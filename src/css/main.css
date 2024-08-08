@@ -1,0 +1,13 @@
+/* Common CSS for Extension Pages */
+
+#toast-container {
+    z-index: 3;
+}
+
+#back-to-top {
+    position: fixed;
+    bottom: 64px;
+    right: 20px;
+    display: none;
+    z-index: 3;
+}

@@ -1,0 +1,32 @@
+{
+  "name": "auto-auth",
+  "scripts": {
+    "postinstall": "npx gulp",
+    "lint:eslint": "npx eslint src/js tests",
+    "lint:web-ext": "npm run manifest:firefox && npx web-ext lint --source-dir ./src/ --ignore-files dist/**",
+    "lint": "npm run lint:eslint && npm run lint:web-ext",
+    "test": "npm run manifest:chrome && node tests/test.js",
+    "chrome": "npm run manifest:chrome && web-ext run --source-dir ./src/ --target=chromium",
+    "firefox": "npm run manifest:firefox && web-ext run --source-dir ./src/",
+    "manifest:chrome": "npx json-merger -p -am concat -o src/manifest.json manifest.json manifest-chrome.json",
+    "manifest:firefox": "npx json-merger -p -am concat -o src/manifest.json manifest.json manifest-firefox.json",
+    "build:chrome": "npm run manifest:chrome && npx web-ext build -n {name}-chrome-{version}.zip -o -s src",
+    "build:firefox": "npm run manifest:firefox && npx web-ext build -n {name}-firefox-{version}.zip -o -s src",
+    "build": "npm run build:chrome && npm run build:firefox"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "bootstrap": "^5.3.3",
+    "clipboard": "^2.0.11",
+    "jquery": "^3.7.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "eslint": "^8.57.0",
+    "gulp": "^4.0.2",
+    "json-merger": "^1.1.10",
+    "prettier": "^3.3.3",
+    "puppeteer": "^22.15.0",
+    "web-ext": "^8.2.0"
+  }
+}

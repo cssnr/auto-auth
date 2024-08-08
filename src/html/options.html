@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Auto Authentication</title>
+    <link rel="icon" href="../images/logo16.png" sizes="any">
+    <link rel="stylesheet" type="text/css" href="../dist/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../dist/fontawesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/options.css">
+    <script type="text/javascript" src="../js/theme.js"></script>
+</head>
+<body class="h-100">
+
+<div class="container-fluid px-1 px-sm-3 py-3 h-100">
+<div class="d-flex align-items-center h-100">
+<div id="options-wrapper" class="w-100 m-auto"> <!--<div class="col-xl-6 col-md-8 col-12 m-auto">-->
+<div class="card mb-3">
+<div class="card-body">
+    <div class="d-flex justify-content-center align-items-center">
+        <img src="../images/logo48.png" class="me-2" height="48" width="48"
+             alt="Auto Authentication" title="Auto Authentication">
+        <h1 class="text-center">Auto Authentication</h1>
+    </div>
+    <div class="clearfix"></div>
+    <p class="text-center lead">v<span class="version"></span></p>
+    <table id="keyboard-shortcuts" class="table table-sm table-borderless table-hover">
+        <caption class="visually-hidden">Keyboard Shortcuts</caption>
+        <thead class="visually-hidden"><tr><th>Description</th><th>Shortcut</th></tr></thead>
+        <tbody></tbody>
+        <tfoot class="d-none">
+        <tr>
+            <td class="bg-transparent"><i class="fa-regular fa-keyboard me-1"></i> <span class="description"></span></td>
+            <td class="bg-transparent text-end" title="Keyboard Shortcut"><kbd>Unknown</kbd></td>
+        </tr>
+        </tfoot>
+    </table>
+    <hr>
+    <form id="options-form" class="options">
+        <div class="form-check form-switch">
+            <input class="form-check-input" id="tempDisabled" type="checkbox" role="switch"
+                   data-warning="text-danger-emphasis" data-related="disableWarning">
+            <label class="form-check-label" for="tempDisabled" aria-describedby="tempDisabledHelp">
+                Temporarily Disable
+                <span data-bs-toggle="tooltip" data-bs-title="Temporarily Disable the Extension for Debugging.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
+        <div id="disableWarning" class="alert alert-warning mt-3" role="alert" style="display: none;">
+            Extension is temporarily disabled!
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" id="ignoreProxy" type="checkbox" role="switch">
+            <label class="form-check-label" for="ignoreProxy" aria-describedby="ignoreProxyHelp">
+                Ignore Proxy Authentication
+                <span data-bs-toggle="tooltip" data-bs-title="Ignore HTTP 407 Proxy Auth Required Responses.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" id="defaultSave" type="checkbox" role="switch">
+            <label class="form-check-label" for="defaultSave" aria-describedby="defaultSaveHelp">
+                Save Authentication by Default
+                <span data-bs-toggle="tooltip" data-bs-title="Save Login Enabled by Default.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" id="contextMenu" type="checkbox" role="switch">
+            <label class="form-check-label" for="contextMenu" aria-describedby="contextMenuHelp">
+                Enable Right Click Menu
+                <span data-bs-toggle="tooltip" data-bs-title="Show Context Menu on Right Click.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" id="showUpdate" type="checkbox" role="switch">
+            <label class="form-check-label" for="showUpdate" aria-describedby="showUpdateHelp">
+                Show Release Notes on Update
+                <span data-bs-toggle="tooltip" data-bs-title="Show Release Notes on Version Update.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
+    </form>
+    <div class="d-none my-3 grant-perms">
+        <button class="btn btn-lg btn-success w-100 mb-2 grant-permissions" type="button"
+                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                data-bs-title="This Extension Requires Host Permissions to Function.">
+            <i class="fa-solid fa-check-double me-1"></i> Grant Host Permissions</button>
+        <p class="text-center"><a href="../html/permissions.html">More Information on Permissions</a></p>
+    </div>
+    <div class="d-none my-3 has-perms">
+        <button class="btn btn-link link-danger revoke-permissions" type="button"
+                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                data-bs-title="Google Chrome does not allow removing required permissions via this method.">
+            Remove Host Permissions</button>
+    </div>
+
+    <form id="add-host">
+        <label class="form-label" for="host-name"><i class="fa-solid fa-globe me-2"></i> Hosts</label>
+        <div class="input-group mb-1">
+            <input id="host-name" type="text" class="form-control" placeholder="Not Yet Implemented" aria-label="Hostname" aria-describedby="add-host-btn" autocomplete="url" required disabled>
+            <button class="btn btn-outline-success disabled" type="submit" id="add-host-btn"
+                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover"
+                    data-bs-title="Not Yet Implemented">
+                Add <i class="fa-solid fa-plus ms-1"></i>
+            </button>
+        </div>
+    </form>
+
+    <div class="mb-1">
+        <input type="file" id="hosts-input" style="display: none;" />
+        <a id="import-hosts" class="link-body-emphasis text-decoration-none fst-italic small" role="button">
+            Import <i class="fa-solid fa-file-arrow-up ms-1"></i></a>
+        <span class="ms-2 me-1">/</span>
+        <a id="export-hosts" class="link-body-emphasis text-decoration-none fst-italic small" role="button">
+            Export <i class="fa-solid fa-file-arrow-down ms-1"></i></a>
+    </div>
+
+    <table id="hosts-table" class="table table-sm table-hover bg-transparent">
+        <caption>Saved Credentials</caption>
+        <thead><tr>
+            <th scope="col" class="text-center" style="width: 36px;">
+                <i class="fa-solid fa-trash-can"></i>
+            </th>
+            <th scope="col">Host</th>
+            <th scope="col" class="d-none d-sm-table-cell">Username</th>
+            <th scope="col" class="text-center" style="width: 36px;">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </th>
+        </tr></thead>
+        <tbody></tbody>
+    </table>
+
+    <p class="fst-italic small mt-3">
+        <a id="copy-support" href="#0">Copy Support Information</a> for issue reporting.
+    </p>
+
+    <hr class="mt-0">
+
+    <div class="text-center">
+        <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
+           href="homepage_url">Home Page</a>
+        <span class="mx-2">&bull;</span>
+        <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
+           href="https://github.com/cssnr/auto-auth/discussions/categories/feature-requests">Request Feature</a>
+        <span class="mx-2">&bull;</span>
+        <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
+           href="https://github.com/cssnr/auto-auth/issues">Open Issue</a>
+    </div>
+</div> <!-- card-body -->
+</div> <!-- card -->
+</div> <!-- options-wrapper -->
+</div> <!-- flex -->
+</div> <!-- container -->
+
+<button type="button" class="btn btn-outline-primary" id="back-to-top">
+    <i class="fa-regular fa-square-caret-up"></i>
+</button> <!-- back-to-top -->
+
+<div aria-live="polite" aria-atomic="true" class="">
+    <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+</div> <!-- toast -->
+
+<div class="d-none">
+    <div class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+        <div class="toast-body"></div>
+    </div>
+    <i class="fa-regular fa-trash-can"></i>
+    <i class="fa-regular fa-pen-to-square"></i>
+</div> <!-- d-none -->
+
+<script type="text/javascript" src="../dist/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../dist/bootstrap/bootstrap.bundle.min.js"></script>
+<script type="module" src="../js/main.js"></script>
+<script type="module" src="../js/options.js"></script>
+
+</body>
+</html>

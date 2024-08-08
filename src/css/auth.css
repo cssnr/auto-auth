@@ -1,0 +1,31 @@
+/* CSS for options.html */
+
+/*body {*/
+/*    background: url('https://images.cssnr.com/aviation/') no-repeat center fixed;*/
+/*    background-size: cover;*/
+/*}*/
+
+#auth-outer {
+    max-width: 767px;
+    backdrop-filter: blur(6px);
+}
+
+[data-bs-theme='dark'] #auth-outer {
+    background-color: rgba(var(--bs-black-rgb), 0.5);
+    border: 1px solid rgba(var(--bs-white-rgb), 0.2);
+    filter: drop-shadow(15px 15px 12px var(--bs-black));
+}
+
+[data-bs-theme='light'] #auth-outer {
+    background-color: rgba(var(--bs-white-rgb), 0.5);
+    border: 1px solid rgba(var(--bs-black-rgb), 0.2);
+    filter: drop-shadow(15px 15px 12px var(--bs-white));
+}
+
+[data-bs-theme='dark'] .form-control {
+    background-color: rgba(var(--bs-black-rgb), 0.5);
+}
+
+[data-bs-theme='light'] .form-control {
+    background-color: rgba(var(--bs-white-rgb), 0.5);
+}

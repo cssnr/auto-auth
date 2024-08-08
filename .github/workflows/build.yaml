@@ -1,0 +1,46 @@
+name: "Build"
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: "Update Manifest Version"
+        if: ${{ github.event_name == 'release' }}
+        uses: cssnr/update-json-value-action@v1
+
+      - name: "Build All"
+        run: |
+          npm install
+          npm run build
+
+      - name: "Upload to Actions"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts
+          path: web-ext-artifacts/
+
+      - name: "Upload to Release"
+        if: ${{ github.event_name == 'release' }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: web-ext-artifacts/*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true

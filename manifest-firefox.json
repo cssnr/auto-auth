@@ -1,0 +1,11 @@
+{
+  "background": {
+    "scripts": ["js/service-worker.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "auto-auth@cssnr.com",
+      "strict_min_version": "112.0"
+    }
+  }
+}

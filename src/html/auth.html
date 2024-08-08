@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Auto Authentication Home</title>
+    <link rel="icon" href="../images/logo16.png" sizes="any">
+    <link rel="stylesheet" type="text/css" href="../dist/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../dist/fontawesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/auth.css">
+    <script type="text/javascript" src="../js/theme.js"></script>
+</head>
+<body>
+
+<div class="container-fluid pt-3 px-0 px-sm-4">
+<div id="auth-outer" class="rounded rounded-4 w-100 mx-auto mb-4 p-3">
+
+    <h1 class="text-center">Auto Auth</h1>
+    <p class="text-center"><a id="link" href="" target="_blank" rel="noopener">url</a></p>
+
+    <div id="fail" class="alert alert-warning text-center d-none" role="alert">
+        <b>Authentication Failed.</b> Please Try Again...
+    </div>
+
+    <form id="auth-form" class="mb-3" autocomplete="off">
+
+        <label for="username" class="form-label"><i class="fa-solid fa-user me-2"></i> Username</label>
+        <div class="input-group input-group-lg col-12">
+            <input id="username" placeholder="username" aria-describedby="usernameHelp" type="text" class="form-control" autocomplete="off" required autofocus>
+            <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1"
+                    data-paste-input="#username" data-copy-text="Site URL Copied to Clipboard."
+                    data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Username">
+                <i class="fa-regular fa-paste"></i>
+            </button>
+        </div>
+        <div class="form-text mb-3" id="usernameHelp">Basic Authentication Username.</div>
+
+        <label for="password" class="form-label"><i class="fa-solid fa-key me-2"></i> Password</label>
+        <div class="input-group input-group-lg col-12">
+            <input id="password" placeholder="password" aria-describedby="passwordHelp" type="password" class="form-control" autocomplete="off" required>
+            <button class="btn btn-outline-success" type="button" data-bs-toggle="tooltip" data-show-hide="#password" tabindex="-1"
+                    data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Show/Hide Password">
+                <i class="fa-regular fa-eye"></i>
+            </button>
+            <button id="passwordCopy" class="btn btn-outline-info" type="button" tabindex="-1"
+                    data-paste-input="#password" data-copy-text="Auth Token Copied to Clipboard."
+                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Password">
+                <i class="fa-regular fa-paste"></i>
+            </button>
+        </div>
+        <div class="form-text mb-3" id="passwordHelp">Basic Authentication Password.</div>
+
+        <input type="hidden" id="hostname" name="hostname">
+
+        <div class="form-check form-switch fs-4 mb-3">
+            <input class="form-check-input" type="checkbox" role="switch" id="save">
+            <label class="form-check-label" for="save">Save Login</label>
+            <span data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Not Yet Implemented.<br><b>All Logins are Saved!</b>">
+                <i class="fa-solid fa-triangle-exclamation ms-1 text-warning-emphasis"></i>
+            </span>
+        </div>
+
+        <button class="btn btn-lg btn-success w-100" type="submit">
+            Login
+            <i id="icon" class="fa-solid fa-right-to-bracket ms-2"></i>
+        </button>
+
+    </form> <!-- auth-form -->
+
+    <p class="text-center lead">
+        Saving as Host: <kbd id="host" class="text-center ms-2"></kbd>
+    </p>
+
+</div> <!-- auth-outer -->
+</div> <!-- container -->
+
+<button type="button" class="btn btn-outline-primary" id="back-to-top">
+    <i class="fa-regular fa-square-caret-up"></i>
+</button> <!-- back-to-top -->
+
+<div aria-live="polite" aria-atomic="true" class="">
+    <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+</div> <!-- toast -->
+
+<div class="d-none">
+    <div class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+        <div class="toast-body"></div>
+    </div>
+</div> <!-- d-none -->
+
+<script type="text/javascript" src="../dist/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../dist/bootstrap/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="../dist/clipboard/clipboard.min.js"></script>
+<script type="module" src="../js/main.js"></script>
+<script type="module" src="../js/auth.js"></script>
+
+</body>
+</html>
