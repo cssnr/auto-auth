@@ -49,12 +49,10 @@ async function onAuthRequired(details, callback) {
         )
         const auth = new URL(chrome.runtime.getURL('/html/auth.html'))
         auth.searchParams.append('url', details.url)
-        const tabId = details.tabId
-        auth.searchParams.append('tab', tabId)
         if (failed) {
             auth.searchParams.append('fail', 'yes')
         }
-        chrome.tabs.update(tabId, {
+        chrome.tabs.update(details.tabId, {
             url: auth.href,
         })
         callback({ cancel: true })
@@ -133,6 +131,9 @@ async function onInstalled(details) {
         defaultSave: true,
         contextMenu: true,
         showUpdate: false,
+        radioBackground: 'bgPicture',
+        pictureURL: 'https://picsum.photos/1920/1080',
+        videoURL: '',
     })
     console.debug('options:', options)
     if (options.contextMenu) {
@@ -241,6 +242,21 @@ function onChanged(changes, namespace) {
                     chrome.contextMenus.removeAll()
                 }
             }
+            if (oldValue.tempDisabled !== newValue.tempDisabled) {
+                console.debug('tempDisabled:', newValue.tempDisabled)
+                if (newValue.tempDisabled) {
+                    console.debug('Setting Red Icon')
+                    chrome.action.setIcon({
+                        path: {
+                            16: '/images/logo-red16.png',
+                            32: '/images/logo-red32.png',
+                        },
+                    })
+                } else {
+                    console.debug('Resetting Icon')
+                    chrome.action.setIcon({})
+                }
+            }
         }
     }
 }
@@ -304,7 +320,7 @@ async function setDefaultOptions(defaultOptions) {
         if (options[key] === undefined) {
             changed = true
             options[key] = value
-            console.log(`Set ${key}:`, value)
+            console.log(`%cSet ${key}:`, 'color: LimeGreen', value)
         }
     }
     if (changed) {

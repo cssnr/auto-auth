@@ -85,6 +85,50 @@
                 </span>
             </label>
         </div>
+
+        <h5 class="mt-3">
+            Auth Page Background
+            <span class="small" data-bs-toggle="tooltip" data-bs-title="Set Auth Page Background: None, Picture or Video.">
+                <i class="fa-solid fa-circle-info ms-1"></i>
+            </span>
+        </h5>
+
+        <div class="d-flex flex-column flex-sm-row ms-1 ms-sm-3">
+            <div class="form-check form-check-inline mb-2 mb-sm-0">
+                <input class="form-check-input" type="radio" name="radioBackground" id="bgNone" value="none">
+                <label class="form-check-label" for="bgNone">
+                    <i class="fa-regular fa-square"></i> None
+                </label>
+            </div>
+            <div class="form-check form-check-inline mb-2 mb-sm-0">
+                <input class="form-check-input" type="radio" name="radioBackground" id="bgPicture" value="picture">
+                <label class="form-check-label" for="bgPicture">
+                    <i class="fa-regular fa-image"></i> Picture
+                </label>
+            </div>
+            <div class="form-check form-check-inline mb-2">
+                <input class="form-check-input" type="radio" name="radioBackground" id="bgVideo" value="video">
+                <label class="form-check-label" for="bgVideo">
+                    <i class="fa-solid fa-video"></i> Video
+                </label>
+            </div>
+        </div>
+
+        <div class="ms-0 ms-sm-3">
+            <div id="bgPictureInput" class="input-group d-none">
+                <span class="input-group-text" id="picture-addon" data-bs-toggle="tooltip" data-bs-title="URL to a Web Image.">
+                    <i class="fa-solid fa-circle-info"></i></span>
+                <input type="text" class="form-control" placeholder="Background Picture URL" aria-label="Background Picture URL"
+                       id="pictureURL" name="pictureURL" aria-describedby="picture-addon">
+            </div>
+            <div id="bgVideoInput" class="input-group d-none">
+                <span class="input-group-text" id="video-addon" data-bs-toggle="tooltip" data-bs-title="URL to a Web Video.">
+                    <i class="fa-solid fa-circle-info"></i></span>
+                <input type="text" class="form-control" placeholder="Background Video URL" aria-label="Background Video URL"
+                       id="videoURL" name="videoURL" aria-describedby="video-addon">
+            </div>
+        </div>
+
     </form>
     <div class="d-none my-3 grant-perms">
         <button class="btn btn-lg btn-success w-100 mb-2 grant-permissions" type="button"

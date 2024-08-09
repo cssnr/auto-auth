@@ -46,6 +46,12 @@ document
 document
     .querySelectorAll('[data-bs-toggle="tooltip"]')
     .forEach((el) => new bootstrap.Tooltip(el))
+document
+    .getElementsByName('radioBackground')
+    .forEach((el) => el.addEventListener('change', backgroundChange))
+
+const bgPictureInput = document.getElementById('bgPictureInput')
+const bgVideoInput = document.getElementById('bgVideoInput')
 
 /**
  * Initialize Options
@@ -64,6 +70,7 @@ async function initOptions() {
     ])
     console.debug('options, sites:', options, sites)
     updateOptions(options)
+    backgroundChange(options.radioBackground)
     updateTable(sites)
 }
 
@@ -258,6 +265,27 @@ async function hostsInputChange(event) {
         showToast(`Imported/Updated ${count} Hosts.`, 'success')
     }
     fileReader.readAsText(hostsInput.files[0])
+}
+
+/**
+ * Auth Background Change Callback
+ * @function backgroundChange
+ * @param {String|InputEvent} event
+ */
+function backgroundChange(event) {
+    console.debug('backgroundChange:', event)
+    const id = typeof event === 'string' ? event : event?.target?.id
+    console.debug('id:', id)
+    if (id === 'bgPicture') {
+        bgPictureInput.classList.remove('d-none')
+        bgVideoInput.classList.add('d-none')
+    } else if (id === 'bgVideo') {
+        bgPictureInput.classList.add('d-none')
+        bgVideoInput.classList.remove('d-none')
+    } else {
+        bgPictureInput.classList.add('d-none')
+        bgVideoInput.classList.add('d-none')
+    }
 }
 
 /**

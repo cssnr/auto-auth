@@ -15,7 +15,6 @@ document
     .forEach((el) => new bootstrap.Tooltip(el))
 
 const searchParams = new URLSearchParams(window.location.search)
-const tabId = parseInt(searchParams.get('tab'))
 const url = new URL(searchParams.get('url'))
 
 const hostname = document.getElementById('hostname')
@@ -46,6 +45,7 @@ async function domContentLoaded() {
         'sites',
     ])
     // console.debug('options, sites:', options, sites)
+    setBackground(options)
     save.checked = options.defaultSave
     if (url.host in sites) {
         const [username, password] = sites[url.host].split(':')
@@ -70,14 +70,18 @@ async function submitAuth(event) {
     const { sites } = await chrome.storage.sync.get(['sites'])
     console.debug('sites:', sites)
     sites[host] = `${user}:${pass}`
+    // TODO: Update to async/await
     await chrome.storage.sync.set({ sites }).then(() => {
         console.log(
             '%cCredentials Saved.',
             'color: LimeGreen',
             `Loading: ${url.href}`
         )
-        chrome.tabs.update(tabId, {
-            url: url.href,
+        chrome.tabs.getCurrent().then((tab) => {
+            console.debug('tab.id:', tab.id)
+            chrome.tabs.update(tab.id, {
+                url: url.href,
+            })
         })
     })
 }
@@ -106,5 +110,29 @@ function showHidePassword(event) {
         input.type = 'text'
     } else {
         input.type = 'password'
+    }
+}
+
+/**
+ * Set Background
+ * @function setBackground
+ * @param {Object} options
+ */
+function setBackground(options) {
+    console.debug('setBackground:', options)
+    const video = document.querySelector('video')
+    if (options.radioBackground === 'bgPicture') {
+        const url = options.pictureURL || 'https://picsum.photos/1920/1080'
+        document.body.style.background = `url('${url}') no-repeat center fixed`
+        document.body.style.backgroundSize = 'cover'
+        video.classList.add('d-none')
+    } else if (options.radioBackground === 'bgVideo') {
+        const src = options.videoURL || '/media/loop.mp4'
+        video.classList.remove('d-none')
+        video.src = src
+        document.body.style.cssText = ''
+    } else {
+        document.body.style.cssText = ''
+        video.classList.add('d-none')
     }
 }
