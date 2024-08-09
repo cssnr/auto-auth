@@ -280,7 +280,7 @@ function addContext(context) {
             type: context[3],
         })
     } catch (e) {
-        console.log(`%cError Adding Context: ${e.message}`, 'color: red', e)
+        console.log(`%cError Adding Context: ${e.message}`, 'color: Red', e)
     }
 }
 

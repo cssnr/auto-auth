@@ -10,6 +10,7 @@ import {
     revokePerms,
     saveOptions,
     showToast,
+    textFileDownload,
     updateManifest,
     updateOptions,
 } from './export.js'
@@ -21,6 +22,12 @@ chrome.permissions.onRemoved.addListener(onRemoved)
 document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('add-host').addEventListener('submit', addHost)
 document.getElementById('copy-support').addEventListener('click', copySupport)
+
+const hostsInput = document.getElementById('hosts-input')
+hostsInput.addEventListener('change', hostsInputChange)
+document.getElementById('import-hosts').addEventListener('click', importHosts)
+document.getElementById('export-hosts').addEventListener('click', exportHosts)
+
 document
     .querySelectorAll('.revoke-permissions')
     .forEach((el) => el.addEventListener('click', revokePerms))
@@ -112,8 +119,8 @@ function updateTable(data) {
 
     for (const [key, value] of Object.entries(data)) {
         const row = tbody.insertRow()
-        const [username] = value.split(':')
-        console.debug('username:', username)
+        const username = value.split(':')[0]
+        // console.debug('username:', username)
 
         const deleteBtn = document.createElement('a')
         const trash = document
@@ -172,7 +179,7 @@ async function deleteHost(event) {
     showToast(`Removed: ${host}`, 'primary')
     // event.preventDefault()
     // const host = event.currentTarget?.dataset?.value
-    // console.log(`%cDelete Host: ${host}`, 'color: yellow')
+    // console.log(`%cDelete Host: ${host}`, 'color: Yellow')
     // const { sites } = await chrome.storage.sync.get(['sites'])
     // // console.debug('sites:', sites)
     // if (host && host in sites) {
@@ -192,6 +199,65 @@ async function editHost(event) {
     const host = event.currentTarget?.dataset?.value
     console.debug('host:', host)
     showToast('Not Yet Implemented', 'warning')
+}
+
+/**
+ * Import Hosts Click Callback
+ * @function importHosts
+ * @param {MouseEvent} event
+ */
+async function importHosts(event) {
+    console.debug('importHosts:', event)
+    event.preventDefault()
+    hostsInput.click()
+}
+
+/**
+ * Export Hosts Click Callback
+ * @function exportHosts
+ * @param {MouseEvent} event
+ */
+async function exportHosts(event) {
+    console.debug('exportHosts:', event)
+    event.preventDefault()
+    const { sites } = await chrome.storage.sync.get(['sites'])
+    console.debug('sites:', sites)
+    if (Object.keys(sites).length === 0) {
+        return showToast('No Credentials to Export', 'warning')
+    }
+    const json = JSON.stringify(sites, null, 2)
+    textFileDownload('auto-auth-secrets.txt', json)
+}
+
+/**
+ * Hosts Input Change Callback
+ * @function hostsInputChange
+ * @param {InputEvent} event
+ */
+async function hostsInputChange(event) {
+    console.debug('hostsInputChange:', event, hostsInput)
+    event.preventDefault()
+    const fileReader = new FileReader()
+    fileReader.onload = async function doBannedImport() {
+        const results = JSON.parse(fileReader.result.toString())
+        console.debug('results:', results)
+        const { sites } = await chrome.storage.sync.get(['sites'])
+        let count = 0
+        for (const [key, value] of Object.entries(results)) {
+            count += 1
+            if (typeof value === 'object') {
+                const { username, password } = value
+                sites[key] = `${username}:${password}`
+            } else if (typeof value === 'string') {
+                // const [username, password] = value.split(':')
+                sites[key] = value
+            }
+        }
+        console.debug('sites:', sites)
+        await chrome.storage.sync.set({ sites })
+        showToast(`Imported/Updated ${count} Hosts.`, 'success')
+    }
+    fileReader.readAsText(hostsInput.files[0])
 }
 
 /**

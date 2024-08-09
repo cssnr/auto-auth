@@ -25,7 +25,7 @@ export async function deleteCredentials(host) {
     // console.debug('deleteCredentials:', event)
     // event.preventDefault()
     // const host = event.currentTarget?.dataset?.value
-    console.log(`%cDelete Host: ${host}`, 'color: yellow')
+    console.log(`%cDelete Host: ${host}`, 'color: Yellow')
     const { sites } = await chrome.storage.sync.get(['sites'])
     // console.debug('sites:', sites)
     if (host && host in sites) {
@@ -33,6 +33,26 @@ export async function deleteCredentials(host) {
         await chrome.storage.sync.set({ sites })
         // showToast(`Removed: ${host}`, 'primary')
     }
+}
+
+/**
+ * Text File Download
+ * @function textFileDownload
+ * @param {String} filename
+ * @param {String} text
+ */
+export function textFileDownload(filename, text) {
+    console.debug(`textFileDownload: ${filename}`)
+    const element = document.createElement('a')
+    element.setAttribute(
+        'href',
+        'data:text/plain;charset=utf-8,' + encodeURIComponent(text)
+    )
+    element.setAttribute('download', filename)
+    element.classList.add('d-none')
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
 }
 
 /**
@@ -78,7 +98,7 @@ export async function saveOptions(event) {
     }
     if (value !== undefined) {
         options[key] = value
-        console.log(`%cSet: ${key}:`, 'color: green', value)
+        console.log(`%cSet: ${key}:`, 'color: Lime', value)
         await chrome.storage.sync.set({ options })
     } else {
         console.warn('No Value for key:', key)
@@ -148,7 +168,7 @@ function hideShowElement(selector, show, speed = 'fast') {
  * @param {String} warning
  */
 function addWarningClass(element, value, warning) {
-    console.debug('hideShowElement:', value, element)
+    console.debug('addWarningClass:', value, element)
     if (value) {
         element.classList.add(warning)
     } else {
@@ -296,7 +316,7 @@ export async function revokePerms(event) {
         })
         await checkPerms()
     } catch (e) {
-        console.log(`%cError: ${e.message}`, 'color: red', e)
+        console.log(`%cError: ${e.message}`, 'color: Red', e)
         showToast(e.toString(), 'danger')
     }
 }

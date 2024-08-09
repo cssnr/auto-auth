@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="h-100">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,12 +11,10 @@
     <link rel="stylesheet" type="text/css" href="../css/options.css">
     <script type="text/javascript" src="../js/theme.js"></script>
 </head>
-<body class="h-100">
+<body>
 
-<div class="container-fluid px-1 px-sm-3 py-3 h-100">
-<div class="d-flex align-items-center h-100">
-<div id="options-wrapper" class="w-100 m-auto"> <!--<div class="col-xl-6 col-md-8 col-12 m-auto">-->
-<div class="card mb-3">
+<div class="container-fluid py-3 px-1 px-sm-3 ">
+<div class="card w-100 mx-auto">
 <div class="card-body">
     <div class="d-flex justify-content-center align-items-center">
         <img src="../images/logo48.png" class="me-2" height="48" width="48"
@@ -105,7 +103,7 @@
     <form id="add-host">
         <label class="form-label" for="host-name"><i class="fa-solid fa-globe me-2"></i> Hosts</label>
         <div class="input-group mb-1">
-            <input id="host-name" type="text" class="form-control" placeholder="Not Yet Implemented" aria-label="Hostname" aria-describedby="add-host-btn" autocomplete="url" required disabled>
+            <input id="host-name" type="text" class="form-control" placeholder="Manually Adding is Not Yet Implemented" aria-label="Hostname" aria-describedby="add-host-btn" autocomplete="url" required disabled>
             <button class="btn btn-outline-success disabled" type="submit" id="add-host-btn"
                     data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover"
                     data-bs-title="Not Yet Implemented">
@@ -156,8 +154,6 @@
     </div>
 </div> <!-- card-body -->
 </div> <!-- card -->
-</div> <!-- options-wrapper -->
-</div> <!-- flex -->
 </div> <!-- container -->
 
 <button type="button" class="btn btn-outline-primary" id="back-to-top">

@@ -1,6 +1,6 @@
 /* CSS for options.html */
 
-#options-wrapper {
+.card {
     min-width: 300px;
     max-width: 900px;
 }

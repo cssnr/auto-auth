@@ -52,7 +52,7 @@ async function initPopup() {
     // Check Host Permissions
     const hasPerms = await checkPerms()
     if (!hasPerms) {
-        return console.log('%cMissing Host Permissions', 'color: red')
+        return console.log('%cMissing Host Permissions', 'color: Red')
     }
 
     // Check Tab Permissions

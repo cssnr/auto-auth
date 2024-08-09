@@ -23,6 +23,7 @@ Modern Chrome Web Extension and Firefox Browser Addon for HTTP Basic Automatic A
     - [Upcoming Features](#Upcoming-Features)
     - [Known Issues](#Known-Issues)
 * [Configuration](#Configuration)
+* [Migration](#Migration)
 * [Support](#Support)
 * [Development](#Development)
     - [Building](#Building)
@@ -37,12 +38,12 @@ Modern Chrome Web Extension and Firefox Browser Addon for HTTP Basic Automatic A
 * [Google Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
 * [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/auto-auth)
 
-[![Chrome](https://raw.githubusercontent.com/cssnr/logo-icons/master/browsers/chrome_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
-[![Firefox](https://raw.githubusercontent.com/cssnr/logo-icons/master/browsers/firefox_48.png)](https://addons.mozilla.org/addon/auto-auth)
-[![Edge](https://raw.githubusercontent.com/cssnr/logo-icons/master/browsers/edge_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
-[![Brave](https://raw.githubusercontent.com/cssnr/logo-icons/master/browsers/brave_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
-[![Opera](https://raw.githubusercontent.com/cssnr/logo-icons/master/browsers/opera_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
-[![Chromium](https://raw.githubusercontent.com/cssnr/logo-icons/master/browsers/chromium_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+[![Chrome](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/chrome_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+[![Firefox](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/firefox_48.png)](https://addons.mozilla.org/addon/auto-auth)
+[![Edge](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/edge_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+[![Brave](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/brave_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+[![Opera](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/opera_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+[![Chromium](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/chromium_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
 
 All **Chromium** Based Browsers can install the extension from
 the [Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx).
@@ -80,6 +81,25 @@ You can pin the Addon by clicking the `Puzzle Piece`, find the Auto Auth icon, t
 
 To open the options, click on the icon (from above) then click `Open Options`.  
 You can also access `Options` through the right-click context menu (enabled by default).
+
+## Migration
+
+Migration Guides from Other Web Extensions.
+
+### AutoAuth
+
+Migration from: [steffanschlein/AutoAuth/](https://github.com/steffanschlein/AutoAuth/)
+
+1. Open Addons Management (about:addons) `Ctrl+Shift+A`
+2. Find AutoAuth, click the 3 dots, then click Options
+3. Open Developer Tools `Ctrl+Shift+I` and go to Console tab
+4. Enter the following code: `await browser.storage.local.get() `
+5. Right-click on the `Object` and choose **Copy Object**
+6. Paste the results into a text file and save it
+7. Go to the Options Page (for this extension) and click Import
+8. Choose the file from step #6 and click Open
+
+You should now see all the credentials in the table on the Options Page.
 
 ## Support
 
