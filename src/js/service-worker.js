@@ -254,7 +254,12 @@ function onChanged(changes, namespace) {
                     })
                 } else {
                     console.debug('Resetting Icon')
-                    chrome.action.setIcon({})
+                    chrome.action.setIcon({
+                        path: {
+                            16: '/images/logo16.png',
+                            32: '/images/logo32.png',
+                        },
+                    })
                 }
             }
         }
