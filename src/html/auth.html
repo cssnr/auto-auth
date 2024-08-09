@@ -65,19 +65,50 @@
             </span>
         </div>
 
-        <button class="btn btn-lg btn-success w-100" type="submit">
-            Login
-            <i id="icon" class="fa-solid fa-right-to-bracket ms-2"></i>
-        </button>
+        <div class="row">
+            <div class="col-12 col-sm-6 mb-2 mb-sm-0">
+                <button class="btn btn-lg btn-success w-100" type="submit">
+                    Login
+                    <i id="icon" class="fa-solid fa-right-to-bracket ms-2"></i>
+                </button>
+            </div>
+            <div class="col-12 col-sm-6">
+                <button class="btn btn-lg btn-outline-warning w-100" type="button" data-bs-toggle="modal" data-bs-target="#ignore-modal">
+                    Ignore Host
+                    <i class="fa-solid fa-ban ms-2"></i>
+                </button>
+            </div>
+        </div>
 
     </form> <!-- auth-form -->
 
     <p class="text-center lead">
-        Saving as Host: <kbd id="host" class="text-center ms-2"></kbd>
+        Host: <kbd class="ms-2 host"></kbd>
     </p>
 
 </div> <!-- auth-outer -->
 </div> <!-- container -->
+
+<div class="modal fade" id="ignore-modal" tabindex="-1" aria-labelledby="ignore-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ignore-modal-label">Confirm Ignore Host</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Are you sure you want to ignore and remove any saved credentials for host: <kbd class="ms-2 host"></kbd>
+                </p>
+                <p class="mb-0">Hosts can always be removed from the ignore list on the Options Page.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning me-auto" id="ignore-host">Ignore</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div><!-- ignore-modal -->
 
 <button type="button" class="btn btn-outline-primary" id="back-to-top">
     <i class="fa-regular fa-square-caret-up"></i>
@@ -88,7 +119,7 @@
 </div> <!-- toast -->
 
 <div class="d-none">
-    <div class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+    <div class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
         <div class="toast-body"></div>
     </div>
 </div> <!-- d-none -->

@@ -4,6 +4,7 @@ import {
     checkPerms,
     deleteCredentials,
     grantPerms,
+    showHidePassword,
     linkClick,
     onAdded,
     onRemoved,
@@ -21,6 +22,7 @@ chrome.permissions.onRemoved.addListener(onRemoved)
 
 document.addEventListener('DOMContentLoaded', initOptions)
 document.getElementById('add-host').addEventListener('submit', addHost)
+document.getElementById('edit-form').addEventListener('submit', editSubmit)
 document.getElementById('copy-support').addEventListener('click', copySupport)
 
 const hostsInput = document.getElementById('hosts-input')
@@ -38,6 +40,9 @@ document
     .querySelectorAll('a[href]')
     .forEach((el) => el.addEventListener('click', linkClick))
 document
+    .querySelectorAll('[data-show-hide]')
+    .forEach((el) => el.addEventListener('click', showHidePassword))
+document
     .querySelectorAll('#options-form input')
     .forEach((el) => el.addEventListener('change', saveOptions))
 document
@@ -52,6 +57,15 @@ document
 
 const bgPictureInput = document.getElementById('bgPictureInput')
 const bgVideoInput = document.getElementById('bgVideoInput')
+
+const editHostname = document.getElementById('hostname')
+const editUsername = document.getElementById('username')
+const editPassword = document.getElementById('password')
+
+const editModal = new bootstrap.Modal('#edit-modal')
+editModal._element.addEventListener('shown.bs.modal', () => {
+    editUsername.focus()
+})
 
 /**
  * Initialize Options
@@ -121,11 +135,14 @@ async function addHost(event) {
  * @param {Object} data
  */
 function updateTable(data) {
-    const tbody = document.querySelector('#hosts-table > tbody')
-    tbody.innerHTML = ''
+    const hostsBody = document.querySelector('#hosts-table > tbody')
+    hostsBody.innerHTML = ''
+    const ignoredBody = document.querySelector('#ignored-table > tbody')
+    ignoredBody.innerHTML = ''
 
     for (const [key, value] of Object.entries(data)) {
-        const row = tbody.insertRow()
+        const ignored = value === 'ignored'
+        const row = ignored ? ignoredBody.insertRow() : hostsBody.insertRow()
         const username = value.split(':')[0]
         // console.debug('username:', username)
 
@@ -153,6 +170,10 @@ function updateTable(data) {
         cell2.classList.add('text-break')
         cell2.appendChild(hostLink)
 
+        if (ignored) {
+            continue
+        }
+
         const user = document.createTextNode(username)
         const cell3 = row.insertCell()
         cell3.appendChild(user)
@@ -167,7 +188,7 @@ function updateTable(data) {
         editBtn.dataset.value = key
         editBtn.classList.add('link-warning')
         editBtn.setAttribute('role', 'button')
-        editBtn.addEventListener('click', editHost)
+        editBtn.addEventListener('click', editClick)
         const cell4 = row.insertCell()
         cell4.classList.add('text-center')
         cell4.appendChild(editBtn)
@@ -182,30 +203,60 @@ function updateTable(data) {
 async function deleteHost(event) {
     console.debug('deleteHost:', event)
     const host = event.currentTarget?.dataset?.value
-    await deleteCredentials(host)
-    showToast(`Removed: ${host}`, 'primary')
-    // event.preventDefault()
-    // const host = event.currentTarget?.dataset?.value
-    // console.log(`%cDelete Host: ${host}`, 'color: Yellow')
-    // const { sites } = await chrome.storage.sync.get(['sites'])
-    // // console.debug('sites:', sites)
-    // if (host && host in sites) {
-    //     delete sites[host]
-    //     await chrome.storage.sync.set({ sites })
-    //     showToast(`Removed: ${host}`, 'primary')
-    // }
+    await deleteCredentials(host) // TODO: check return value
+    showToast(`Removed: ${host}`)
 }
 
 /**
- * Delete Host
- * @function editHost
+ * Edit Host Click Callback
+ * @function editClick
  * @param {MouseEvent} event
  */
-async function editHost(event) {
-    console.debug('deleteHost:', event)
+async function editClick(event) {
+    console.debug('editClick:', event)
     const host = event.currentTarget?.dataset?.value
     console.debug('host:', host)
-    showToast('Not Yet Implemented', 'warning')
+    // showToast('Not Yet Implemented', 'warning')
+    const { sites } = await chrome.storage.sync.get(['sites'])
+    const [username, password] = sites[host].split(':')
+    editHostname.value = host
+    editHostname.dataset.original = host
+    editPassword.value = password
+    editPassword.dataset.original = password
+    editUsername.value = username
+    editUsername.dataset.original = username
+    editModal.show()
+}
+
+/**
+ * Edit Host Submit Callback
+ * @function editSubmit
+ * @param {SubmitEvent} event
+ */
+async function editSubmit(event) {
+    console.debug('editSubmit:', event)
+    event.preventDefault()
+    event.stopPropagation()
+    const hostname = editHostname.value
+    const username = editUsername.value
+    const password = editPassword.value
+    console.debug('hostname ,username, password:', hostname, username, password)
+    if (
+        hostname === editHostname.dataset.original &&
+        username === editUsername.dataset.original &&
+        password === editPassword.dataset.original
+    ) {
+        editModal.hide()
+        return showToast('No Changes Detected', 'warning')
+    }
+    const { sites } = await chrome.storage.sync.get(['sites'])
+    if (hostname !== editHostname.dataset.original) {
+        delete sites[editHostname.dataset.original]
+    }
+    sites[hostname] = `${username}:${password}`
+    await chrome.storage.sync.set({ sites })
+    editModal.hide()
+    showToast(`Updated Host: ${hostname}`, 'success')
 }
 
 /**
@@ -350,5 +401,5 @@ async function copySupport(event) {
         `options: ${JSON.stringify(options)}`,
     ]
     await navigator.clipboard.writeText(result.join('\n'))
-    showToast('Support Information Copied.')
+    showToast('Support Information Copied.', 'success')
 }

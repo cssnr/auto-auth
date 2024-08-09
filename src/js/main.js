@@ -11,7 +11,7 @@ if (typeof ClipboardJS !== 'undefined') {
         if (event.trigger.dataset.toast) {
             showToast(event.trigger.dataset.toast)
         } else {
-            showToast('Copied to Clipboard')
+            showToast('Copied to Clipboard', 'success')
         }
     })
     clipboard.on('error', function (event) {

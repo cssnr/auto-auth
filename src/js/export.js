@@ -19,19 +19,20 @@
  * Delete Host
  * @function deleteHost
  * @param {String} host
+ * @return {Promise<*|Boolean>}
  */
 export async function deleteCredentials(host) {
     console.debug('deleteCredentials:', host)
-    // console.debug('deleteCredentials:', event)
-    // event.preventDefault()
-    // const host = event.currentTarget?.dataset?.value
-    console.log(`%cDelete Host: ${host}`, 'color: Yellow')
     const { sites } = await chrome.storage.sync.get(['sites'])
     // console.debug('sites:', sites)
     if (host && host in sites) {
         delete sites[host]
         await chrome.storage.sync.set({ sites })
-        // showToast(`Removed: ${host}`, 'primary')
+        console.log(`%cDeleted Host: ${host}`, 'color: Yellow')
+        return true
+    } else {
+        console.log(`%cHost Not Found: ${host}`, 'color: Red')
+        return false
     }
 }
 
@@ -53,6 +54,16 @@ export function textFileDownload(filename, text) {
     document.body.appendChild(element)
     element.click()
     document.body.removeChild(element)
+}
+
+export function showHidePassword(event) {
+    console.debug('showHidePassword:', event)
+    const input = document.querySelector(event.currentTarget.dataset.showHide)
+    if (input.type === 'password') {
+        input.type = 'text'
+    } else {
+        input.type = 'password'
+    }
 }
 
 /**
@@ -345,7 +356,7 @@ export async function onRemoved(permissions) {
  * @param {String} message
  * @param {String} type
  */
-export function showToast(message, type = 'success') {
+export function showToast(message, type = 'primary') {
     console.debug(`showToast: ${type}: ${message}`)
     const clone = document.querySelector('.d-none > .toast')
     const container = document.getElementById('toast-container')

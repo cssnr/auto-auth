@@ -68,6 +68,14 @@ async function onAuthRequired(details, callback) {
     pendingRequests.push(details.requestId)
 
     if (url.host in sites) {
+        if (sites[url.host] === 'ignored') {
+            console.log(
+                `%cHost is Set to Ignored: %c${url.host}`,
+                'color: Yellow',
+                'color: Violet'
+            )
+            return callback()
+        }
         console.log(
             `%cSending Credentials for Request ID: ${details.requestId}`,
             'color: LimeGreen'
@@ -250,6 +258,7 @@ function onChanged(changes, namespace) {
                         path: {
                             16: '/images/logo-red16.png',
                             32: '/images/logo-red32.png',
+                            48: '/images/logo-red48.png',
                         },
                     })
                 } else {
@@ -258,6 +267,7 @@ function onChanged(changes, namespace) {
                         path: {
                             16: '/images/logo16.png',
                             32: '/images/logo32.png',
+                            48: '/images/logo48.png',
                         },
                     })
                 }

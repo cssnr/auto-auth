@@ -1,8 +1,9 @@
 // JS for auth.html
 
-import { showToast } from './export.js'
+import { showHidePassword, showToast } from './export.js'
 
 document.addEventListener('DOMContentLoaded', domContentLoaded)
+document.getElementById('ignore-host').addEventListener('click', ignoreHost)
 document.getElementById('auth-form').addEventListener('submit', submitAuth)
 document
     .querySelectorAll('[data-paste-input]')
@@ -14,15 +15,13 @@ document
     .querySelectorAll('[data-bs-toggle="tooltip"]')
     .forEach((el) => new bootstrap.Tooltip(el))
 
+const save = document.getElementById('save')
+save.addEventListener('change', saveChange)
+
 const searchParams = new URLSearchParams(window.location.search)
 const url = new URL(searchParams.get('url'))
 
-const hostname = document.getElementById('hostname')
-const host = document.getElementById('host')
-const link = document.getElementById('link')
-const icon = document.getElementById('icon')
-const save = document.getElementById('save')
-const fail = document.getElementById('fail')
+document.querySelectorAll('.host').forEach((el) => (el.textContent = url.host))
 
 /**
  * DOMContentLoaded
@@ -32,13 +31,13 @@ async function domContentLoaded() {
     console.debug('domContentLoaded:', searchParams, url)
 
     if (searchParams.get('fail')) {
-        fail.classList.remove('d-none')
+        document.getElementById('fail').classList.remove('d-none')
     }
 
-    host.textContent = url.host
+    const link = document.getElementById('link')
     link.textContent = url.href
     link.href = url.href
-    hostname.value = url.host
+    document.getElementById('hostname').value = url.host
 
     const { options, sites } = await chrome.storage.sync.get([
         'options',
@@ -48,19 +47,38 @@ async function domContentLoaded() {
     setBackground(options)
     save.checked = options.defaultSave
     if (url.host in sites) {
-        const [username, password] = sites[url.host].split(':')
-        const user = document.getElementById('username')
-        user.value = username
-        user.select()
-        document.getElementById('password').value = password
+        if (sites[url.host] !== 'ignored') {
+            const [username, password] = sites[url.host].split(':')
+            const user = document.getElementById('username')
+            user.value = username
+            user.select()
+            document.getElementById('password').value = password
+        }
     }
+}
+
+async function ignoreHost(event) {
+    console.debug('ignoreHost:', event)
+    const { sites } = await chrome.storage.sync.get(['sites'])
+    console.debug('sites:', sites)
+    sites[url.host] = 'ignored'
+    await chrome.storage.sync.set({ sites })
+
+    document.body.remove()
+    // window.location = url.href
+    // location.href = url.href
+    const tab = await chrome.tabs.getCurrent()
+    console.debug('tab.id:', tab.id)
+    await chrome.tabs.update(tab.id, {
+        url: url.href,
+    })
 }
 
 async function submitAuth(event) {
     console.debug('submitAuth:', event)
     event.preventDefault()
     event.submitter.classList.add('disabled')
-    icon.className = 'fa-solid fa-sync fa-spin ms-2'
+    document.getElementById('icon').className = 'fa-solid fa-sync fa-spin ms-2'
 
     const host = event.target.elements.hostname.value
     const user = event.target.elements.username.value
@@ -103,14 +121,9 @@ async function pasteInput(event) {
     // input.value = text
 }
 
-function showHidePassword(event) {
-    console.debug('showHidePassword:', event)
-    const input = document.querySelector(event.currentTarget.dataset.showHide)
-    if (input.type === 'password') {
-        input.type = 'text'
-    } else {
-        input.type = 'password'
-    }
+function saveChange(event) {
+    console.debug('saveChange:', event)
+    showToast('Not Yet Implemented, All Logins are Saved', 'warning')
 }
 
 /**

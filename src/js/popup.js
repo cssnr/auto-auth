@@ -79,9 +79,9 @@ async function initPopup() {
 async function removeCredentials(event) {
     console.debug('removeCredentials:', event)
     const host = event.currentTarget?.dataset?.value
-    await deleteCredentials(host)
+    await deleteCredentials(host) // TODO: check return value
     await initPopup()
-    showToast(`Removed: ${host}`, 'primary')
+    showToast(`Removed: ${host}`)
 }
 
 /**
