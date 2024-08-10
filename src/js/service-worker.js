@@ -8,6 +8,8 @@ chrome.contextMenus.onClicked.addListener(onClicked)
 chrome.commands.onCommand.addListener(onCommand)
 chrome.runtime.onMessage.addListener(onMessage)
 chrome.storage.onChanged.addListener(onChanged)
+chrome.permissions.onAdded.addListener(onAdded)
+chrome.permissions.onRemoved.addListener(onRemoved)
 
 chrome.webRequest.onAuthRequired.addListener(
     onAuthRequired,
@@ -58,6 +60,7 @@ async function onAuthRequired(details, callback) {
         callback({ cancel: true })
     }
 
+    // Check if Request Already Processed
     if (pendingRequests.includes(details.requestId)) {
         console.log(
             `%cAlready Processed Request ID: ${details.requestId}`,
@@ -67,6 +70,7 @@ async function onAuthRequired(details, callback) {
     }
     pendingRequests.push(details.requestId)
 
+    // Check for Saved Credentials
     if (url.host in sites) {
         if (sites[url.host] === 'ignored') {
             console.log(
@@ -77,7 +81,7 @@ async function onAuthRequired(details, callback) {
             return callback()
         }
         console.log(
-            `%cSending Credentials for Request ID: ${details.requestId}`,
+            `%cSending Saved Creds for: ${details.requestId}`,
             'color: LimeGreen'
         )
         const [username, password] = sites[url.host].split(':')
@@ -86,14 +90,31 @@ async function onAuthRequired(details, callback) {
             password,
         }
         console.debug('authCredentials:', authCredentials)
-        callback({ authCredentials })
-    } else {
-        console.log(
-            `%cNo Credentials for Request ID: ${details.requestId}`,
-            'color: DeepSkyBlue'
-        )
-        hijackRequest()
+        return callback({ authCredentials })
     }
+
+    // Check for Temporary Credentials
+    const { session } = await chrome.storage.session.get(['session'])
+    if (url.host in session) {
+        console.log(
+            `%cSending Session Creds for: ${details.requestId}`,
+            'color: SpringGreen'
+        )
+        const [username, password] = session[url.host].split(':')
+        const authCredentials = {
+            username,
+            password,
+        }
+        console.debug('authCredentials:', authCredentials)
+        return callback({ authCredentials })
+    }
+
+    // New Request Without Credentials
+    console.log(
+        `%cNo Credentials for Request ID: ${details.requestId}`,
+        'color: DeepSkyBlue'
+    )
+    hijackRequest()
 }
 
 function webRequestFinished(requestDetails) {
@@ -114,9 +135,10 @@ function webRequestFinished(requestDetails) {
  */
 async function onStartup() {
     console.log('onStartup')
+    const { options } = await chrome.storage.sync.get(['options'])
+    await updateIcon(options)
     if (typeof browser !== 'undefined') {
         console.log('Firefox CTX Menu Workaround')
-        const { options } = await chrome.storage.sync.get(['options'])
         console.debug('options:', options)
         if (options.contextMenu) {
             createContextMenus()
@@ -144,6 +166,7 @@ async function onInstalled(details) {
         videoURL: '',
     })
     console.debug('options:', options)
+    await updateIcon(options)
     if (options.contextMenu) {
         createContextMenus()
     }
@@ -237,7 +260,7 @@ function onMessage(message, sender) {
  * @param {Object} changes
  * @param {String} namespace
  */
-function onChanged(changes, namespace) {
+async function onChanged(changes, namespace) {
     // console.debug('onChanged:', changes, namespace)
     for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (namespace === 'sync' && key === 'options' && oldValue && newValue) {
@@ -252,27 +275,77 @@ function onChanged(changes, namespace) {
             }
             if (oldValue.tempDisabled !== newValue.tempDisabled) {
                 console.debug('tempDisabled:', newValue.tempDisabled)
-                if (newValue.tempDisabled) {
-                    console.debug('Setting Red Icon')
-                    chrome.action.setIcon({
-                        path: {
-                            16: '/images/logo-red16.png',
-                            32: '/images/logo-red32.png',
-                            48: '/images/logo-red48.png',
-                        },
-                    })
-                } else {
-                    console.debug('Resetting Icon')
-                    chrome.action.setIcon({
-                        path: {
-                            16: '/images/logo16.png',
-                            32: '/images/logo32.png',
-                            48: '/images/logo48.png',
-                        },
-                    })
-                }
+                // const color = newValue.tempDisabled ? 'red' : 'green'
+                await updateIcon(newValue)
             }
         }
+    }
+}
+
+/**
+ * Permissions On Added Callback
+ * @param {chrome.permissions} permissions
+ */
+export async function onAdded(permissions) {
+    console.debug('onAdded', permissions)
+    await updateIcon()
+}
+
+/**
+ * Permissions On Removed Callback
+ * @param {chrome.permissions} permissions
+ */
+export async function onRemoved(permissions) {
+    console.debug('onRemoved', permissions)
+    await updateIcon()
+}
+
+async function updateIcon(options) {
+    if (!options) {
+        const data = await chrome.storage.sync.get(['options'])
+        options = data.options
+    }
+    console.debug('updateIcon: options:', options)
+    const hasPerms = await checkPerms()
+    let color
+    if (!hasPerms) {
+        color = 'red'
+    } else if (options.tempDisabled) {
+        color = 'yellow'
+    } else {
+        color = 'green'
+    }
+    console.debug('color', color)
+
+    if (color === 'red') {
+        console.debug('Setting Red Icon')
+        await chrome.action.setIcon({
+            path: {
+                16: '/images/logo-red16.png',
+                32: '/images/logo-red32.png',
+                48: '/images/logo-red48.png',
+            },
+        })
+    } else if (color === 'yellow') {
+        console.debug('Setting Yellow Icon')
+        await chrome.action.setIcon({
+            path: {
+                16: '/images/logo-yellow16.png',
+                32: '/images/logo-yellow32.png',
+                48: '/images/logo-yellow48.png',
+            },
+        })
+    } else if (color === 'green') {
+        console.debug('Setting Green Icon')
+        await chrome.action.setIcon({
+            path: {
+                16: '/images/logo16.png',
+                32: '/images/logo32.png',
+                48: '/images/logo48.png',
+            },
+        })
+    } else {
+        console.warn('Unknown Color for setIcon:', color)
     }
 }
 
@@ -326,6 +399,12 @@ async function setDefaultOptions(defaultOptions) {
     let { sites } = await chrome.storage.sync.get(['sites'])
     if (!sites) {
         await chrome.storage.sync.set({ sites: {} })
+        console.debug('Initialized Empty sync sites')
+    }
+    const { session } = await chrome.storage.session.get(['session'])
+    if (!session) {
+        await chrome.storage.session.set({ session: {} })
+        console.debug('Initialized Empty session')
     }
     let { options } = await chrome.storage.sync.get(['options'])
     options = options || {}

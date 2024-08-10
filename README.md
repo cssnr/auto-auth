@@ -52,26 +52,32 @@ the [Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/xxxChr
 
 * Save Logins for HTTP Basic Authentication
 * Automatically Login with Saved Credentials
-* Notification for Invalid Credentials
-* View and Delete Saved Credentials
-* Toolbar Status for Enabled Hosts
+* Option to Ignore Specific Hosts
+* Notification on Invalid Credentials
+* View, Delete and Edit Saved Credentials
 * Option to Ignore Proxy Authentication
 * Option to Temporarily Disable
+* Toolbar Status for Enabled Hosts
+* Icon Colors for Extension Status
 
 ### Upcoming Features
 
 * Save Multiple Credentials for a Single Host
-* Manually Edit/Add Saved Credentials
-* Ignore/Disable on a Per-Host Basis
+* Manually Add Saved Credentials
+* Toggle to Match Any Port for Host
+
+> [!TIP]
+> **Don't see your feature here?**
+> Request one on
+> the [Feature Request Discussion](https://github.com/cssnr/auto-auth/discussions/categories/feature-requests).
 
 ### Known Issues
 
 * Only allows saving 1 set of credentials per host
 
 > [!TIP]
-> **Don't see your feature here?**
-> Request one on
-> the [Feature Request Discussion](https://github.com/cssnr/auto-auth/discussions/categories/feature-requests).
+> **Don't see your issue here?**
+> Open one on the [Issues](https://github.com/cssnr/auto-auth/issues).
 
 ## Configuration
 

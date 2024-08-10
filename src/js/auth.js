@@ -1,10 +1,17 @@
 // JS for auth.html
 
-import { showHidePassword, showToast } from './export.js'
+import { linkClick, showHidePassword, showToast } from './export.js'
+
+const searchParams = new URLSearchParams(window.location.search)
+const url = new URL(searchParams.get('url'))
+
+document.querySelectorAll('.host').forEach((el) => (el.textContent = url.host))
+document.title = `Login for ${url.host}`
+document.getElementById('favicon').href = `${url.origin}/favicon.ico`
 
 document.addEventListener('DOMContentLoaded', domContentLoaded)
-document.getElementById('ignore-host').addEventListener('click', ignoreHost)
 document.getElementById('auth-form').addEventListener('submit', submitAuth)
+document.getElementById('ignore-host').addEventListener('click', ignoreHost)
 document
     .querySelectorAll('[data-paste-input]')
     .forEach((el) => el.addEventListener('click', pasteInput))
@@ -12,16 +19,17 @@ document
     .querySelectorAll('[data-show-hide]')
     .forEach((el) => el.addEventListener('click', showHidePassword))
 document
+    .querySelectorAll('a[href]')
+    .forEach((el) => el.addEventListener('click', linkClick))
+document
     .querySelectorAll('[data-bs-toggle="tooltip"]')
     .forEach((el) => new bootstrap.Tooltip(el))
 
-const save = document.getElementById('save')
-save.addEventListener('change', saveChange)
+const userInput = document.getElementById('username')
+const passInput = document.getElementById('password')
 
-const searchParams = new URLSearchParams(window.location.search)
-const url = new URL(searchParams.get('url'))
-
-document.querySelectorAll('.host').forEach((el) => (el.textContent = url.host))
+const saveCreds = document.getElementById('saveCreds')
+saveCreds.addEventListener('change', saveChange)
 
 /**
  * DOMContentLoaded
@@ -43,17 +51,34 @@ async function domContentLoaded() {
         'options',
         'sites',
     ])
+    const { session } = await chrome.storage.session.get(['session'])
     // console.debug('options, sites:', options, sites)
     setBackground(options)
-    save.checked = options.defaultSave
+
+    const tempSave = sessionStorage.getItem(url.host)
+    if (tempSave) {
+        saveCreds.checked = !!parseInt(tempSave)
+    } else {
+        saveCreds.checked = options.defaultSave
+    }
+    if (!saveCreds.checked) {
+        document.getElementById('save-session').classList.remove('d-none')
+    }
+
     if (url.host in sites) {
         if (sites[url.host] !== 'ignored') {
             const [username, password] = sites[url.host].split(':')
-            const user = document.getElementById('username')
+            const user = userInput
             user.value = username
             user.select()
-            document.getElementById('password').value = password
+            passInput.value = password
         }
+    } else if (url.host in session) {
+        const [username, password] = session[url.host].split(':')
+        const user = userInput
+        user.value = username
+        user.select()
+        passInput.value = password
     }
 }
 
@@ -85,22 +110,29 @@ async function submitAuth(event) {
     const pass = event.target.elements.password.value
     console.debug('host, user, pass:', host, user, pass)
 
-    const { sites } = await chrome.storage.sync.get(['sites'])
-    console.debug('sites:', sites)
-    sites[host] = `${user}:${pass}`
-    // TODO: Update to async/await
-    await chrome.storage.sync.set({ sites }).then(() => {
+    if (event.target.elements.saveCreds.checked) {
+        const { sites } = await chrome.storage.sync.get(['sites'])
+        sites[host] = `${user}:${pass}`
+        await chrome.storage.sync.set({ sites })
         console.log(
             '%cCredentials Saved.',
-            'color: LimeGreen',
-            `Loading: ${url.href}`
+            `Loading: ${url.href}`,
+            'color: LimeGreen'
         )
-        chrome.tabs.getCurrent().then((tab) => {
-            console.debug('tab.id:', tab.id)
-            chrome.tabs.update(tab.id, {
-                url: url.href,
-            })
-        })
+    } else {
+        const { session } = await chrome.storage.session.get(['session'])
+        session[host] = `${user}:${pass}`
+        await chrome.storage.session.set({ session })
+        console.log(
+            '%cCredentials Saved for Session Only.',
+            `Loading: ${url.href}`,
+            'color: SpringGreen'
+        )
+    }
+    const tab = await chrome.tabs.getCurrent()
+    console.debug('tab.id:', tab.id)
+    await chrome.tabs.update(tab.id, {
+        url: url.href,
     })
 }
 
@@ -123,7 +155,15 @@ async function pasteInput(event) {
 
 function saveChange(event) {
     console.debug('saveChange:', event)
-    showToast('Not Yet Implemented, All Logins are Saved', 'warning')
+    console.debug('event.currentTarget.checked:', event.currentTarget.checked)
+    // showToast('Not Yet Implemented, All Logins are Saved', 'warning')
+    if (event.currentTarget.checked) {
+        document.getElementById('save-session').classList.add('d-none')
+        sessionStorage.setItem(url.host, '1')
+    } else {
+        document.getElementById('save-session').classList.remove('d-none')
+        sessionStorage.setItem(url.host, '0')
+    }
 }
 
 /**

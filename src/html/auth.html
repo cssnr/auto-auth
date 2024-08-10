@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Auto Authentication Home</title>
-    <link rel="icon" href="../images/logo16.png" sizes="any">
+    <title>Login</title>
+    <link rel="icon" href="../images/logo16.png" sizes="any" id="favicon">
     <link rel="stylesheet" type="text/css" href="../dist/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../dist/fontawesome/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="../css/main.css">
@@ -13,17 +13,15 @@
 </head>
 <body>
 
-<video id="bgvid" class="d-none" playsinline autoplay muted loop>
-    <!--    <source src="/media/loop.mp4" type="video/mp4">-->
-</video> <!-- video -->
+<video id="bgvid" class="d-none" playsinline autoplay muted loop></video>
 
 <div class="container-fluid pt-3 px-0 px-sm-4">
 <div id="auth-outer" class="rounded rounded-4 w-100 mx-auto mb-4 p-3">
 
-    <h1 class="text-center">Auto Auth</h1>
-    <p class="text-center"><a id="link" href="" target="_blank" rel="noopener">url</a></p>
+    <p class="text-center fs-4 mb-1"><kbd class="ms-2 host"></kbd></p>
+    <p class="text-center mb-1"><a id="link" href="" target="_blank" rel="noopener">url</a></p>
 
-    <div id="fail" class="alert alert-warning text-center d-none" role="alert">
+    <div id="fail" class="alert alert-warning text-center my-2 d-none" role="alert">
         <b>Authentication Failed.</b> Please Try Again...
     </div>
 
@@ -32,11 +30,10 @@
         <label for="username" class="form-label"><i class="fa-solid fa-user me-2"></i> Username</label>
         <div class="input-group input-group-lg col-12">
             <input id="username" placeholder="username" aria-describedby="usernameHelp" type="text" class="form-control" autocomplete="off" required autofocus>
-            <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1"
-                    data-paste-input="#username" data-copy-text="Site URL Copied to Clipboard."
-                    data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Username">
-                <i class="fa-regular fa-paste"></i>
-            </button>
+<!--            <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1" data-paste-input="#username"-->
+<!--                    data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Username">-->
+<!--                <i class="fa-regular fa-paste"></i>-->
+<!--            </button>-->
         </div>
         <div class="form-text mb-3" id="usernameHelp">Basic Authentication Username.</div>
 
@@ -44,24 +41,25 @@
         <div class="input-group input-group-lg col-12">
             <input id="password" placeholder="password" aria-describedby="passwordHelp" type="password" class="form-control" autocomplete="off" required>
             <button class="btn btn-outline-success" type="button" data-bs-toggle="tooltip" data-show-hide="#password" tabindex="-1"
-                    data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Show/Hide Password">
+                    data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Show/Hide Password"
+                    data-class-on="btn-outline-warning" data-class-off="btn-outline-success">
                 <i class="fa-regular fa-eye"></i>
             </button>
-            <button id="passwordCopy" class="btn btn-outline-info" type="button" tabindex="-1"
-                    data-paste-input="#password" data-copy-text="Auth Token Copied to Clipboard."
-                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Password">
-                <i class="fa-regular fa-paste"></i>
-            </button>
+<!--            <button id="passwordCopy" class="btn btn-outline-info" type="button" tabindex="-1" data-paste-input="#password"-->
+<!--                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Password">-->
+<!--                <i class="fa-regular fa-paste"></i>-->
+<!--            </button>-->
         </div>
         <div class="form-text mb-3" id="passwordHelp">Basic Authentication Password.</div>
 
         <input type="hidden" id="hostname" name="hostname">
 
         <div class="form-check form-switch fs-4 mb-3">
-            <input class="form-check-input" type="checkbox" role="switch" id="save">
-            <label class="form-check-label" for="save">Save Login</label>
-            <span data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Not Yet Implemented.<br><b>All Logins are Saved!</b>">
-                <i class="fa-solid fa-triangle-exclamation ms-1 text-warning-emphasis"></i>
+            <input class="form-check-input" type="checkbox" role="switch" id="saveCreds" name="saveCreds">
+            <label class="form-check-label" for="saveCreds">Save Login</label>
+            <span id="save-session" class="text-warning-emphasis fs-6 ms-2 d-none">
+                <i class="fa-solid fa-triangle-exclamation me-1"></i>
+                Credentials will not be saved!
             </span>
         </div>
 
@@ -82,9 +80,13 @@
 
     </form> <!-- auth-form -->
 
-    <p class="text-center lead">
-        Host: <kbd class="ms-2 host"></kbd>
-    </p>
+    <hr>
+    <div class="text-center">
+        <a class="link-body-emphasis text-decoration-none d-inline-block" href="../html/options.html">Open Options</a>
+        <span class="mx-2">&bull;</span>
+        <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
+           href="https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme">Get Support</a>
+    </div>
 
 </div> <!-- auth-outer -->
 </div> <!-- container -->

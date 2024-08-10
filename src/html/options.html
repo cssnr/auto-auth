@@ -130,6 +130,7 @@
         </div>
 
     </form>
+
     <div class="d-none my-3 grant-perms">
         <button class="btn btn-lg btn-success w-100 mb-2 grant-permissions" type="button"
                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
@@ -137,24 +138,28 @@
             <i class="fa-solid fa-check-double me-1"></i> Grant Host Permissions</button>
         <p class="text-center"><a href="../html/permissions.html">More Information on Permissions</a></p>
     </div>
-    <div class="d-none my-3 has-perms">
-        <button class="btn btn-link link-danger revoke-permissions" type="button"
-                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
-                data-bs-title="Google Chrome does not allow removing required permissions via this method.">
-            Remove Host Permissions</button>
-    </div>
+<!--    <div class="d-none my-3 has-perms">-->
+<!--        <button class="btn btn-link link-danger revoke-permissions" type="button"-->
+<!--                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"-->
+<!--                data-bs-title="Google Chrome does not allow removing required permissions via this method.">-->
+<!--            Remove Host Permissions</button>-->
+<!--    </div>-->
 
-    <form id="add-host">
-        <label class="form-label" for="host-name"><i class="fa-solid fa-globe me-2"></i> Hosts</label>
-        <div class="input-group mb-1">
-            <input id="host-name" type="text" class="form-control" placeholder="Manually Adding is Not Yet Implemented" aria-label="Hostname" aria-describedby="add-host-btn" autocomplete="url" required disabled>
-            <button class="btn btn-outline-success disabled" type="submit" id="add-host-btn"
-                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover"
-                    data-bs-title="Not Yet Implemented">
-                Add <i class="fa-solid fa-plus ms-1"></i>
-            </button>
-        </div>
-    </form>
+<!--    <form id="add-host">-->
+<!--        <label class="form-label" for="host-name"><i class="fa-solid fa-globe me-2"></i> Hosts</label>-->
+<!--        <div class="input-group mb-1">-->
+<!--            <input id="host-name" type="text" class="form-control" placeholder="Manually Adding is Not Yet Implemented" aria-label="Hostname" aria-describedby="add-host-btn" autocomplete="url" required disabled>-->
+<!--            <button class="btn btn-outline-success disabled" type="submit" id="add-host-btn"-->
+<!--                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover"-->
+<!--                    data-bs-title="Not Yet Implemented">-->
+<!--                Add <i class="fa-solid fa-plus ms-1"></i>-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </form>-->
+
+    <hr>
+
+    <h5><i class="fa-solid fa-key me-2"></i> Saved Credentials</h5>
 
     <div class="mb-1">
         <input type="file" id="hosts-input" style="display: none;" />
@@ -179,6 +184,8 @@
         </tr></thead>
         <tbody></tbody>
     </table>
+
+    <h5><i class="fa-solid fa-ban me-2"></i> Ignored Hosts</h5>
 
     <table id="ignored-table" class="table table-sm table-hover bg-transparent">
         <caption>Ignored Hosts</caption>
@@ -221,25 +228,23 @@
             <div class="modal-body">
                 <form id="edit-form" name="edit-form" class="mb-3" autocomplete="off">
 
-                    <label for="hostname" class="form-label"><i class="fa-solid fa-user me-2"></i> Hostname</label>
+                    <label for="hostname" class="form-label"><i class="fa-solid fa-globe me-2"></i> Hostname</label>
                     <div class="input-group col-12 mb-3">
                         <input id="hostname" placeholder="hostname" aria-describedby="hostnameHelp" type="text" class="form-control" autocomplete="off" required>
-                        <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1"
-                                data-paste-input="#hostname" data-copy-text="Site URL Copied to Clipboard."
-                                data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Hostname">
-                            <i class="fa-regular fa-paste"></i>
-                        </button>
+<!--                        <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1" data-paste-input="#hostname"-->
+<!--                                data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Hostname">-->
+<!--                            <i class="fa-regular fa-paste"></i>-->
+<!--                        </button>-->
                     </div>
                     <div class="form-text visually-hidden" id="hostnameHelp">Basic Authentication Hostname.</div>
 
                     <label for="username" class="form-label"><i class="fa-solid fa-user me-2"></i> Username</label>
                     <div class="input-group col-12 mb-3">
                         <input id="username" placeholder="username" aria-describedby="usernameHelp" type="text" class="form-control" autocomplete="off" required>
-                        <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1"
-                                data-paste-input="#username" data-copy-text="Site URL Copied to Clipboard."
-                                data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Username">
-                            <i class="fa-regular fa-paste"></i>
-                        </button>
+<!--                        <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1" data-paste-input="#username"-->
+<!--                                data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Username">-->
+<!--                            <i class="fa-regular fa-paste"></i>-->
+<!--                        </button>-->
                     </div>
                     <div class="form-text visually-hidden" id="usernameHelp">Basic Authentication Username.</div>
 
@@ -247,14 +252,14 @@
                     <div class="input-group col-12 mb-3">
                         <input id="password" placeholder="password" aria-describedby="passwordHelp" type="password" class="form-control" autocomplete="off" required>
                         <button class="btn btn-outline-success" type="button" data-bs-toggle="tooltip" data-show-hide="#password" tabindex="-1"
-                                data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Show/Hide Password">
+                                data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Show/Hide Password"
+                                data-class-on="btn-outline-warning" data-class-off="btn-outline-success">
                             <i class="fa-regular fa-eye"></i>
                         </button>
-                        <button id="passwordCopy" class="btn btn-outline-info" type="button" tabindex="-1"
-                                data-paste-input="#password" data-copy-text="Auth Token Copied to Clipboard."
-                                data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Password">
-                            <i class="fa-regular fa-paste"></i>
-                        </button>
+<!--                        <button id="passwordCopy" class="btn btn-outline-info" type="button" tabindex="-1" data-paste-input="#password"-->
+<!--                                data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Password">-->
+<!--                            <i class="fa-regular fa-paste"></i>-->
+<!--                        </button>-->
                     </div>
                     <div class="form-text visually-hidden" id="passwordHelp">Basic Authentication Password.</div>
 

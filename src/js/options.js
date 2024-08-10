@@ -21,7 +21,7 @@ chrome.permissions.onAdded.addListener(onAdded)
 chrome.permissions.onRemoved.addListener(onRemoved)
 
 document.addEventListener('DOMContentLoaded', initOptions)
-document.getElementById('add-host').addEventListener('submit', addHost)
+// document.getElementById('add-host').addEventListener('submit', addHost)
 document.getElementById('edit-form').addEventListener('submit', editSubmit)
 document.getElementById('copy-support').addEventListener('click', copySupport)
 
@@ -221,10 +221,11 @@ async function editClick(event) {
     const [username, password] = sites[host].split(':')
     editHostname.value = host
     editHostname.dataset.original = host
-    editPassword.value = password
-    editPassword.dataset.original = password
     editUsername.value = username
     editUsername.dataset.original = username
+    editPassword.value = password
+    editPassword.dataset.original = password
+    editPassword.type = 'password'
     editModal.show()
 }
 

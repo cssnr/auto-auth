@@ -58,11 +58,16 @@ export function textFileDownload(filename, text) {
 
 export function showHidePassword(event) {
     console.debug('showHidePassword:', event)
-    const input = document.querySelector(event.currentTarget.dataset.showHide)
+    const el = event.currentTarget
+    const input = document.querySelector(el.dataset.showHide)
     if (input.type === 'password') {
         input.type = 'text'
+        el.classList.remove(el.dataset.classOff)
+        el.classList.add(el.dataset.classOn)
     } else {
         input.type = 'password'
+        el.classList.remove(el.dataset.classOn)
+        el.classList.add(el.dataset.classOff)
     }
 }
 
