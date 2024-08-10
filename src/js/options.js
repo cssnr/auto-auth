@@ -88,46 +88,46 @@ async function initOptions() {
     updateTable(sites)
 }
 
-/**
- * Add Host Callback
- * @function addHost
- * @param {SubmitEvent} event
- */
-async function addHost(event) {
-    console.debug('addHost:', event)
-    event.preventDefault()
-    showToast('Not Yet Implemented', 'warning')
-    // const input = event.target.elements['host-name']
-    // let value = input.value
-    // console.debug('value:', value)
-    // if (!value.includes('://')) {
-    //     value = `https://${value}`
-    // }
-    // let url
-    // try {
-    //     url = new URL(value)
-    // } catch (e) {
-    //     showToast(e.message, 'danger')
-    //     input.focus()
-    //     input.select()
-    //     return console.info(e)
-    // }
-    // console.log('url:', url)
-    // const { sites } = await chrome.storage.sync.get(['sites'])
-    // if (url.hostname in sites) {
-    //     showToast(`Host Exists: ${url.hostname}`, 'warning')
-    //     input.focus()
-    //     input.select()
-    //     return console.info('Existing Host: url:', url)
-    // } else {
-    //     sites[url.hostname] = 'user:pass'
-    //     await chrome.storage.sync.set({ sites })
-    //     showToast(`Added Host: ${url.hostname}`)
-    //     console.log(`Added Host: ${url.hostname}`, url)
-    //     input.value = ''
-    //     input.focus()
-    // }
-}
+// /**
+//  * Add Host Callback
+//  * @function addHost
+//  * @param {SubmitEvent} event
+//  */
+// async function addHost(event) {
+//     console.debug('addHost:', event)
+//     event.preventDefault()
+//     showToast('Not Yet Implemented', 'warning')
+//     // const input = event.target.elements['host-name']
+//     // let value = input.value
+//     // console.debug('value:', value)
+//     // if (!value.includes('://')) {
+//     //     value = `https://${value}`
+//     // }
+//     // let url
+//     // try {
+//     //     url = new URL(value)
+//     // } catch (e) {
+//     //     showToast(e.message, 'danger')
+//     //     input.focus()
+//     //     input.select()
+//     //     return console.info(e)
+//     // }
+//     // console.log('url:', url)
+//     // const { sites } = await chrome.storage.sync.get(['sites'])
+//     // if (url.hostname in sites) {
+//     //     showToast(`Host Exists: ${url.hostname}`, 'warning')
+//     //     input.focus()
+//     //     input.select()
+//     //     return console.info('Existing Host: url:', url)
+//     // } else {
+//     //     sites[url.hostname] = 'user:pass'
+//     //     await chrome.storage.sync.set({ sites })
+//     //     showToast(`Added Host: ${url.hostname}`)
+//     //     console.log(`Added Host: ${url.hostname}`, url)
+//     //     input.value = ''
+//     //     input.focus()
+//     // }
+// }
 
 /**
  * Update Popup Table with Data
