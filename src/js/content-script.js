@@ -11,11 +11,12 @@ if (!chrome.storage.onChanged.hasListener(onChanged)) {
 }
 
 ;(async () => {
-    const { options, sites } = await chrome.storage.sync.get([
-        'options',
-        'sites',
-    ])
+    // const { options, sites } = await chrome.storage.sync.get([
+    //     'options',
+    //     'sites',
+    // ])
     // console.debug('options, sites:', options, sites)
+    const { sites } = await chrome.storage.sync.get(['sites'])
     if (url.host in sites) {
         tabEnabled = true
         console.debug(
