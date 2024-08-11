@@ -89,7 +89,7 @@ async function onAuthRequired(details, callback) {
             username,
             password,
         }
-        console.debug('authCredentials:', authCredentials)
+        // console.debug('authCredentials:', authCredentials)
         return callback({ authCredentials })
     }
 
@@ -105,7 +105,7 @@ async function onAuthRequired(details, callback) {
             username,
             password,
         }
-        console.debug('authCredentials:', authCredentials)
+        // console.debug('authCredentials:', authCredentials)
         return callback({ authCredentials })
     }
 
@@ -135,11 +135,16 @@ function webRequestFinished(requestDetails) {
  */
 async function onStartup() {
     console.log('onStartup')
+    const { session } = await chrome.storage.session.get(['session'])
+    if (!session) {
+        await chrome.storage.session.set({ session: {} })
+        console.debug('onStartup: Initialized Empty session')
+    }
     const { options } = await chrome.storage.sync.get(['options'])
     await updateIcon(options)
     if (typeof browser !== 'undefined') {
         console.log('Firefox CTX Menu Workaround')
-        console.debug('options:', options)
+        // console.debug('options:', options)
         if (options.contextMenu) {
             createContextMenus()
         }
@@ -159,6 +164,7 @@ async function onInstalled(details) {
         tempDisabled: false,
         ignoreProxy: false,
         defaultSave: true,
+        confirmDelete: true,
         contextMenu: true,
         showUpdate: false,
         radioBackground: 'bgPicture',
@@ -305,7 +311,7 @@ async function updateIcon(options) {
         const data = await chrome.storage.sync.get(['options'])
         options = data.options
     }
-    console.debug('updateIcon: options:', options)
+    console.debug('updateIcon options.tempDisabled:', options.tempDisabled)
     const hasPerms = await checkPerms()
     let color
     if (!hasPerms) {
@@ -358,9 +364,9 @@ function createContextMenus() {
     chrome.contextMenus.removeAll()
     /** @type {Array[String[], String, String, String]} */
     const contexts = [
-        [['all'], 'showPanel', 'Open Panel'],
-        [['all'], 'separator'],
-        [['all'], 'openOptions', 'Open Options'],
+        // [['all'], 'showPanel', 'Open Panel'],
+        // [['all'], 'separator'],
+        [['all'], 'openOptions', 'Auto Auth Options'],
     ]
     contexts.forEach(addContext)
 }
@@ -404,7 +410,7 @@ async function setDefaultOptions(defaultOptions) {
     const { session } = await chrome.storage.session.get(['session'])
     if (!session) {
         await chrome.storage.session.set({ session: {} })
-        console.debug('Initialized Empty session')
+        console.debug('setDefaultOptions: Initialized Empty session')
     }
     let { options } = await chrome.storage.sync.get(['options'])
     options = options || {}

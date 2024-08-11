@@ -42,7 +42,7 @@ async function initPopup() {
         'options',
         'sites',
     ])
-    console.debug('options, sites:', options, sites)
+    // console.debug('options, sites:', options, sites)
     updateOptions(options)
 
     if (chrome.runtime.lastError) {
@@ -52,7 +52,7 @@ async function initPopup() {
     // Check Host Permissions
     const hasPerms = await checkPerms()
     if (!hasPerms) {
-        return console.log('%cMissing Host Permissions', 'color: Red')
+        console.log('%cMissing Host Permissions', 'color: Red')
     }
 
     // Check Tab Permissions

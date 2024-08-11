@@ -85,7 +85,7 @@ async function domContentLoaded() {
 async function ignoreHost(event) {
     console.debug('ignoreHost:', event)
     const { sites } = await chrome.storage.sync.get(['sites'])
-    console.debug('sites:', sites)
+    // console.debug('sites:', sites)
     sites[url.host] = 'ignored'
     await chrome.storage.sync.set({ sites })
 
@@ -93,7 +93,7 @@ async function ignoreHost(event) {
     // window.location = url.href
     // location.href = url.href
     const tab = await chrome.tabs.getCurrent()
-    console.debug('tab.id:', tab.id)
+    // console.debug('tab:', tab)
     await chrome.tabs.update(tab.id, {
         url: url.href,
     })
@@ -108,7 +108,7 @@ async function submitAuth(event) {
     const host = event.target.elements.hostname.value
     const user = event.target.elements.username.value
     const pass = event.target.elements.password.value
-    console.debug('host, user, pass:', host, user, pass)
+    // console.debug('host, user, pass:', host, user, pass)
 
     if (event.target.elements.saveCreds.checked) {
         const { sites } = await chrome.storage.sync.get(['sites'])
@@ -130,7 +130,7 @@ async function submitAuth(event) {
         )
     }
     const tab = await chrome.tabs.getCurrent()
-    console.debug('tab.id:', tab.id)
+    // console.debug('tab:', tab)
     await chrome.tabs.update(tab.id, {
         url: url.href,
     })
@@ -155,8 +155,7 @@ async function pasteInput(event) {
 
 function saveChange(event) {
     console.debug('saveChange:', event)
-    console.debug('event.currentTarget.checked:', event.currentTarget.checked)
-    // showToast('Not Yet Implemented, All Logins are Saved', 'warning')
+    // console.debug('event.currentTarget.checked:', event.currentTarget.checked)
     if (event.currentTarget.checked) {
         document.getElementById('save-session').classList.add('d-none')
         sessionStorage.setItem(url.host, '1')
@@ -172,7 +171,7 @@ function saveChange(event) {
  * @param {Object} options
  */
 function setBackground(options) {
-    console.debug('setBackground:', options)
+    console.debug('setBackground:', options.radioBackground)
     const video = document.querySelector('video')
     if (options.radioBackground === 'bgPicture') {
         const url = options.pictureURL || 'https://picsum.photos/1920/1080'

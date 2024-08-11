@@ -26,6 +26,17 @@ async function screenshot(name) {
     count++
 }
 
+async function scrollPage(page) {
+    await page.evaluate(() => {
+        window.scrollBy({
+            top: window.innerHeight,
+            left: 0,
+            behavior: 'instant',
+        })
+    })
+    await new Promise((resolve) => setTimeout(resolve, 500))
+}
+
 /**
  * @function getPage
  * @param {String} name
@@ -92,11 +103,32 @@ async function getPage(name, log, size) {
     console.log('page:', page)
     await page.waitForNetworkIdle()
     await screenshot('options')
-    await page.locator('#tempDisabled').click()
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    await screenshot('options')
+
+    // await page.locator('#tempDisabled').click()
+    // await new Promise((resolve) => setTimeout(resolve, 500))
+    // await screenshot('options')
+
     // await page.locator('#tempDisabled').click()
     // await new Promise((resolve) => setTimeout(resolve, 250))
+
+    const [fileChooser] = await Promise.all([
+        page.waitForFileChooser(),
+        page.click('#import-hosts'),
+    ])
+    await fileChooser.accept(['./tests/secrets.txt'])
+    await scrollPage(page)
+    await screenshot('options')
+
+    await page.locator('[title="Delete"]').click()
+    // await page.evaluate((selector) => {
+    //     document.querySelectorAll(selector)[1].click()
+    // }, 'a[title="Delete"]')
+    await new Promise((resolve) => setTimeout(resolve, 250))
+    await screenshot('delete')
+
+    await page.locator('#confirm-delete').click()
+    await new Promise((resolve) => setTimeout(resolve, 250))
+    await screenshot('delete-confirm')
 
     // Auth
     // TODO: Open Bug as this throws `Error: net::ERR_ABORTED`

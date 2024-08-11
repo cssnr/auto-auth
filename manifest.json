@@ -35,12 +35,6 @@
         "default": "Alt+Shift+X"
       },
       "description": "Open Options Page"
-    },
-    "showPanel": {
-      "suggested_key": {
-        "default": "Alt+Shift+W"
-      },
-      "description": "Show Extension Panel"
     }
   },
   "action": {

@@ -2,6 +2,7 @@
 
 import {
     checkPerms,
+    copyInput,
     deleteCredentials,
     grantPerms,
     showHidePassword,
@@ -22,8 +23,11 @@ chrome.permissions.onRemoved.addListener(onRemoved)
 
 document.addEventListener('DOMContentLoaded', initOptions)
 // document.getElementById('add-host').addEventListener('submit', addHost)
-document.getElementById('edit-form').addEventListener('submit', editSubmit)
 document.getElementById('copy-support').addEventListener('click', copySupport)
+
+const editForm = document.getElementById('edit-form')
+editForm.addEventListener('submit', editSubmit)
+editForm.addEventListener('change', editChange)
 
 const hostsInput = document.getElementById('hosts-input')
 hostsInput.addEventListener('change', hostsInputChange)
@@ -42,6 +46,9 @@ document
 document
     .querySelectorAll('[data-show-hide]')
     .forEach((el) => el.addEventListener('click', showHidePassword))
+document
+    .querySelectorAll('[data-copy-input]')
+    .forEach((el) => el.addEventListener('click', copyInput))
 document
     .querySelectorAll('#options-form input')
     .forEach((el) => el.addEventListener('change', saveOptions))
@@ -62,9 +69,24 @@ const editHostname = document.getElementById('hostname')
 const editUsername = document.getElementById('username')
 const editPassword = document.getElementById('password')
 
-const editModal = new bootstrap.Modal('#edit-modal')
-editModal._element.addEventListener('shown.bs.modal', () => {
+const confirmDelete = document.getElementById('confirm-delete')
+const confirmDeleteHost = document.getElementById('delete-host')
+const deleteModal = new bootstrap.Modal('#delete-modal')
+confirmDelete.addEventListener('click', deleteHost)
+
+const editModalEl = document.getElementById('edit-modal')
+const editModalAlert = document.getElementById('edit-modal-alert')
+const editModal = new bootstrap.Modal(editModalEl)
+editModalEl.addEventListener('shown.bs.modal', () => {
     editUsername.focus()
+})
+editModalEl.addEventListener('hide.bs.modal', () => {
+    editModal._config.backdrop = true
+    editModalAlert.classList.add('d-none')
+})
+editModalEl.addEventListener('hidePrevented.bs.modal', () => {
+    console.log('Changes Detected!')
+    editModalAlert.classList.remove('d-none')
 })
 
 /**
@@ -82,7 +104,7 @@ async function initOptions() {
         'options',
         'sites',
     ])
-    console.debug('options, sites:', options, sites)
+    // console.debug('options, sites:', options, sites)
     updateOptions(options)
     backgroundChange(options.radioBackground)
     updateTable(sites)
@@ -203,7 +225,18 @@ function updateTable(data) {
 async function deleteHost(event) {
     console.debug('deleteHost:', event)
     const host = event.currentTarget?.dataset?.value
+    console.debug('host:', host)
+    const confirm = event.currentTarget?.id !== 'confirm-delete'
+    const { options } = await chrome.storage.sync.get(['options'])
+    if (options.confirmDelete && !!confirm) {
+        console.debug('Show Delete Modal')
+        confirmDelete.dataset.value = host
+        confirmDeleteHost.textContent = host
+        deleteModal.show()
+        return
+    }
     await deleteCredentials(host) // TODO: check return value
+    deleteModal.hide()
     showToast(`Removed: ${host}`)
 }
 
@@ -241,7 +274,7 @@ async function editSubmit(event) {
     const hostname = editHostname.value
     const username = editUsername.value
     const password = editPassword.value
-    console.debug('hostname ,username, password:', hostname, username, password)
+    // console.debug('hostname ,username, password:', hostname, username, password)
     if (
         hostname === editHostname.dataset.original &&
         username === editUsername.dataset.original &&
@@ -258,6 +291,16 @@ async function editSubmit(event) {
     await chrome.storage.sync.set({ sites })
     editModal.hide()
     showToast(`Updated Host: ${hostname}`, 'success')
+}
+
+/**
+ * Edit Host Change Callback
+ * @function editChange
+ * @param {SubmitEvent} event
+ */
+async function editChange(event) {
+    console.debug('editChange:', event)
+    editModal._config.backdrop = 'static'
 }
 
 /**
@@ -280,7 +323,7 @@ async function exportHosts(event) {
     console.debug('exportHosts:', event)
     event.preventDefault()
     const { sites } = await chrome.storage.sync.get(['sites'])
-    console.debug('sites:', sites)
+    // console.debug('sites:', sites)
     if (Object.keys(sites).length === 0) {
         return showToast('No Credentials to Export', 'warning')
     }
@@ -299,7 +342,7 @@ async function hostsInputChange(event) {
     const fileReader = new FileReader()
     fileReader.onload = async function doBannedImport() {
         const results = JSON.parse(fileReader.result.toString())
-        console.debug('results:', results)
+        // console.debug('results:', results)
         const { sites } = await chrome.storage.sync.get(['sites'])
         let count = 0
         for (const [key, value] of Object.entries(results)) {
@@ -312,7 +355,7 @@ async function hostsInputChange(event) {
                 sites[key] = value
             }
         }
-        console.debug('sites:', sites)
+        // console.debug('sites:', sites)
         await chrome.storage.sync.set({ sites })
         showToast(`Imported/Updated ${count} Hosts.`, 'success')
     }

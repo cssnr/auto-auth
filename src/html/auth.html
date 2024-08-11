@@ -18,8 +18,13 @@
 <div class="container-fluid pt-3 px-0 px-sm-4">
 <div id="auth-outer" class="rounded rounded-4 w-100 mx-auto mb-4 p-3">
 
-    <p class="text-center fs-4 mb-1"><kbd class="ms-2 host"></kbd></p>
-    <p class="text-center mb-1"><a id="link" href="" target="_blank" rel="noopener">url</a></p>
+    <p class="text-center fs-4 mb-1">
+        <kbd class="ms-2 host clip" role="button" data-clipboard-target=".host" data-toast="Host Copied"></kbd>
+    </p>
+    <p class="text-center mb-1">
+        <i class="fa-regular fa-copy clip me-2" role="button" data-clipboard-target="#link" data-toast="URL Copied">
+        </i><a id="link" href="" target="_blank" rel="noopener">url</a>
+    </p>
 
     <div id="fail" class="alert alert-warning text-center my-2 d-none" role="alert">
         <b>Authentication Failed.</b> Please Try Again...
@@ -99,14 +104,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>
-                    Are you sure you want to ignore and remove any saved credentials for host: <kbd class="ms-2 host"></kbd>
-                </p>
-                <p class="mb-0">Hosts can always be removed from the ignore list on the Options Page.</p>
+                <p>Ignore host and remove any saved credentials?</p>
+                <p class="text-center"><kbd class="ms-2 host"></kbd></p>
+                <p class="mb-0">Ignored hosts can be removed from the <a href="../html/options.html">Options Page</a>.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning me-auto" id="ignore-host">Ignore</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning me-auto" id="ignore-host">Confirm Ignore</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>

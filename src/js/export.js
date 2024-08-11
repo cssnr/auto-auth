@@ -87,6 +87,29 @@ export async function showPanel(height = 520, width = 480) {
 }
 
 /**
+ * @function copyInput
+ * @param {MouseEvent} event
+ * @return {Promise<void>}
+ */
+export async function copyInput(event) {
+    console.debug('copyInput:', event)
+    const el = event.currentTarget || event.target.closest('button')
+    console.debug('el.dataset.copyInput:', el.dataset.copyInput)
+    const input = document.querySelector(el.dataset.copyInput)
+    console.debug('input:', input)
+    if (!input.value) {
+        showToast('No Data to Copy.', 'warning')
+        return
+    }
+    await navigator.clipboard.writeText(input.value)
+    if (el.dataset.copyText) {
+        showToast(el.dataset.copyText, 'success')
+    } else {
+        showToast('Copied to Clipboard.', 'success')
+    }
+}
+
+/**
  * Save Options Callback
  * @function saveOptions
  * @param {UIEvent} event
@@ -168,7 +191,7 @@ export function updateOptions(options) {
  */
 function hideShowElement(selector, show, speed = 'fast') {
     const element = $(`${selector}`)
-    console.debug('hideShowElement:', show, element)
+    // console.debug('hideShowElement:', show, element)
     if (show) {
         element.show(speed)
     } else {
@@ -184,7 +207,7 @@ function hideShowElement(selector, show, speed = 'fast') {
  * @param {String} warning
  */
 function addWarningClass(element, value, warning) {
-    console.debug('addWarningClass:', value, element)
+    // console.debug('addWarningClass:', value, element)
     if (value) {
         element.classList.add(warning)
     } else {
@@ -200,12 +223,13 @@ function addWarningClass(element, value, warning) {
  * @param {Boolean} [close]
  */
 export async function linkClick(event, close = false) {
-    console.debug('linkClick:', event, close)
+    // console.debug('linkClick:', event, close)
     event.preventDefault()
     const href = event.currentTarget.getAttribute('href').replace(/^\.+/g, '')
-    console.debug('href:', href)
+    // console.debug('href:', href)
     if (href.startsWith('#')) {
-        return console.debug('return on anchor link')
+        // console.debug('return on anchor link')
+        return
     }
     let url
     if (href.endsWith('html/options.html')) {
@@ -237,7 +261,7 @@ export async function activateOrOpen(url, open = true) {
     console.debug('activateOrOpen:', url)
     // Get Tab from Tabs (requires host permissions)
     const tabs = await chrome.tabs.query({ currentWindow: true })
-    console.debug('tabs:', tabs)
+    // console.debug('tabs:', tabs)
     for (const tab of tabs) {
         if (tab.url === url) {
             console.debug('found tab in tabs:', tab)

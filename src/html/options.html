@@ -35,6 +35,24 @@
         </tfoot>
     </table>
     <hr>
+
+    <div class="d-none my-3 grant-perms">
+        <button class="btn btn-lg btn-success w-100 mb-2 grant-permissions" type="button"
+                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                data-bs-title="This Extension Requires Host Permissions to Function.">
+            <i class="fa-solid fa-check-double me-1"></i> Grant Host Permissions</button>
+        <p class="text-center"><a href="../html/permissions.html">More Information on Permissions</a></p>
+        <div class="alert alert-danger text-center" role="alert">
+            The Extension does not work without host permissions.
+        </div>
+    </div>
+    <!--    <div class="d-none my-3 has-perms">-->
+    <!--        <button class="btn btn-link link-danger revoke-permissions" type="button"-->
+    <!--                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"-->
+    <!--                data-bs-title="Google Chrome does not allow removing required permissions via this method.">-->
+    <!--            Remove Host Permissions</button>-->
+    <!--    </div>-->
+
     <form id="options-form" class="options">
         <div class="form-check form-switch">
             <input class="form-check-input" id="tempDisabled" type="checkbox" role="switch"
@@ -46,8 +64,8 @@
                 </span>
             </label>
         </div>
-        <div id="disableWarning" class="alert alert-warning mt-3" role="alert" style="display: none;">
-            Extension is temporarily disabled!
+        <div id="disableWarning" class="alert alert-warning text-center mt-2" role="alert" style="display: none;">
+            Extension is currently disabled!
         </div>
         <div class="form-check form-switch">
             <input class="form-check-input" id="ignoreProxy" type="checkbox" role="switch">
@@ -63,6 +81,15 @@
             <label class="form-check-label" for="defaultSave" aria-describedby="defaultSaveHelp">
                 Save Authentication by Default
                 <span data-bs-toggle="tooltip" data-bs-title="Save Login Enabled by Default.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" id="confirmDelete" type="checkbox" role="switch">
+            <label class="form-check-label" for="confirmDelete" aria-describedby="confirmDeleteHelp">
+                Show Confirmation on Delete
+                <span data-bs-toggle="tooltip" data-bs-title="Show Confirmation Dialog on Delete.">
                     <i class="fa-solid fa-circle-info ms-1"></i>
                 </span>
             </label>
@@ -130,20 +157,6 @@
         </div>
 
     </form>
-
-    <div class="d-none my-3 grant-perms">
-        <button class="btn btn-lg btn-success w-100 mb-2 grant-permissions" type="button"
-                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
-                data-bs-title="This Extension Requires Host Permissions to Function.">
-            <i class="fa-solid fa-check-double me-1"></i> Grant Host Permissions</button>
-        <p class="text-center"><a href="../html/permissions.html">More Information on Permissions</a></p>
-    </div>
-<!--    <div class="d-none my-3 has-perms">-->
-<!--        <button class="btn btn-link link-danger revoke-permissions" type="button"-->
-<!--                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"-->
-<!--                data-bs-title="Google Chrome does not allow removing required permissions via this method.">-->
-<!--            Remove Host Permissions</button>-->
-<!--    </div>-->
 
 <!--    <form id="add-host">-->
 <!--        <label class="form-label" for="host-name"><i class="fa-solid fa-globe me-2"></i> Hosts</label>-->
@@ -218,61 +231,101 @@
 </div> <!-- card -->
 </div> <!-- container -->
 
-<div class="modal fade" id="edit-modal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="edit-modal-label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="edit-modal-label">Edit Host</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="edit-form" name="edit-form" class="mb-3" autocomplete="off">
-
-                    <label for="hostname" class="form-label"><i class="fa-solid fa-globe me-2"></i> Hostname</label>
-                    <div class="input-group col-12 mb-3">
-                        <input id="hostname" placeholder="hostname" aria-describedby="hostnameHelp" type="text" class="form-control" autocomplete="off" required>
-<!--                        <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1" data-paste-input="#hostname"-->
-<!--                                data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Hostname">-->
-<!--                            <i class="fa-regular fa-paste"></i>-->
-<!--                        </button>-->
-                    </div>
-                    <div class="form-text visually-hidden" id="hostnameHelp">Basic Authentication Hostname.</div>
-
-                    <label for="username" class="form-label"><i class="fa-solid fa-user me-2"></i> Username</label>
-                    <div class="input-group col-12 mb-3">
-                        <input id="username" placeholder="username" aria-describedby="usernameHelp" type="text" class="form-control" autocomplete="off" required>
-<!--                        <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1" data-paste-input="#username"-->
-<!--                                data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Username">-->
-<!--                            <i class="fa-regular fa-paste"></i>-->
-<!--                        </button>-->
-                    </div>
-                    <div class="form-text visually-hidden" id="usernameHelp">Basic Authentication Username.</div>
-
-                    <label for="password" class="form-label"><i class="fa-solid fa-key me-2"></i> Password</label>
-                    <div class="input-group col-12 mb-3">
-                        <input id="password" placeholder="password" aria-describedby="passwordHelp" type="password" class="form-control" autocomplete="off" required>
-                        <button class="btn btn-outline-success" type="button" data-bs-toggle="tooltip" data-show-hide="#password" tabindex="-1"
-                                data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Show/Hide Password"
-                                data-class-on="btn-outline-warning" data-class-off="btn-outline-success">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-<!--                        <button id="passwordCopy" class="btn btn-outline-info" type="button" tabindex="-1" data-paste-input="#password"-->
-<!--                                data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Password">-->
-<!--                            <i class="fa-regular fa-paste"></i>-->
-<!--                        </button>-->
-                    </div>
-                    <div class="form-text visually-hidden" id="passwordHelp">Basic Authentication Password.</div>
-
-                </form> <!-- edit-form -->
-            </div> <!-- modal-body -->
-            <div class="modal-footer">
-                <button type="submit" form="edit-form" class="btn btn-success me-auto" id="save-host">
-                    Save <i class="fa-regular fa-floppy-disk ms-2"></i>
-                </button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
+<div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="delete-modal-label">Delete Host</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
+    <div class="modal-body text-center p-2">
+        <p class="mb-1">Are you sure you want to delete this host?</p>
+        <p class="text-break fs-4 mb-1"><kbd id="delete-host"></kbd></p>
+    </div>
+    <div class="modal-footer p-2">
+        <button type="button" class="btn btn-danger me-auto" id="confirm-delete">
+            Delete <i class="fa-regular fa-trash-can ms-2"></i></button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel</button>
+    </div>
+</div> <!-- modal-content -->
+</div> <!-- modal-dialog -->
+</div> <!-- delete-modal -->
+
+<div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="edit-modal-label" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="edit-modal-label">Edit Host</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <form id="edit-form" name="edit-form" class="mb-3" autocomplete="off">
+
+            <label for="hostname" class="form-label"><i class="fa-solid fa-globe me-2"></i> Hostname</label>
+            <div class="input-group col-12 mb-3">
+                <input id="hostname" placeholder="hostname" aria-describedby="hostnameHelp" type="text" class="form-control" autocomplete="off" required>
+                <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip"
+                        data-copy-input="#hostname" data-copy-text="Hostname Copied."
+                        data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Copy Hostname">
+                    <i class="fa-solid fa-copy"></i>
+                </button>
+<!--                <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1" data-paste-input="#hostname"-->
+<!--                        data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Hostname">-->
+<!--                    <i class="fa-regular fa-paste"></i>-->
+<!--                </button>-->
+            </div>
+            <div class="form-text visually-hidden" id="hostnameHelp">Basic Authentication Hostname.</div>
+
+            <label for="username" class="form-label"><i class="fa-solid fa-user me-2"></i> Username</label>
+            <div class="input-group col-12 mb-3">
+                <input id="username" placeholder="username" aria-describedby="usernameHelp" type="text" class="form-control" autocomplete="off" required>
+                <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip"
+                        data-copy-input="#username" data-copy-text="Username Copied."
+                        data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Copy Username">
+                    <i class="fa-solid fa-copy"></i>
+                </button>
+<!--                <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1" data-paste-input="#username"-->
+<!--                        data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Username">-->
+<!--                    <i class="fa-regular fa-paste"></i>-->
+<!--                </button>-->
+            </div>
+            <div class="form-text visually-hidden" id="usernameHelp">Basic Authentication Username.</div>
+
+            <label for="password" class="form-label"><i class="fa-solid fa-key me-2"></i> Password</label>
+            <div class="input-group col-12 mb-3">
+                <input id="password" placeholder="password" aria-describedby="passwordHelp" type="password" class="form-control" autocomplete="off" required>
+                <button class="btn btn-outline-success" type="button" data-bs-toggle="tooltip" data-show-hide="#password" tabindex="-1"
+                        data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Show/Hide Password"
+                        data-class-on="btn-outline-warning" data-class-off="btn-outline-success">
+                    <i class="fa-regular fa-eye"></i>
+                </button>
+                <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip"
+                        data-copy-input="#password" data-copy-text="Password Copied."
+                        data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Copy Password">
+                    <i class="fa-solid fa-copy"></i>
+                </button>
+<!--                <button id="passwordCopy" class="btn btn-outline-info" type="button" tabindex="-1" data-paste-input="#password"-->
+<!--                        data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Password">-->
+<!--                    <i class="fa-regular fa-paste"></i>-->
+<!--                </button>-->
+            </div>
+            <div class="form-text visually-hidden" id="passwordHelp">Basic Authentication Password.</div>
+
+        </form> <!-- edit-form -->
+
+        <div id="edit-modal-alert" class="alert alert-warning text-center p-2 mb-2 d-none" role="alert">
+            Unsaved Changes Detected.
+        </div>
+    </div> <!-- modal-body -->
+    <div class="modal-footer">
+        <button type="submit" form="edit-form" class="btn btn-success me-auto">
+            Save <i class="fa-regular fa-floppy-disk ms-2"></i>
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</div> <!-- modal-content -->
+</div> <!-- modal-dialog -->
 </div><!-- edit-modal -->
 
 <button type="button" class="btn btn-outline-primary" id="back-to-top">

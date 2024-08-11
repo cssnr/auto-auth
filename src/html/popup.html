@@ -14,25 +14,35 @@
 <body>
 
 <div class="container-fluid p-3">
-    <div class="d-grid g-2 gap-2">
-        <div class="d-none grant-perms">
-            <button class="btn btn-lg btn-success w-100 mb-1 grant-permissions" type="button"
-                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
-                    data-bs-title="This Extension Requires Host Permissions to Function.">
-                <i class="fa-solid fa-check-double me-1"></i> Grant Host Permissions</button>
-            <p class="text-center mb-1"><a href="../html/permissions.html" class="">
-                More Information on Permissions</a></p>
-            <hr class="my-2">
+
+    <div class="d-none grant-perms">
+        <button class="btn btn-lg btn-success w-100 mb-1 grant-permissions" type="button"
+                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+                data-bs-title="This Extension Requires Host Permissions to Function.">
+            <i class="fa-solid fa-check-double me-1"></i> Grant Host Permissions</button>
+        <p class="text-center"><a href="../html/permissions.html" class="">
+            More Information on Permissions</a></p>
+        <div class="alert alert-danger text-center p-1" role="alert">
+            Extension requires host permissions.
         </div>
-        <div id="host" class="text-center border border-2 rounded p-1 mb-2 has-perms">
+    </div>
+
+    <div class="d-grid g-2 gap-2 has-perms">
+
+        <div id="host" class="text-center border border-2 rounded p-1">
             No Access to the Current Tab.
         </div>
+
         <a id="delete-saved" class="btn btn-outline-warning d-none">
             <i class="fa-regular fa-trash-can me-1"></i> Delete Saved Credentials</a>
+
 <!--        <a class="btn btn-primary" href="../html/panel.html">-->
 <!--            <i class="fa-regular fa-window-maximize me-1"></i> Show Extension Panel</a>-->
+
+        <hr class="mt-1">
+
     </div> <!-- d-grid -->
-    <hr>
+
     <form id="options-form" class="mb-3">
         <div class="form-check form-switch">
             <input class="form-check-input" id="tempDisabled" type="checkbox" role="switch"
@@ -44,8 +54,8 @@
                 </span>
             </label>
         </div>
-        <div id="disableWarning" class="alert alert-warning mt-3" role="alert" style="display: none;">
-            Extension is temporarily disabled!
+        <div id="disableWarning" class="alert alert-warning text-center mt-2 p-1" role="alert" style="display: none;">
+            Extension is currently disabled!
         </div>
         <div class="form-check form-switch">
             <input class="form-check-input" id="ignoreProxy" type="checkbox" role="switch">
@@ -61,6 +71,15 @@
             <label class="form-check-label" for="defaultSave" aria-describedby="defaultSaveHelp">
                 Save Authentication by Default
                 <span data-bs-toggle="tooltip" data-bs-title="Save Login Enabled by Default.">
+                    <i class="fa-solid fa-circle-info ms-1"></i>
+                </span>
+            </label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" id="confirmDelete" type="checkbox" role="switch">
+            <label class="form-check-label" for="confirmDelete" aria-describedby="confirmDeleteHelp">
+                Show Confirmation on Delete
+                <span data-bs-toggle="tooltip" data-bs-title="Show Confirmation Dialog on Delete.">
                     <i class="fa-solid fa-circle-info ms-1"></i>
                 </span>
             </label>

@@ -1,12 +1,12 @@
 // JS Content Script
 
-console.log('%cAuto Auth: content-script.js', 'color: Lime')
+// console.log('%cAuto Auth: content-script.js', 'color: Lime')
 
 const url = new URL(window.location)
 let tabEnabled = false
 
 if (!chrome.storage.onChanged.hasListener(onChanged)) {
-    console.debug('Adding storage.onChanged Listener')
+    // console.debug('Adding storage.onChanged Listener')
     chrome.storage.onChanged.addListener(onChanged)
 }
 
@@ -15,7 +15,7 @@ if (!chrome.storage.onChanged.hasListener(onChanged)) {
         'options',
         'sites',
     ])
-    console.debug('options, sites:', options, sites)
+    // console.debug('options, sites:', options, sites)
     if (url.host in sites) {
         tabEnabled = true
         console.debug(
@@ -42,7 +42,7 @@ async function onChanged(changes, namespace) {
             console.debug('options', oldValue, newValue)
         }
         if (namespace === 'sync' && key === 'sites') {
-            console.debug('sites', oldValue, newValue)
+            // console.debug('sites', oldValue, newValue)
             if (tabEnabled && !(url.host in newValue)) {
                 await chrome.runtime.sendMessage({
                     badgeText: '',

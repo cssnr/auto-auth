@@ -9,7 +9,7 @@ if (typeof ClipboardJS !== 'undefined') {
         const text = event.text.trim()
         console.debug(`text: "${text}"`)
         if (event.trigger.dataset.toast) {
-            showToast(event.trigger.dataset.toast)
+            showToast(event.trigger.dataset.toast, 'success')
         } else {
             showToast('Copied to Clipboard', 'success')
         }
