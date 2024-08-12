@@ -1,5 +1,5 @@
 {
-  "name": "Automatic Authentication",
+  "name": "Auto Auth",
   "short_name": "Auto Auth",
   "description": "Automatic Basic HTTP Authentication Web Extension with Browser Synchronization, Import/Export Capability and More Options.",
   "homepage_url": "https://github.com/cssnr/auto-auth",
