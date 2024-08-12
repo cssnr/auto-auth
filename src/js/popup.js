@@ -1,8 +1,8 @@
 // JS for popup.html
 
 import {
+    Hosts,
     checkPerms,
-    deleteCredentials,
     grantPerms,
     linkClick,
     saveOptions,
@@ -38,11 +38,12 @@ async function initPopup() {
     console.debug('initPopup')
     updateManifest()
 
-    const { options, sites } = await chrome.storage.sync.get([
-        'options',
-        'sites',
-    ])
+    // const { options, sites } = await chrome.storage.sync.get([
+    //     'options',
+    //     'sites',
+    // ])
     // console.debug('options, sites:', options, sites)
+    const { options } = await chrome.storage.sync.get(['options'])
     updateOptions(options)
 
     if (chrome.runtime.lastError) {
@@ -60,7 +61,8 @@ async function initPopup() {
     console.debug('tab:', tab)
     if (tab.url) {
         const url = new URL(tab.url)
-        if (url.host in sites) {
+        const creds = await Hosts.get(url.host)
+        if (creds) {
             hostDiv.classList.add('border-success')
             hostDiv.textContent = url.host
             deleteSaved.classList.remove('d-none')
@@ -79,7 +81,8 @@ async function initPopup() {
 async function removeCredentials(event) {
     console.debug('removeCredentials:', event)
     const host = event.currentTarget?.dataset?.value
-    await deleteCredentials(host) // TODO: check return value
+    // await deleteCredentials(host)
+    await Hosts.delete(host)
     await initPopup()
     showToast(`Removed: ${host}`)
 }

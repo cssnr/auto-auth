@@ -14,9 +14,10 @@
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white&label=org%20stars)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 
-# Auto Auth
+# Automatic Authentication
 
-Modern Chrome Web Extension and Firefox Browser Addon for HTTP Basic Automatic Authentication.
+Modern Chrome Web Extension and Firefox Browser Addon for Automatic Basic HTTP Authentication with many Options and
+Features.
 
 * [Install](#Install)
 * [Features](#Features)
@@ -81,7 +82,7 @@ the [Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/xxxChr
 
 ## Configuration
 
-You can pin the Addon by clicking the `Puzzle Piece`, find the Auto Auth icon, then;  
+You can pin the Addon by clicking the `Puzzle Piece`, find the Automatic Authentication icon, then;  
 **Chrome,** click the `Pin` icon.  
 **Firefox,** click the `Settings Wheel` and `Pin to Toolbar`.
 

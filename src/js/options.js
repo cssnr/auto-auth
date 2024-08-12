@@ -1,9 +1,9 @@
 // JS for options.html
 
 import {
+    Hosts,
     checkPerms,
     copyInput,
-    deleteCredentials,
     grantPerms,
     showHidePassword,
     linkClick,
@@ -24,7 +24,6 @@ chrome.permissions.onRemoved.addListener(onRemoved)
 document.addEventListener('DOMContentLoaded', initOptions)
 // document.getElementById('add-host').addEventListener('submit', addHost)
 document.getElementById('copy-support').addEventListener('click', copySupport)
-
 const editForm = document.getElementById('edit-form')
 editForm.addEventListener('submit', editSubmit)
 editForm.addEventListener('change', editChange)
@@ -100,14 +99,17 @@ async function initOptions() {
     await setShortcuts()
     await checkPerms()
 
-    const { options, sites } = await chrome.storage.sync.get([
-        'options',
-        'sites',
-    ])
+    // const { options, sites } = await chrome.storage.sync.get([
+    //     'options',
+    //     'sites',
+    // ])
     // console.debug('options, sites:', options, sites)
+    const { options } = await chrome.storage.sync.get(['options'])
     updateOptions(options)
     backgroundChange(options.radioBackground)
-    updateTable(sites)
+    const hosts = await Hosts.all()
+    // console.debug('hosts:', hosts)
+    updateTable(hosts)
 }
 
 // /**
@@ -235,7 +237,8 @@ async function deleteHost(event) {
         deleteModal.show()
         return
     }
-    await deleteCredentials(host) // TODO: check return value
+    // await deleteCredentials(host)
+    await Hosts.delete(host)
     deleteModal.hide()
     showToast(`Removed: ${host}`)
 }
@@ -250,8 +253,9 @@ async function editClick(event) {
     const host = event.currentTarget?.dataset?.value
     console.debug('host:', host)
     // showToast('Not Yet Implemented', 'warning')
-    const { sites } = await chrome.storage.sync.get(['sites'])
-    const [username, password] = sites[host].split(':')
+    // const { sites } = await chrome.storage.sync.get(['sites'])
+    const creds = await Hosts.get(host)
+    const [username, password] = creds.split(':')
     editHostname.value = host
     editHostname.dataset.original = host
     editUsername.value = username
@@ -271,7 +275,7 @@ async function editSubmit(event) {
     console.debug('editSubmit:', event)
     event.preventDefault()
     event.stopPropagation()
-    const hostname = editHostname.value
+    const hostname = editHostname.value.toLowerCase()
     const username = editUsername.value
     const password = editPassword.value
     // console.debug('hostname ,username, password:', hostname, username, password)
@@ -283,12 +287,17 @@ async function editSubmit(event) {
         editModal.hide()
         return showToast('No Changes Detected', 'warning')
     }
-    const { sites } = await chrome.storage.sync.get(['sites'])
-    if (hostname !== editHostname.dataset.original) {
-        delete sites[editHostname.dataset.original]
-    }
-    sites[hostname] = `${username}:${password}`
-    await chrome.storage.sync.set({ sites })
+    // const { sites } = await chrome.storage.sync.get(['sites'])
+    // if (hostname !== editHostname.dataset.original) {
+    //     delete sites[editHostname.dataset.original]
+    // }
+    // sites[hostname] = `${username}:${password}`
+    // await chrome.storage.sync.set({ sites })
+    await Hosts.edit(
+        editHostname.dataset.original,
+        hostname,
+        `${username}:${password}`
+    )
     editModal.hide()
     showToast(`Updated Host: ${hostname}`, 'success')
 }
@@ -322,12 +331,15 @@ async function importHosts(event) {
 async function exportHosts(event) {
     console.debug('exportHosts:', event)
     event.preventDefault()
-    const { sites } = await chrome.storage.sync.get(['sites'])
+    // const { sites } = await chrome.storage.sync.get(['sites'])
     // console.debug('sites:', sites)
-    if (Object.keys(sites).length === 0) {
+
+    const hosts = await Hosts.all()
+    // console.debug('hosts:', hosts)
+    if (Object.keys(hosts).length === 0) {
         return showToast('No Credentials to Export', 'warning')
     }
-    const json = JSON.stringify(sites, null, 2)
+    const json = JSON.stringify(hosts, null, 2)
     textFileDownload('auto-auth-secrets.txt', json)
 }
 
@@ -343,20 +355,22 @@ async function hostsInputChange(event) {
     fileReader.onload = async function doBannedImport() {
         const results = JSON.parse(fileReader.result.toString())
         // console.debug('results:', results)
-        const { sites } = await chrome.storage.sync.get(['sites'])
+        // const { sites } = await chrome.storage.sync.get(['sites'])
+        const hosts = {}
         let count = 0
         for (const [key, value] of Object.entries(results)) {
             count += 1
             if (typeof value === 'object') {
                 const { username, password } = value
-                sites[key] = `${username}:${password}`
+                hosts[key] = `${username}:${password}`
             } else if (typeof value === 'string') {
                 // const [username, password] = value.split(':')
-                sites[key] = value
+                hosts[key] = value
             }
         }
-        // console.debug('sites:', sites)
-        await chrome.storage.sync.set({ sites })
+        // console.debug('hosts:', hosts)
+        // await chrome.storage.sync.set({ sites })
+        await Hosts.update(hosts)
         showToast(`Imported/Updated ${count} Hosts.`, 'success')
     }
     fileReader.readAsText(hostsInput.files[0])
@@ -389,18 +403,28 @@ function backgroundChange(event) {
  * @param {Object} changes
  * @param {String} namespace
  */
-function onChanged(changes, namespace) {
-    console.debug('onChanged:', changes, namespace)
-    for (const [key, { newValue }] of Object.entries(changes)) {
-        if (namespace === 'sync') {
-            if (key === 'options') {
-                updateOptions(newValue)
-            }
-            if (namespace === 'sync' && key === 'sites') {
-                updateTable(newValue)
-            }
+async function onChanged(changes, namespace) {
+    // console.debug('onChanged:', changes, namespace)
+    if (namespace === 'sync') {
+        if ('options' in changes) {
+            updateOptions(changes.newValue)
+        } else {
+            const hosts = await Hosts.all()
+            // console.debug('hosts:', hosts)
+            updateTable(hosts)
         }
     }
+    // for (const [key, { newValue }] of Object.entries(changes)) {
+    //     if (namespace === 'sync') {
+    //         if (key === 'options') {
+    //             updateOptions(newValue)
+    //         } else {
+    //             const hosts = await Hosts.all()
+    //             console.debug('hosts:', hosts)
+    //             updateTable(hosts)
+    //         }
+    //     }
+    // }
 }
 
 /**

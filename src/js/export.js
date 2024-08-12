@@ -1,5 +1,85 @@
 // JS Exports
 
+export class Hosts {
+    /** @type {[String]} */
+    static keys = [...'abcdefghijklmnopqrstuvwxyz0123456789']
+
+    /**
+     * @return {Promise<Object.<String, String>>}
+     */
+    static async all() {
+        const sync = await chrome.storage.sync.get(Hosts.keys)
+        return Object.assign({}, ...Object.values(sync))
+    }
+
+    /**
+     * @param {String} host
+     * @return {Promise<String>}
+     */
+    static async get(host) {
+        const sync = await Hosts.#getSync(host)
+        return sync[host]
+    }
+
+    /**
+     * @param {String} host
+     * @param {String} creds
+     * @return {Promise<void>}
+     */
+    static async set(host, creds) {
+        const sync = await Hosts.#getSync(host)
+        sync[host] = creds
+        await chrome.storage.sync.set({ [host[0]]: sync })
+    }
+
+    /**
+     * @param {String} host
+     * @return {Promise<void>}
+     */
+    static async delete(host) {
+        const sync = await Hosts.#getSync(host)
+        delete sync[host]
+        await chrome.storage.sync.set({ [host[0]]: sync })
+    }
+
+    /**
+     * @param {String} old
+     * @param {String} host
+     * @param {String} creds
+     * @return {Promise<void>}
+     */
+    static async edit(old, host, creds) {
+        if (old !== host) {
+            await this.delete(old)
+        }
+        await this.set(host, creds)
+    }
+
+    /**
+     * @param {Object} hosts
+     * @return {Promise<void>}
+     */
+    static async update(hosts) {
+        const sync = await chrome.storage.sync.get(Hosts.keys)
+        for (const [key, value] of Object.entries(hosts)) {
+            if (!(key[0] in sync)) {
+                sync[key[0]] = {}
+            }
+            sync[key[0]][key] = value
+        }
+        await chrome.storage.sync.set(sync)
+    }
+
+    /**
+     * @param {String} host
+     * @return {Promise<Object.<String, String>>}
+     */
+    static async #getSync(host) {
+        const sync = await chrome.storage.sync.get(host[0])
+        return sync[host[0]] || {}
+    }
+}
+
 // /**
 //  * Save Credentials Function
 //  * @function saveCredentials
@@ -15,26 +95,27 @@
 //     await chrome.storage.sync.set({ sites })
 // }
 
-/**
- * Delete Host
- * @function deleteHost
- * @param {String} host
- * @return {Promise<*|Boolean>}
- */
-export async function deleteCredentials(host) {
-    console.debug('deleteCredentials:', host)
-    const { sites } = await chrome.storage.sync.get(['sites'])
-    // console.debug('sites:', sites)
-    if (host && host in sites) {
-        delete sites[host]
-        await chrome.storage.sync.set({ sites })
-        console.log(`%cDeleted Host: ${host}`, 'color: Yellow')
-        return true
-    } else {
-        console.log(`%cHost Not Found: ${host}`, 'color: Red')
-        return false
-    }
-}
+// /**
+//  * Delete Host
+//  * @function deleteHost
+//  * @param {String} host
+//  * @return {Promise<*|Boolean>}
+//  */
+// export async function deleteCredentials(host) {
+//     console.debug('deleteCredentials:', host)
+//     // const { sites } = await chrome.storage.sync.get(['sites'])
+//     // console.debug('sites:', sites)
+//     await Hosts.delete(host)
+//     // if (host && host in sites) {
+//     //     delete sites[host]
+//     //     await chrome.storage.sync.set({ sites })
+//     //     console.log(`%cDeleted Host: ${host}`, 'color: Yellow')
+//     //     return true
+//     // } else {
+//     //     console.log(`%cHost Not Found: ${host}`, 'color: Red')
+//     //     return false
+//     // }
+// }
 
 /**
  * Text File Download

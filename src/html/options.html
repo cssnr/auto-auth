@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Auto Authentication</title>
+    <title>Auto Auth Options</title>
     <link rel="icon" href="../images/logo16.png" sizes="any">
     <link rel="stylesheet" type="text/css" href="../dist/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../dist/fontawesome/css/all.min.css">
@@ -18,8 +18,8 @@
 <div class="card-body">
     <div class="d-flex justify-content-center align-items-center">
         <img src="../images/logo48.png" class="me-2" height="48" width="48"
-             alt="Auto Authentication" title="Auto Authentication">
-        <h1 class="text-center">Auto Authentication</h1>
+             alt="Auto Auth" title="Auto Auth">
+        <h1 class="text-center">Automatic Authentication</h1>
     </div>
     <div class="clearfix"></div>
     <p class="text-center lead">v<span class="version"></span></p>
@@ -265,7 +265,7 @@
             <label for="hostname" class="form-label"><i class="fa-solid fa-globe me-2"></i> Hostname</label>
             <div class="input-group col-12 mb-3">
                 <input id="hostname" placeholder="hostname" aria-describedby="hostnameHelp" type="text" class="form-control" autocomplete="off" required>
-                <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip"
+                <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1"
                         data-copy-input="#hostname" data-copy-text="Hostname Copied."
                         data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Copy Hostname">
                     <i class="fa-solid fa-copy"></i>
@@ -280,7 +280,7 @@
             <label for="username" class="form-label"><i class="fa-solid fa-user me-2"></i> Username</label>
             <div class="input-group col-12 mb-3">
                 <input id="username" placeholder="username" aria-describedby="usernameHelp" type="text" class="form-control" autocomplete="off" required>
-                <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip"
+                <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1"
                         data-copy-input="#username" data-copy-text="Username Copied."
                         data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Copy Username">
                     <i class="fa-solid fa-copy"></i>
@@ -300,7 +300,7 @@
                         data-class-on="btn-outline-warning" data-class-off="btn-outline-success">
                     <i class="fa-regular fa-eye"></i>
                 </button>
-                <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip"
+                <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1"
                         data-copy-input="#password" data-copy-text="Password Copied."
                         data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Copy Password">
                     <i class="fa-solid fa-copy"></i>

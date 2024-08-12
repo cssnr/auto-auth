@@ -1,6 +1,7 @@
 {
-  "name": "Auto Auth",
-  "description": "HTTP Basic Auto Authentication Web Extension.",
+  "name": "Automatic Authentication",
+  "short_name": "Auto Auth",
+  "description": "Automatic Basic HTTP Authentication Web Extension with Browser Synchronization, Import/Export Capability and More Options.",
   "homepage_url": "https://github.com/cssnr/auto-auth",
   "author": "Shane",
   "version": "0.0.1",
@@ -39,7 +40,7 @@
   },
   "action": {
     "default_popup": "html/popup.html",
-    "default_title": "Auto Authentication",
+    "default_title": "Auto Auth",
     "default_icon": {
       "16": "images/logo16.png",
       "32": "images/logo32.png",

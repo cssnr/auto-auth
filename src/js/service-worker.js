@@ -1,6 +1,6 @@
 // JS Background Service Worker
 
-import { checkPerms, showPanel } from './export.js'
+import { Hosts, checkPerms, showPanel } from './export.js'
 
 chrome.runtime.onStartup.addListener(onStartup)
 chrome.runtime.onInstalled.addListener(onInstalled)
@@ -27,11 +27,12 @@ const pendingRequests = []
 
 async function onAuthRequired(details, callback) {
     console.debug('onAuthRequired:', details)
-    const { options, sites } = await chrome.storage.sync.get([
-        'options',
-        'sites',
-    ])
+    // const { options, sites } = await chrome.storage.sync.get([
+    //     'options',
+    //     'sites',
+    // ])
     // console.debug('options, sites:', options, sites)
+    let { options } = await chrome.storage.sync.get(['options'])
     if (options.tempDisabled) {
         console.log('%cExtension is Temporarily Disabled!', 'color: Red')
         return callback()
@@ -70,9 +71,12 @@ async function onAuthRequired(details, callback) {
     }
     pendingRequests.push(details.requestId)
 
+    const creds = await Hosts.get(url.host)
+    // console.log('creds:', creds)
+
     // Check for Saved Credentials
-    if (url.host in sites) {
-        if (sites[url.host] === 'ignored') {
+    if (creds) {
+        if (creds === 'ignored') {
             console.log(
                 `%cHost is Set to Ignored: %c${url.host}`,
                 'color: Yellow',
@@ -84,7 +88,7 @@ async function onAuthRequired(details, callback) {
             `%cSending Saved Creds for: ${details.requestId}`,
             'color: LimeGreen'
         )
-        const [username, password] = sites[url.host].split(':')
+        const [username, password] = creds.split(':')
         const authCredentials = {
             username,
             password,
@@ -239,9 +243,10 @@ async function onCommand(command) {
  * @param {String} [message.badgeColor]
  * @param {String} [message.badgeText]
  * @param {Number} [message.tabId]
+ * @param {Function} sendResponse
  * @param {MessageSender} sender
  */
-function onMessage(message, sender) {
+function onMessage(message, sender, sendResponse) {
     console.debug('message, sender:', message, sender)
     const tabId = message.tabId || sender.tab?.id
     if ('badgeColor' in message && tabId) {
@@ -257,6 +262,10 @@ function onMessage(message, sender) {
             tabId: tabId,
             text: message.badgeText,
         })
+    }
+    if ('host' in message) {
+        Hosts.get(message.host).then((creds) => sendResponse(creds))
+        return true
     }
 }
 
@@ -402,11 +411,11 @@ function addContext(context) {
  */
 async function setDefaultOptions(defaultOptions) {
     console.log('setDefaultOptions', defaultOptions)
-    let { sites } = await chrome.storage.sync.get(['sites'])
-    if (!sites) {
-        await chrome.storage.sync.set({ sites: {} })
-        console.debug('Initialized Empty sync sites')
-    }
+    // let { sites } = await chrome.storage.sync.get(['sites'])
+    // if (!sites) {
+    //     await chrome.storage.sync.set({ sites: {} })
+    //     console.debug('Initialized Empty sync sites')
+    // }
     const { session } = await chrome.storage.session.get(['session'])
     if (!session) {
         await chrome.storage.session.set({ session: {} })

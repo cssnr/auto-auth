@@ -1,6 +1,6 @@
 // JS for auth.html
 
-import { linkClick, showHidePassword, showToast } from './export.js'
+import { Hosts, linkClick, showHidePassword, showToast } from './export.js'
 
 const searchParams = new URLSearchParams(window.location.search)
 const url = new URL(searchParams.get('url'))
@@ -47,10 +47,11 @@ async function domContentLoaded() {
     link.href = url.href
     document.getElementById('hostname').value = url.host
 
-    const { options, sites } = await chrome.storage.sync.get([
-        'options',
-        'sites',
-    ])
+    // const { options, sites } = await chrome.storage.sync.get([
+    //     'options',
+    //     'sites',
+    // ])
+    const { options } = await chrome.storage.sync.get(['options'])
     const { session } = await chrome.storage.session.get(['session'])
     // console.debug('options, sites:', options, sites)
     setBackground(options)
@@ -65,9 +66,12 @@ async function domContentLoaded() {
         document.getElementById('save-session').classList.remove('d-none')
     }
 
-    if (url.host in sites) {
-        if (sites[url.host] !== 'ignored') {
-            const [username, password] = sites[url.host].split(':')
+    const creds = await Hosts.get(url.host)
+    // console.log('creds:', creds)
+
+    if (creds) {
+        if (creds !== 'ignored') {
+            const [username, password] = creds.split(':')
             const user = userInput
             user.value = username
             user.select()
@@ -84,10 +88,11 @@ async function domContentLoaded() {
 
 async function ignoreHost(event) {
     console.debug('ignoreHost:', event)
-    const { sites } = await chrome.storage.sync.get(['sites'])
-    // console.debug('sites:', sites)
-    sites[url.host] = 'ignored'
-    await chrome.storage.sync.set({ sites })
+    // const { sites } = await chrome.storage.sync.get(['sites'])
+    // // console.debug('sites:', sites)
+    // sites[url.host] = 'ignored'
+    // await chrome.storage.sync.set({ sites })
+    await Hosts.set(url.host, 'ignored')
 
     document.body.remove()
     // window.location = url.href
@@ -111,9 +116,10 @@ async function submitAuth(event) {
     // console.debug('host, user, pass:', host, user, pass)
 
     if (event.target.elements.saveCreds.checked) {
-        const { sites } = await chrome.storage.sync.get(['sites'])
-        sites[host] = `${user}:${pass}`
-        await chrome.storage.sync.set({ sites })
+        // const { sites } = await chrome.storage.sync.get(['sites'])
+        // sites[host] = `${user}:${pass}`
+        // await chrome.storage.sync.set({ sites })
+        await Hosts.set(url.host, `${user}:${pass}`)
         console.log(
             '%cCredentials Saved.',
             `Loading: ${url.href}`,

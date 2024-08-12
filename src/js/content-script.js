@@ -16,8 +16,10 @@ if (!chrome.storage.onChanged.hasListener(onChanged)) {
     //     'sites',
     // ])
     // console.debug('options, sites:', options, sites)
-    const { sites } = await chrome.storage.sync.get(['sites'])
-    if (url.host in sites) {
+    // const { sites } = await chrome.storage.sync.get(['sites'])
+    const creds = await chrome.runtime.sendMessage({ host: url.host })
+    // console.debug('creds:', creds)
+    if (creds) {
         tabEnabled = true
         console.debug(
             '%cFound Credentials for Current Site.',
@@ -37,14 +39,15 @@ if (!chrome.storage.onChanged.hasListener(onChanged)) {
  * @param {String} namespace
  */
 async function onChanged(changes, namespace) {
-    console.debug('onChanged:', changes, namespace)
+    // console.debug('onChanged:', changes, namespace)
     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (namespace === 'sync' && key === 'options') {
             console.debug('options', oldValue, newValue)
         }
-        if (namespace === 'sync' && key === 'sites') {
+        if (namespace === 'sync' && key.startsWith(url.host[0])) {
             // console.debug('sites', oldValue, newValue)
-            if (tabEnabled && !(url.host in newValue)) {
+            const hosts = newValue[url.host[0]] || {}
+            if (tabEnabled && !(url.host in hosts)) {
                 await chrome.runtime.sendMessage({
                     badgeText: '',
                 })
