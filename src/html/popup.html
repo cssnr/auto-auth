@@ -113,6 +113,27 @@
     </div>
 </div> <!-- container -->
 
+<div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="delete-modal-label">Delete Host</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"></button>
+    </div>
+    <div class="modal-body text-center p-2">
+        <p class="mb-1">Are you sure you want to delete this host?</p>
+        <p class="text-break fs-4 mb-1"><kbd id="delete-host"></kbd></p>
+    </div>
+    <div class="modal-footer p-2">
+        <button type="button" class="btn btn-danger me-auto" id="confirm-delete">
+            Delete <i class="fa-regular fa-trash-can ms-2"></i></button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel</button>
+    </div>
+</div> <!-- modal-content -->
+</div> <!-- modal-dialog -->
+</div> <!-- delete-modal -->
+
 <div aria-live="polite" aria-atomic="true" class="">
     <div id="toast-container" class="toast-container bottom-0 end-0 p-3"></div>
 </div> <!-- toast -->

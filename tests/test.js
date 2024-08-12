@@ -130,6 +130,15 @@ async function getPage(name, log, size) {
     await new Promise((resolve) => setTimeout(resolve, 250))
     await screenshot('delete-confirm')
 
+    await page.locator('[title="Edit"]').click()
+    await new Promise((resolve) => setTimeout(resolve, 250))
+    await screenshot('edit')
+
+    await page.locator('#username').fill('success')
+    await page.keyboard.press('Enter')
+    await new Promise((resolve) => setTimeout(resolve, 250))
+    await screenshot('edit-save')
+
     // Auth
     // TODO: Open Bug as this throws `Error: net::ERR_ABORTED`
     // await page.goto('https://httpbin.org/basic-auth/guest/guest')

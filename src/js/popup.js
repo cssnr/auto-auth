@@ -27,6 +27,11 @@ document
     .querySelectorAll('[data-bs-toggle="tooltip"]')
     .forEach((el) => new bootstrap.Tooltip(el))
 
+const confirmDelete = document.getElementById('confirm-delete')
+const confirmDeleteHost = document.getElementById('delete-host')
+const deleteModal = new bootstrap.Modal('#delete-modal')
+confirmDelete.addEventListener('click', deleteHost)
+
 const hostDiv = document.getElementById('host')
 const deleteSaved = document.getElementById('delete-saved')
 
@@ -67,7 +72,9 @@ async function initPopup() {
             hostDiv.textContent = url.host
             deleteSaved.classList.remove('d-none')
             deleteSaved.dataset.value = url.host
-            deleteSaved.addEventListener('click', removeCredentials)
+            deleteSaved.addEventListener('click', deleteHost)
+            confirmDelete.dataset.value = url.host
+            confirmDeleteHost.textContent = url.host
         } else {
             hostDiv.textContent = 'No Credentials Found for Tab.'
             hostDiv.classList.remove('border-success')
@@ -78,11 +85,27 @@ async function initPopup() {
     }
 }
 
-async function removeCredentials(event) {
-    console.debug('removeCredentials:', event)
+/**
+ * Delete Host
+ * TODO: Cleanup This Function, Elements, and Event Listeners
+ * @function deleteHost
+ * @param {MouseEvent} event
+ */
+async function deleteHost(event) {
+    console.debug('deleteHost:', event)
     const host = event.currentTarget?.dataset?.value
-    // await deleteCredentials(host)
+    console.debug('host:', host)
+    const confirm = event.currentTarget?.id !== 'confirm-delete'
+    const { options } = await chrome.storage.sync.get(['options'])
+    if (options.confirmDelete && !!confirm) {
+        console.debug('Show Delete Modal')
+        // confirmDelete.dataset.value = host
+        // confirmDeleteHost.textContent = host
+        deleteModal.show()
+        return
+    }
     await Hosts.delete(host)
+    deleteModal.hide()
     await initPopup()
     showToast(`Removed: ${host}`)
 }

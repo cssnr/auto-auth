@@ -80,43 +80,6 @@ export class Hosts {
     }
 }
 
-// /**
-//  * Save Credentials Function
-//  * @function saveCredentials
-//  * @param {String} host
-//  * @param {String} user
-//  * @param {String} pass
-//  */
-// export async function saveCredentials(host, user, pass) {
-//     console.debug('saveCredentials:', host, user, pass)
-//     const { sites } = await chrome.storage.sync.get(['sites'])
-//     console.debug('sites:', sites)
-//     sites[host] = `${user}:${pass}`
-//     await chrome.storage.sync.set({ sites })
-// }
-
-// /**
-//  * Delete Host
-//  * @function deleteHost
-//  * @param {String} host
-//  * @return {Promise<*|Boolean>}
-//  */
-// export async function deleteCredentials(host) {
-//     console.debug('deleteCredentials:', host)
-//     // const { sites } = await chrome.storage.sync.get(['sites'])
-//     // console.debug('sites:', sites)
-//     await Hosts.delete(host)
-//     // if (host && host in sites) {
-//     //     delete sites[host]
-//     //     await chrome.storage.sync.set({ sites })
-//     //     console.log(`%cDeleted Host: ${host}`, 'color: Yellow')
-//     //     return true
-//     // } else {
-//     //     console.log(`%cHost Not Found: ${host}`, 'color: Red')
-//     //     return false
-//     // }
-// }
-
 /**
  * Text File Download
  * @function textFileDownload
@@ -481,19 +444,3 @@ export function showToast(message, type = 'primary') {
     element.addEventListener('mousemove', () => toast.hide())
     toast.show()
 }
-
-// /**
-//  * Inject Function into Current Tab with args
-//  * @function injectFunction
-//  * @param {Function} func
-//  * @param {Array} args
-//  * @return {Promise<*|InjectionResult>}
-//  */
-// export async function injectFunction(func, args) {
-//     const [tab] = await chrome.tabs.query({ currentWindow: true, active: true })
-//     return await chrome.scripting.executeScript({
-//         target: { tabId: tab.id },
-//         func: func,
-//         args: args,
-//     })
-// }

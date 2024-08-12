@@ -25,6 +25,7 @@ Features.
     - [Known Issues](#Known-Issues)
 * [Configuration](#Configuration)
 * [Migration](#Migration)
+* [Security](#Security)
 * [Support](#Support)
 * [Development](#Development)
     - [Building](#Building)
@@ -51,21 +52,27 @@ the [Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/xxxChr
 
 ## Features
 
-* Save Logins for HTTP Basic Authentication
-* Automatically Login with Saved Credentials
-* Option to Ignore Specific Hosts
-* Notification on Invalid Credentials
-* View, Delete and Edit Saved Credentials
-* Option to Ignore Proxy Authentication
-* Option to Temporarily Disable
-* Toolbar Status for Enabled Hosts
-* Icon Colors for Extension Status
+- Save Logins for HTTP Basic Authentication
+- Automatically Login with Saved Credentials
+- Option to Ignore Specific Hosts
+- Notification on Invalid Credentials
+- View, Delete and Edit Saved Credentials
+- Option to Ignore Proxy Authentication
+- Option to Temporarily Disable
+- Ability to Import/Export Credentials
+- Toolbar Status for Enabled Hosts
+- Icon Colors for Extension Status
 
 ### Upcoming Features
 
-* Save Multiple Credentials for a Single Host
-* Manually Add Saved Credentials
-* Toggle to Match Any Port for Host
+- Save Multiple Credentials for a Single Host
+- Manually Add Saved Credentials
+- Toggle to Match Any Port for Host
+
+Long-term Goals for Improved Security:
+
+- Add Optional Password Encryption Feature
+- Add a Sync Service for Cross-Browser Synchronization
 
 > [!TIP]
 > **Don't see your feature here?**
@@ -75,6 +82,7 @@ the [Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/xxxChr
 ### Known Issues
 
 * Only allows saving 1 set of credentials per host
+* Most browsers will offer to save passwords on login and edit 
 
 > [!TIP]
 > **Don't see your issue here?**
@@ -107,6 +115,18 @@ Migration from: [steffanschlein/AutoAuth/](https://github.com/steffanschlein/Aut
 8. Choose the file from step #6 and click Open
 
 You should now see all the credentials in the table on the Options Page.
+
+## Security
+
+Since there is no API to manage or store credentials securely, usernames and passwords are stored in the web
+extension's [sync storage](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/sync). This
+will sync your credentials to all browsers you are logged into if sync is enabled for addons. Therefore, any computers
+you use a synced browser on will write the credentials to the file system in plain text.
+
+If there is enough popularity/requests for these features, there are a couple options to mitigate this:
+
+- Option to switch between sync and local storage to limit credentials to a single computer.
+- Option to encrypt credentials using a password that must be entered once every session.
 
 ## Support
 

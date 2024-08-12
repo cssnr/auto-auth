@@ -185,7 +185,7 @@ function setBackground(options) {
         document.body.style.backgroundSize = 'cover'
         video.classList.add('d-none')
     } else if (options.radioBackground === 'bgVideo') {
-        const src = options.videoURL || '/media/loop.mp4'
+        const src = options.videoURL // || '/media/loop.mp4'
         video.classList.remove('d-none')
         video.src = src
         document.body.style.cssText = ''

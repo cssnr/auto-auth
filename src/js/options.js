@@ -221,6 +221,7 @@ function updateTable(data) {
 
 /**
  * Delete Host
+ * TODO: Cleanup This Function, Elements, and Event Listeners
  * @function deleteHost
  * @param {MouseEvent} event
  */
@@ -237,7 +238,6 @@ async function deleteHost(event) {
         deleteModal.show()
         return
     }
-    // await deleteCredentials(host)
     await Hosts.delete(host)
     deleteModal.hide()
     showToast(`Removed: ${host}`)
