@@ -407,7 +407,7 @@ async function onChanged(changes, namespace) {
     // console.debug('onChanged:', changes, namespace)
     if (namespace === 'sync') {
         if ('options' in changes) {
-            updateOptions(changes.newValue)
+            updateOptions(changes.options.newValue)
         } else {
             const hosts = await Hosts.all()
             // console.debug('hosts:', hosts)
