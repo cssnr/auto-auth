@@ -433,6 +433,9 @@ async function onChanged(changes, namespace) {
  * @param {String} selector
  */
 async function setShortcuts(selector = '#keyboard-shortcuts') {
+    if (!chrome.commands) {
+        return console.debug('Skipping: chrome.commands')
+    }
     const table = document.querySelector(selector)
     const tbody = table.querySelector('tbody')
     const source = table.querySelector('tfoot > tr').cloneNode(true)

@@ -16,7 +16,7 @@
 <div class="d-flex align-items-center h-100">
 <div class="col-xl-6 col-md-8 col-12 m-auto">
 <div class="card p-3 text-center">
-    <div class="d-flex justify-content-center align-items-center">
+    <div class="d-flex justify-content-center align-items-center mb-2">
         <img src="../images/logo48.png" class="me-2" height="48" width="48"
              alt="Auto Auth" title="Auto Auth">
         <h1>Auto Auth</h1>
@@ -28,13 +28,11 @@
                 data-bs-title="This Extension Requires Host Permissions to Function.">
             <i class="fa-solid fa-check-double me-1"></i> Grant Host Permissions</button>
     </div>
+    <div class="alert alert-success text-center d-none has-perms" role="alert">
+        Permissions Granted.
+    </div>
     <a class="btn btn-lg btn-outline-info w-100 mb-3" href="../html/options.html">
         <i class="fa-solid fa-sliders me-1"></i> Open Options</a>
-    <div class="d-none has-perms my-1">
-        <div class="alert alert-success" role="alert">
-            Permissions Granted.
-        </div>
-    </div>
     <div class="text-center">
         <a class="link-body-emphasis text-decoration-none" target="_blank" rel="noopener"
            href="homepage_url">Home Page</a>

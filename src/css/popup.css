@@ -1,7 +1,8 @@
 /* CSS for popup.html */
 
 body {
-    width: 340px;
+    min-width: 340px;
+    width: 100%;
     overflow-x: hidden;
 }
 

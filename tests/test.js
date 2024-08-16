@@ -42,7 +42,7 @@ async function scrollPage(page) {
  * @param {String} name
  * @param {Boolean=} log
  * @param {String=} size
- * @return {import('puppeteer').Page}
+ * @return {Promise<puppeteer.Page>}
  */
 async function getPage(name, log, size) {
     console.debug(`getPage: ${name}`, log, size)

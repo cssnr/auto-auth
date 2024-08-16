@@ -36,7 +36,7 @@ async function domContentLoaded() {
 async function onAdded(permissions) {
     console.debug('onAdded', permissions)
     const hasPerms = await checkPerms()
-    if (hasPerms) {
+    if (hasPerms && window.opener) {
         await chrome.runtime.openOptionsPage()
         window.close()
     }
