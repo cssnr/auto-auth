@@ -1,9 +1,9 @@
-[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/xxxChromeIDxxx?logo=google&logoColor=white&label=users)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/gpoiggobidhogpmmlakahiaaegibnogm?logo=google&logoColor=white&label=users)](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
 [![Mozilla Add-on Users](https://img.shields.io/amo/users/auto-auth?logo=mozilla&label=users)](https://addons.mozilla.org/addon/auto-auth)
-[![Chrome Web Store Rating](https://img.shields.io/chrome-web-store/rating/xxxChromeIDxxx?logo=google&logoColor=white)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+[![Chrome Web Store Rating](https://img.shields.io/chrome-web-store/rating/gpoiggobidhogpmmlakahiaaegibnogm?logo=google&logoColor=white)](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
 [![Mozilla Add-on Rating](https://img.shields.io/amo/rating/auto-auth?logo=mozilla&logoColor=white)](https://addons.mozilla.org/addon/auto-auth)
 [![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/auto-auth?style=flat&logo=github&logoColor=white)](https://github.com/cssnr/auto-auth/stargazers)
-[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/xxxChromeIDxxx?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/gpoiggobidhogpmmlakahiaaegibnogm?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
 [![Mozilla Add-on Version](https://img.shields.io/amo/v/auto-auth?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/auto-auth)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/auto-auth?logo=github&logoColor=white)](https://github.com/cssnr/auto-auth/releases/latest)
 [![Build](https://img.shields.io/github/actions/workflow/status/cssnr/auto-auth/build.yaml?logo=github&logoColor=white&label=build)](https://github.com/cssnr/auto-auth/actions/workflows/build.yaml)
@@ -33,22 +33,18 @@ Features.
 
 ## Install
 
-> [!WARNING]  
-> Extension not yet published to Google or Mozilla.  
-> To install you must download a [Release from GitHub](https://github.com/cssnr/auto-auth/releases/latest).
-
-* [Google Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+* [Google Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
 * [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/auto-auth)
 
-[![Chrome](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/chrome_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+[![Chrome](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/chrome_48.png)](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
 [![Firefox](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/firefox_48.png)](https://addons.mozilla.org/addon/auto-auth)
-[![Edge](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/edge_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
-[![Brave](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/brave_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
-[![Opera](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/opera_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
-[![Chromium](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/chromium_48.png)](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+[![Edge](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/edge_48.png)](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
+[![Brave](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/brave_48.png)](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
+[![Opera](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/opera_48.png)](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
+[![Chromium](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/chromium_48.png)](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
 
 All **Chromium** Based Browsers can install the extension from
-the [Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx).
+the [Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm).
 
 ## Features
 
@@ -228,7 +224,7 @@ Build: [https://wiki.mozilla.org/Add-ons/Extension_Signing#Unbranded_Builds](htt
 # Contributing
 
 Currently, the best way to contribute to this project is to give a 5-star rating
-on [Google](https://chromewebstore.google.com/detail/auto-auth/xxxChromeIDxxx)
+on [Google](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
 or [Mozilla](https://addons.mozilla.org/addon/auto-auth) and to star this project on GitHub.
 
 Other Web Extensions I have created and published:
