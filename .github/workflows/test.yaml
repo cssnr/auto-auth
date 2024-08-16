@@ -41,14 +41,15 @@ jobs:
         run: |
           npm run test
 
-      #- name: "Push Artifacts"
-      #  uses: cssnr/push-artifacts-action@master
-      #  with:
-      #    source: "tests/screenshots/"
-      #    dest: "/static"
-      #    host: ${{ secrets.RSYNC_HOST }}
-      #    user: ${{ secrets.RSYNC_USER }}
-      #    pass: ${{ secrets.RSYNC_PASS }}
-      #    port: ${{ secrets.RSYNC_PORT }}
-      #    webhost: "https://artifacts.hosted-domains.com"
-      #    webhook: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: "Push Artifacts"
+        uses: cssnr/push-artifacts-action@master
+        with:
+          source: "tests/screenshots/"
+          dest: "/static"
+          host: ${{ secrets.RSYNC_HOST }}
+          user: ${{ secrets.RSYNC_USER }}
+          pass: ${{ secrets.RSYNC_PASS }}
+          port: ${{ secrets.RSYNC_PORT }}
+          webhost: "https://artifacts.hosted-domains.com"
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          token: ${{ secrets.GITHUB_TOKEN }}

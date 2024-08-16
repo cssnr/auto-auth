@@ -26,7 +26,7 @@ jobs:
 
       - name: "Build All"
         run: |
-          npm install
+          npm ci
           npm run build
 
       - name: "Upload to Actions"
