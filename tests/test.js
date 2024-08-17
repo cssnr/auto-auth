@@ -96,12 +96,18 @@ async function getPage(browser, name, size) {
 
     // Options
     await worker.evaluate('chrome.runtime.openOptionsPage();')
-    const options = await getPage(browser, 'options.html')
+    const options = await getPage(browser, 'options.html', '600x900')
     console.log('options:', options)
     await options.waitForNetworkIdle()
-    // const innerHeight = await options.evaluate('window.innerHeight')
-    // console.log('innerHeight:', innerHeight)
     await options.screenshot(ssOptions('options'))
+
+    await options.locator('#tempDisabled').click()
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    await options.screenshot(ssOptions('disabled'))
+
+    await options.locator('#tempDisabled').click()
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    await options.screenshot(ssOptions('enabled'))
 
     const [fileChooser] = await Promise.all([
         options.waitForFileChooser(),
@@ -111,7 +117,7 @@ async function getPage(browser, name, size) {
     await scrollPage(options)
     await options.screenshot(ssOptions('import'))
 
-    await options.locator('[title="Delete"]').click()
+    await options.locator('[title="Delete"][data-value="cssnr.com"]').click()
     // await options.evaluate((selector) => {
     //     document.querySelectorAll(selector)[1].click()
     // }, 'a[title="Delete"]')
@@ -122,20 +128,38 @@ async function getPage(browser, name, size) {
     await new Promise((resolve) => setTimeout(resolve, 500))
     await options.screenshot(ssOptions('delete-confirm'))
 
-    await options.locator('[title="Edit"]').click()
+    await options.locator('[title="Edit"][data-value="httpbin.org"]').click()
     await new Promise((resolve) => setTimeout(resolve, 500))
     await options.screenshot(ssOptions('edit'))
 
-    await options.locator('#username').fill('success')
+    await options.locator('#username').fill('changed')
     await options.keyboard.press('Enter')
     await new Promise((resolve) => setTimeout(resolve, 500))
     await options.screenshot(ssOptions('edit-save'))
 
     // Auth
-    // TODO: Open Bug as this throws `Error: net::ERR_ABORTED`
-    // await page.goto('https://httpbin.org/basic-auth/guest/guest')
-    // await page.waitForNavigation()
-    // await screenshot('auth')
+    let page = await browser.newPage()
+    console.log('saved:', page)
+    try {
+        // Intercepting auth throws `Error: net::ERR_ABORTED`
+        await page.goto('https://authenticationtest.com/HTTPAuth/')
+    } catch (e) {}
+    await page.waitForNetworkIdle()
+    await page.screenshot(ssOptions('success'))
+
+    page = await browser.newPage()
+    console.log('page:', page)
+    try {
+        // Intercepting auth throws `Error: net::ERR_ABORTED`
+        await page.goto('https://httpbin.org/basic-auth/guest/guest')
+    } catch (e) {}
+    await page.waitForNetworkIdle()
+    await page.screenshot(ssOptions('auth'))
+
+    await page.locator('#username').fill('guest')
+    await page.keyboard.press('Enter')
+    await page.waitForNetworkIdle()
+    await page.screenshot(ssOptions('httpbin'))
 
     await browser.close()
 })()
