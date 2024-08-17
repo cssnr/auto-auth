@@ -3,27 +3,27 @@ const path = require('path')
 const fs = require('fs')
 
 const sourceDir = 'src'
-const screenshotsDir = 'tests/screenshots'
-
-/** @type {import('puppeteer').Browser}*/
-let browser
-/** @type {import('puppeteer').Page}*/
-let page
+const ssDir = 'tests/screenshots'
 
 let count = 1
+
+// if (fs.existsSync(ssDir)) {}
+fs.rmSync(ssDir, { recursive: true, force: true })
+fs.mkdirSync(ssDir)
 
 /**
  * @function screenshot
  * @param {String} name
- * @return {Promise<void>}
+ * @param {Object} [options]
+ * @return {Object}
  */
-async function screenshot(name) {
-    if (!fs.existsSync(screenshotsDir)) {
-        fs.mkdirSync(screenshotsDir)
-    }
+function ssOptions(name, options = {}) {
     const n = count.toString().padStart(2, '0')
-    await page.screenshot({ path: `${screenshotsDir}/${n}_${name}.png` })
     count++
+    const opts = { path: `${ssDir}/${n}_${name}.png` }
+    Object.assign(opts, options)
+    console.log('options:', opts)
+    return opts
 }
 
 async function scrollPage(page) {
@@ -39,17 +39,17 @@ async function scrollPage(page) {
 
 /**
  * @function getPage
+ * @param {puppeteer.Browser} browser
  * @param {String} name
- * @param {Boolean=} log
- * @param {String=} size
+ * @param {String} [size]
  * @return {Promise<puppeteer.Page>}
  */
-async function getPage(name, log, size) {
-    console.debug(`getPage: ${name}`, log, size)
+async function getPage(browser, name, size) {
+    console.debug(`getPage: ${name}`, size)
     const target = await browser.waitForTarget(
         (target) => target.type() === 'page' && target.url().endsWith(name)
     )
-    page = await target.asPage()
+    const page = await target.asPage()
     await page.emulateMediaFeatures([
         { name: 'prefers-color-scheme', value: 'dark' },
     ])
@@ -57,19 +57,16 @@ async function getPage(name, log, size) {
         const [width, height] = size.split('x').map((x) => parseInt(x))
         await page.setViewport({ width, height })
     }
-    if (log) {
-        console.debug(`Adding Logger: ${name}`)
-        page.on('console', (msg) =>
-            console.log(`console: ${name}:`, msg.text())
-        )
-    }
+    console.debug(`Adding Logger: ${name}`)
+    page.on('console', (msg) => console.log(`console: ${name}:`, msg.text()))
     return page
 }
 
 ;(async () => {
+    // Get Browser
     const pathToExtension = path.join(process.cwd(), sourceDir)
     console.log('pathToExtension:', pathToExtension)
-    browser = await puppeteer.launch({
+    const browser = await puppeteer.launch({
         args: [
             `--disable-extensions-except=${pathToExtension}`,
             `--load-extension=${pathToExtension}`,
@@ -80,7 +77,7 @@ async function getPage(name, log, size) {
     })
     console.log('browser:', browser)
 
-    // Get Service Worker
+    // Get Worker
     const workerTarget = await browser.waitForTarget(
         (target) =>
             target.type() === 'service_worker' &&
@@ -91,53 +88,48 @@ async function getPage(name, log, size) {
 
     // Popup
     await worker.evaluate('chrome.action.openPopup();')
-    page = await getPage('popup.html')
-    console.log('page:', page)
-    await page.waitForNetworkIdle()
-    await screenshot('popup')
-    await page.locator('[href="../html/options.html"]').click()
+    const popup = await getPage(browser, 'popup.html')
+    console.log('popup:', popup)
+    await popup.waitForNetworkIdle()
+    await popup.screenshot(ssOptions('popup'))
+    await popup.locator('[href="../html/options.html"]').click()
 
     // Options
-    // await worker.evaluate('chrome.runtime.openOptionsPage();')
-    page = await getPage('options.html')
-    console.log('page:', page)
-    await page.waitForNetworkIdle()
-    await screenshot('options')
-
-    // await page.locator('#tempDisabled').click()
-    // await new Promise((resolve) => setTimeout(resolve, 500))
-    // await screenshot('options')
-
-    // await page.locator('#tempDisabled').click()
-    // await new Promise((resolve) => setTimeout(resolve, 250))
+    await worker.evaluate('chrome.runtime.openOptionsPage();')
+    const options = await getPage(browser, 'options.html')
+    console.log('options:', options)
+    await options.waitForNetworkIdle()
+    // const innerHeight = await options.evaluate('window.innerHeight')
+    // console.log('innerHeight:', innerHeight)
+    await options.screenshot(ssOptions('options'))
 
     const [fileChooser] = await Promise.all([
-        page.waitForFileChooser(),
-        page.click('#import-hosts'),
+        options.waitForFileChooser(),
+        options.click('#import-hosts'),
     ])
     await fileChooser.accept(['./tests/secrets.txt'])
-    await scrollPage(page)
-    await screenshot('options')
+    await scrollPage(options)
+    await options.screenshot(ssOptions('import'))
 
-    await page.locator('[title="Delete"]').click()
-    // await page.evaluate((selector) => {
+    await options.locator('[title="Delete"]').click()
+    // await options.evaluate((selector) => {
     //     document.querySelectorAll(selector)[1].click()
     // }, 'a[title="Delete"]')
-    await new Promise((resolve) => setTimeout(resolve, 250))
-    await screenshot('delete')
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    await options.screenshot(ssOptions('delete'))
 
-    await page.locator('#confirm-delete').click()
-    await new Promise((resolve) => setTimeout(resolve, 250))
-    await screenshot('delete-confirm')
+    await options.locator('#confirm-delete').click()
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    await options.screenshot(ssOptions('delete-confirm'))
 
-    await page.locator('[title="Edit"]').click()
-    await new Promise((resolve) => setTimeout(resolve, 250))
-    await screenshot('edit')
+    await options.locator('[title="Edit"]').click()
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    await options.screenshot(ssOptions('edit'))
 
-    await page.locator('#username').fill('success')
-    await page.keyboard.press('Enter')
-    await new Promise((resolve) => setTimeout(resolve, 250))
-    await screenshot('edit-save')
+    await options.locator('#username').fill('success')
+    await options.keyboard.press('Enter')
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    await options.screenshot(ssOptions('edit-save'))
 
     // Auth
     // TODO: Open Bug as this throws `Error: net::ERR_ABORTED`
@@ -145,6 +137,5 @@ async function getPage(name, log, size) {
     // await page.waitForNavigation()
     // await screenshot('auth')
 
-    await page.close()
     await browser.close()
 })()
