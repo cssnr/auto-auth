@@ -137,9 +137,15 @@ async function getPage(browser, name, size) {
     await new Promise((resolve) => setTimeout(resolve, 500))
     await options.screenshot(ssOptions('edit-save'))
 
+    // Page
+    const page = await browser.newPage()
+    await page.emulateMediaFeatures([
+        { name: 'prefers-color-scheme', value: 'dark' },
+    ])
+    page.on('console', (msg) => console.log(`console:`, msg.text()))
+    console.log('page:', page)
+
     // Auth
-    let page = await browser.newPage()
-    console.log('saved:', page)
     try {
         // Intercepting auth throws `Error: net::ERR_ABORTED`
         await page.goto('https://authenticationtest.com/HTTPAuth/')
@@ -147,8 +153,6 @@ async function getPage(browser, name, size) {
     await page.waitForNetworkIdle()
     await page.screenshot(ssOptions('success'))
 
-    page = await browser.newPage()
-    console.log('page:', page)
     try {
         // Intercepting auth throws `Error: net::ERR_ABORTED`
         await page.goto('https://httpbin.org/basic-auth/guest/guest')
