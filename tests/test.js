@@ -143,7 +143,7 @@ async function getPage(browser, name, size) {
     try {
         // Intercepting auth throws `Error: net::ERR_ABORTED`
         await page.goto('https://authenticationtest.com/HTTPAuth/')
-    } catch (e) {}
+    } catch (e) {} // eslint-disable-line no-empty
     await page.waitForNetworkIdle()
     await page.screenshot(ssOptions('success'))
 
@@ -152,7 +152,7 @@ async function getPage(browser, name, size) {
     try {
         // Intercepting auth throws `Error: net::ERR_ABORTED`
         await page.goto('https://httpbin.org/basic-auth/guest/guest')
-    } catch (e) {}
+    } catch (e) {} // eslint-disable-line no-empty
     await page.waitForNetworkIdle()
     await page.screenshot(ssOptions('auth'))
 
