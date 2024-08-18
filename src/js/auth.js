@@ -56,6 +56,9 @@ async function domContentLoaded() {
     // console.debug('options, sites:', options, sites)
     setBackground(options)
 
+    const creds = await Hosts.get(url.host)
+    // console.log('creds:', creds)
+
     const tempSave = sessionStorage.getItem(url.host)
     if (tempSave) {
         saveCreds.checked = !!parseInt(tempSave)
@@ -64,10 +67,10 @@ async function domContentLoaded() {
     }
     if (!saveCreds.checked) {
         document.getElementById('save-session').classList.remove('d-none')
+        if (creds) {
+            document.getElementById('temp-alert').classList.remove('d-none')
+        }
     }
-
-    const creds = await Hosts.get(url.host)
-    // console.log('creds:', creds)
 
     if (creds) {
         if (creds !== 'ignored') {
@@ -159,15 +162,20 @@ async function pasteInput(event) {
     // input.value = text
 }
 
-function saveChange(event) {
+async function saveChange(event) {
     console.debug('saveChange:', event)
     // console.debug('event.currentTarget.checked:', event.currentTarget.checked)
     if (event.currentTarget.checked) {
         document.getElementById('save-session').classList.add('d-none')
         sessionStorage.setItem(url.host, '1')
+        document.getElementById('temp-alert').classList.add('d-none')
     } else {
         document.getElementById('save-session').classList.remove('d-none')
         sessionStorage.setItem(url.host, '0')
+        const creds = await Hosts.get(url.host)
+        if (creds) {
+            document.getElementById('temp-alert').classList.remove('d-none')
+        }
     }
 }
 
