@@ -14,7 +14,6 @@
 <body>
 
 <div class="container-fluid p-3">
-
     <div class="d-none grant-perms">
         <button class="btn btn-lg btn-success w-100 mb-1 grant-permissions" type="button"
                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
@@ -25,23 +24,17 @@
         <div class="alert alert-danger text-center p-1" role="alert">
             Extension requires host permissions.
         </div>
-    </div>
+    </div> <!-- grant-perms -->
 
     <div class="d-grid g-2 gap-2 has-perms">
-
-        <div id="host" class="text-center border border-2 rounded p-1">
+        <div id="hostname" class="text-center border border-2 rounded p-1">
             No Access to the Current Tab.
         </div>
-
         <a id="delete-saved" class="btn btn-outline-warning d-none">
             <i class="fa-regular fa-trash-can me-1"></i> Delete Saved Credentials</a>
-
-<!--        <a class="btn btn-primary" href="../html/panel.html">-->
-<!--            <i class="fa-regular fa-window-maximize me-1"></i> Show Extension Panel</a>-->
-
-        <hr class="mt-1">
-
     </div> <!-- d-grid -->
+
+    <hr class="">
 
     <form id="options-form" class="mb-3">
         <div class="form-check form-switch">
@@ -102,10 +95,13 @@
                 </span>
             </label>
         </div>
-    </form>
+    </form> <!-- options-form -->
+
     <a class="btn btn-outline-info w-100" href="../html/options.html">
         <i class="fa-solid fa-sliders me-1"></i> Open Options</a>
+
     <hr>
+
     <div class="d-flex justify-content-center align-items-center text-center small">
         <img src="../images/logo16.png" width="16" height="16" alt="Auto Auth" title="Auto Auth">
         <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover mx-2" rel="noopener"

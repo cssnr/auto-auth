@@ -32,7 +32,7 @@ const confirmDeleteHost = document.getElementById('delete-host')
 const deleteModal = new bootstrap.Modal('#delete-modal')
 confirmDelete.addEventListener('click', deleteHost)
 
-const hostDiv = document.getElementById('host')
+const hostnameEl = document.getElementById('hostname')
 const deleteSaved = document.getElementById('delete-saved')
 
 /**
@@ -68,20 +68,20 @@ async function initPopup() {
         const url = new URL(tab.url)
         const creds = await Hosts.get(url.host)
         if (creds) {
-            hostDiv.classList.add('border-success')
-            hostDiv.textContent = url.host
+            hostnameEl.classList.add('border-success')
+            hostnameEl.textContent = url.host
             deleteSaved.classList.remove('d-none')
             deleteSaved.dataset.value = url.host
             deleteSaved.addEventListener('click', deleteHost)
             confirmDelete.dataset.value = url.host
             confirmDeleteHost.textContent = url.host
         } else {
-            hostDiv.textContent = 'No Credentials Found for Tab.'
-            hostDiv.classList.remove('border-success')
+            hostnameEl.textContent = 'No Credentials Found for Tab.'
+            hostnameEl.classList.remove('border-success')
             deleteSaved.classList.add('d-none')
         }
     } else {
-        hostDiv.classList.add('border-danger-subtle')
+        hostnameEl.classList.add('border-danger-subtle')
     }
 }
 

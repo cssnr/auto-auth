@@ -285,7 +285,7 @@ async function onChanged(changes, namespace) {
                     createContextMenus()
                 } else {
                     console.info('Disabled contextMenu...')
-                    chrome.contextMenus.removeAll()
+                    chrome.contextMenus?.removeAll()
                 }
             }
             if (oldValue.tempDisabled !== newValue.tempDisabled) {
@@ -369,6 +369,9 @@ async function updateIcon(options) {
  * @function createContextMenus
  */
 function createContextMenus() {
+    if (!chrome.contextMenus) {
+        return console.debug('Skipping: chrome.contextMenus')
+    }
     console.debug('createContextMenus')
     chrome.contextMenus.removeAll()
     /** @type {Array[String[], String, String, String]} */

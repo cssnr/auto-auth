@@ -4,7 +4,6 @@ import { Hosts, linkClick, showHidePassword, showToast } from './export.js'
 
 const searchParams = new URLSearchParams(window.location.search)
 const url = new URL(searchParams.get('url'))
-
 document.querySelectorAll('.host').forEach((el) => (el.textContent = url.host))
 document.title = `Login for ${url.host}`
 document.getElementById('favicon').href = `${url.origin}/favicon.ico`
