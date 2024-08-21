@@ -228,20 +228,24 @@ function updateTable(data) {
  */
 async function deleteHost(event) {
     console.debug('deleteHost:', event)
-    const host = event.currentTarget?.dataset?.value
-    console.debug('host:', host)
-    const confirm = event.currentTarget?.id !== 'confirm-delete'
-    const { options } = await chrome.storage.sync.get(['options'])
-    if (options.confirmDelete && !!confirm) {
-        console.debug('Show Delete Modal')
-        confirmDelete.dataset.value = host
-        confirmDeleteHost.textContent = host
-        deleteModal.show()
-        return
+    try {
+        const host = event.currentTarget?.dataset?.value
+        console.debug('host:', host)
+        const confirm = event.currentTarget?.id !== 'confirm-delete'
+        const { options } = await chrome.storage.sync.get(['options'])
+        if (options.confirmDelete && !!confirm) {
+            console.debug('Show Delete Modal')
+            confirmDelete.dataset.value = host
+            confirmDeleteHost.textContent = host
+            deleteModal.show()
+            return
+        }
+        await Hosts.delete(host)
+        deleteModal.hide()
+        showToast(`Removed: ${host}`)
+    } catch (e) {
+        showToast(`Delete Error: ${e.message}`, 'danger')
     }
-    await Hosts.delete(host)
-    deleteModal.hide()
-    showToast(`Removed: ${host}`)
 }
 
 /**
@@ -276,31 +280,53 @@ async function editSubmit(event) {
     console.debug('editSubmit:', event)
     event.preventDefault()
     event.stopPropagation()
-    const hostname = editHostname.value.toLowerCase()
-    const username = editUsername.value
-    const password = editPassword.value
-    // console.debug('hostname ,username, password:', hostname, username, password)
-    if (
-        hostname === editHostname.dataset.original &&
-        username === editUsername.dataset.original &&
-        password === editPassword.dataset.original
-    ) {
+    try {
+        const hostname = getHost(editHostname.value)
+        const username = editUsername.value
+        const password = editPassword.value
+        // console.debug('hostname ,username, password:', hostname, username, password)
+        if (
+            hostname === editHostname.dataset.original &&
+            username === editUsername.dataset.original &&
+            password === editPassword.dataset.original
+        ) {
+            editModal.hide()
+            return showToast('No Changes Detected', 'warning')
+        }
+        // const { sites } = await chrome.storage.sync.get(['sites'])
+        // if (hostname !== editHostname.dataset.original) {
+        //     delete sites[editHostname.dataset.original]
+        // }
+        // sites[hostname] = `${username}:${password}`
+        // await chrome.storage.sync.set({ sites })
+        await Hosts.edit(
+            editHostname.dataset.original,
+            hostname,
+            `${username}:${password}`
+        )
         editModal.hide()
-        return showToast('No Changes Detected', 'warning')
+        showToast(`Updated Host: ${hostname}`, 'success')
+    } catch (e) {
+        showToast(`Error saving credentials: ${e.message}`, 'danger')
     }
-    // const { sites } = await chrome.storage.sync.get(['sites'])
-    // if (hostname !== editHostname.dataset.original) {
-    //     delete sites[editHostname.dataset.original]
-    // }
-    // sites[hostname] = `${username}:${password}`
-    // await chrome.storage.sync.set({ sites })
-    await Hosts.edit(
-        editHostname.dataset.original,
-        hostname,
-        `${username}:${password}`
-    )
-    editModal.hide()
-    showToast(`Updated Host: ${hostname}`, 'success')
+}
+
+/**
+ * @function getHost
+ * @param host
+ * @return {String}
+ */
+function getHost(host) {
+    host = host.toLowerCase().trim()
+    try {
+        const url = new URL(host)
+        return url.host
+    } catch (e) {} // eslint-disable-line no-empty
+    try {
+        const url = new URL('https://' + host)
+        return url.host
+    } catch (e) {} // eslint-disable-line no-empty
+    throw new Error('Unable to validate hostname')
 }
 
 /**
@@ -352,29 +378,39 @@ async function exportHosts(event) {
 async function hostsInputChange(event) {
     console.debug('hostsInputChange:', event, hostsInput)
     event.preventDefault()
-    const fileReader = new FileReader()
-    fileReader.onload = async function doBannedImport() {
-        const results = JSON.parse(fileReader.result.toString())
-        // console.debug('results:', results)
-        // const { sites } = await chrome.storage.sync.get(['sites'])
-        const hosts = {}
-        let count = 0
-        for (const [key, value] of Object.entries(results)) {
-            count += 1
-            if (typeof value === 'object') {
-                const { username, password } = value
-                hosts[key] = `${username}:${password}`
-            } else if (typeof value === 'string') {
-                // const [username, password] = value.split(':')
-                hosts[key] = value
+    try {
+        const fileReader = new FileReader()
+        fileReader.onload = async function doBannedImport() {
+            const results = JSON.parse(fileReader.result.toString())
+            // console.debug('results:', results)
+            // const { sites } = await chrome.storage.sync.get(['sites'])
+            const hosts = {}
+            let count = 0
+            for (const [key, value] of Object.entries(results)) {
+                try {
+                    if (typeof value === 'object') {
+                        const { username, password } = value
+                        hosts[key] = `${username}:${password}`
+                    } else if (typeof value === 'string') {
+                        // const [username, password] = value.split(':')
+                        hosts[key] = value
+                    }
+                    count += 1
+                } catch (e) {
+                    console.log(`Error processing: ${key}`, 'color: Red')
+                }
             }
+            // console.debug('hosts:', hosts)
+            // await chrome.storage.sync.set({ sites })
+            await Hosts.update(hosts)
+            const total = Object.keys(results).length
+            showToast(`Imported/Updated ${count}/${total} Hosts.`, 'success')
         }
-        // console.debug('hosts:', hosts)
-        // await chrome.storage.sync.set({ sites })
-        await Hosts.update(hosts)
-        showToast(`Imported/Updated ${count} Hosts.`, 'success')
+        fileReader.readAsText(hostsInput.files[0])
+    } catch (e) {
+        console.log('Import error:', e)
+        showToast(`Import Error: ${e.message}`, 'warning')
     }
-    fileReader.readAsText(hostsInput.files[0])
 }
 
 /**
