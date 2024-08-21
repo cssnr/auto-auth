@@ -45,10 +45,13 @@ async function onAuthRequired(details, callback) {
     // console.debug('url.host:', url.host)
 
     const hijackRequest = (failed = false) => {
-        const color = failed ? 'Yellow' : 'Lime'
+        if (details.tabId === -1) {
+            console.warn(`Unable to process tab:`, details)
+            return callback()
+        }
         console.log(
             `Cancel Request and Hijack w/ failed: %c${failed}`,
-            `color: ${color}`
+            `color: ${failed ? 'Yellow' : 'Lime'}`
         )
         const auth = new URL(chrome.runtime.getURL('/html/auth.html'))
         auth.searchParams.append('url', details.url)

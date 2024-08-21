@@ -78,7 +78,8 @@ Long-term Goals for Improved Security:
 ### Known Issues
 
 * Only allows saving 1 set of credentials per host
-* Most browsers will offer to save passwords on login and edit 
+* Most browsers will offer to save passwords on login and edit
+* Firefox: May cache a 401 and not prompt for auth, use `Ctrl+F5` or clear cache
 
 > [!TIP]
 > **Don't see your issue here?**
