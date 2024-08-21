@@ -325,16 +325,20 @@ export async function activateOrOpen(url, open = true) {
  * @function updateManifest
  */
 export function updateManifest() {
-    const manifest = chrome.runtime.getManifest()
-    document.querySelectorAll('.version').forEach((el) => {
-        el.textContent = manifest.version
-    })
-    document.querySelectorAll('[href="version_url"]').forEach((el) => {
-        el.href = `${githubURL}/releases/tag/${manifest.version}`
-    })
-    document.querySelectorAll('[href="homepage_url"]').forEach((el) => {
-        el.href = manifest.homepage_url
-    })
+    try {
+        const manifest = chrome.runtime.getManifest()
+        document.querySelectorAll('.version').forEach((el) => {
+            el.textContent = manifest.version
+        })
+        document.querySelectorAll('[href="version_url"]').forEach((el) => {
+            el.href = `${githubURL}/releases/tag/${manifest.version}`
+        })
+        document.querySelectorAll('[href="homepage_url"]').forEach((el) => {
+            el.href = manifest.homepage_url
+        })
+    } catch (e) {
+        console.log('Error updating manifest settings:', e)
+    }
 }
 
 /**

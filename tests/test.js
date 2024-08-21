@@ -91,6 +91,9 @@ async function getPage(browser, name, size) {
     const popup = await getPage(browser, 'popup.html')
     console.log('popup:', popup)
     await popup.waitForNetworkIdle()
+    console.log('innerWidth:', await popup.evaluate('window.innerWidth'))
+    console.log('innerHeight:', await popup.evaluate('window.innerHeight'))
+    console.log('userAgent:', await popup.evaluate('navigator.userAgent'))
     await popup.screenshot(ssOptions('popup'))
     await popup.locator('[href="../html/options.html"]').click()
 

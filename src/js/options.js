@@ -439,31 +439,43 @@ async function setShortcuts(selector = '#keyboard-shortcuts', action = false) {
         return console.debug('Skipping: chrome.commands')
     }
     const table = document.querySelector(selector)
+    if (!table) {
+        return console.warn(`${selector} table not found`)
+    }
     table.classList.remove('d-none')
     const tbody = table.querySelector('tbody')
     const source = table.querySelector('tfoot > tr').cloneNode(true)
     const commands = await chrome.commands.getAll()
     for (const command of commands) {
-        // console.debug('command:', command)
-        const row = source.cloneNode(true)
-        let description = command.description
-        // Note: Chrome does not parse the description for _execute_action in manifest.json
-        if (!description && command.name === '_execute_action') {
-            description = 'Show Popup Action'
+        try {
+            // console.debug('command:', command)
+            const row = source.cloneNode(true)
+            let description = command.description
+            // Note: Chrome does not parse the description for _execute_action in manifest.json
+            if (!description && command.name === '_execute_action') {
+                description = 'Show Popup Action'
+            }
+            row.querySelector('.description').textContent = description
+            row.querySelector('kbd').textContent = command.shortcut || 'Not Set'
+            tbody.appendChild(row)
+        } catch (e) {
+            console.warn('Error adding command:', command, e)
         }
-        row.querySelector('.description').textContent = description
-        row.querySelector('kbd').textContent = command.shortcut || 'Not Set'
-        tbody.appendChild(row)
     }
     if (action) {
-        const userSettings = await chrome.action.getUserSettings()
-        const row = source.cloneNode(true)
-        row.querySelector('i').className = 'fa-solid fa-puzzle-piece me-1'
-        row.querySelector('.description').textContent = 'Toolbar Icon Pinned'
-        row.querySelector('kbd').textContent = userSettings.isOnToolbar
-            ? 'Yes'
-            : 'No'
-        tbody.appendChild(row)
+        try {
+            const userSettings = await chrome.action.getUserSettings()
+            const row = source.cloneNode(true)
+            row.querySelector('i').className = 'fa-solid fa-puzzle-piece me-1'
+            row.querySelector('.description').textContent =
+                'Toolbar Icon Pinned'
+            row.querySelector('kbd').textContent = userSettings.isOnToolbar
+                ? 'Yes'
+                : 'No'
+            tbody.appendChild(row)
+        } catch (e) {
+            console.log('Error adding pinned setting:', e)
+        }
     }
 }
 
