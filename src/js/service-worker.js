@@ -1,6 +1,6 @@
 // JS Background Service Worker
 
-import { Hosts, checkPerms, showPanel } from './export.js'
+import { Hosts, checkPerms, showPanel, githubURL } from './export.js'
 
 chrome.runtime.onStartup.addListener(onStartup)
 chrome.runtime.onInstalled.addListener(onInstalled)
@@ -162,7 +162,6 @@ async function onStartup() {
  */
 async function onInstalled(details) {
     console.log('onInstalled:', details)
-    const githubURL = 'https://github.com/cssnr/auto-auth'
     // const uninstallURL = new URL('https://link-extractor.cssnr.com/uninstall/')
     const options = await setDefaultOptions({
         tempDisabled: false,
