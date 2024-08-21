@@ -14,6 +14,35 @@
 <body>
 
 <div class="container-fluid p-3">
+    <div class="d-flex flex-row align-items-center">
+        <div class="">
+            <a title="Options" href="../html/options.html"><img src="../images/logo32.png" height="32" width="32" alt="Cache Cleaner"></a>
+        </div>
+
+        <div class="flex-fill text-center">
+            <a class="link-body-emphasis text-decoration-none fs-4" title="Home Page" href="homepage_url">Auto Auth</a>
+            <span class="small">
+                <a class="link-body-emphasis text-decoration-none" title="Release Notes" href="version_url">
+                v<span class="version"></span></a>
+            </span>
+        </div>
+
+        <div class="dropdown">
+            <a class="nav-link hvr-grow" id="bd-theme-disabled" title="Theme Switcher" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i id="theme-icon" class="fa-solid fa-circle-half-stroke fa-lg" style="min-width: 20px;"></i> <i class="fa-solid fa-caret-down fa-xs mx-1"></i></a>
+            <ul class="dropdown-menu auto dropdown-menu-end" aria-labelledby="bd-theme-disabled">
+                <li><button class="dropdown-item" data-bs-theme-value="dark" aria-pressed="false">
+                    <i class="fa-regular fa-moon" style="min-width: 16px;"></i> <span class="ms-3">Dark</span></button></li>
+                <li><button class="dropdown-item" data-bs-theme-value="light" aria-pressed="false">
+                    <i class="fa-solid fa-sun" style="min-width: 16px;"></i> <span class="ms-3">Light</span></button></li>
+                <li><button class="dropdown-item" data-bs-theme-value="auto" aria-pressed="false">
+                    <i class="fa-solid fa-circle-half-stroke" style="min-width: 16px;"></i> <span class="ms-3">Auto</span></button></li>
+            </ul>
+        </div>
+    </div> <!-- d-flex -->
+
+    <hr class="my-2">
+
     <div class="d-none grant-perms">
         <button class="btn btn-lg btn-success w-100 mb-1 grant-permissions" type="button"
                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
@@ -34,7 +63,7 @@
             <i class="fa-regular fa-trash-can me-1"></i> Delete Saved Credentials</a>
     </div> <!-- d-grid -->
 
-    <hr class="">
+    <hr class="my-2">
 
     <form id="options-form" class="mb-3">
         <div class="form-check form-switch">
@@ -100,13 +129,12 @@
     <a class="btn btn-outline-info w-100" href="../html/options.html">
         <i class="fa-solid fa-sliders me-1"></i> Open Options</a>
 
-    <hr>
-
-    <div class="d-flex justify-content-center align-items-center text-center small">
-        <img src="../images/logo16.png" width="16" height="16" alt="Auto Auth" title="Auto Auth">
-        <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover mx-2" rel="noopener"
-           href="homepage_url">Auto Auth</a> v<span class="version"></span>
-    </div>
+<!--    <hr>-->
+<!--    <div class="d-flex justify-content-center align-items-center text-center small">-->
+<!--        <img src="../images/logo16.png" width="16" height="16" alt="Auto Auth" title="Auto Auth">-->
+<!--        <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover mx-2" rel="noopener"-->
+<!--           href="homepage_url">Auto Auth</a> v<span class="version"></span>-->
+<!--    </div>-->
 </div> <!-- container -->
 
 <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">
