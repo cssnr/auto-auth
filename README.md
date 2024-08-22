@@ -79,7 +79,11 @@ Long-term Goals for Improved Security:
 
 * Only allows saving 1 set of credentials per host
 * Most browsers will offer to save passwords on login and edit
-* Firefox: May cache a 401 and not prompt for auth, use `Ctrl+F5` or clear cache
+* A 401 response from a Service Worker is not properly intercepted:
+  - Firefox: Shows a generic 401 page, use `Ctrl+F5`
+    * Once credentials are saved, requests will work as normal.
+  - Chrome: Shows a default credentials prompt, Cancel and press `Ctrl+F5`
+    * This behavior may continue after saving credentials.
 
 > [!TIP]
 > **Don't see your issue here?**
