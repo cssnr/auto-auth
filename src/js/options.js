@@ -313,15 +313,18 @@ async function editSubmit(event) {
 
 /**
  * @function getHost
- * @param {String} host
+ * @param {String} hostname
  * @return {String}
  */
-function getHost(host) {
-    host = host.toLowerCase().trim()
+function getHost(hostname) {
+    let host = hostname.toLowerCase().trim()
     host = host.includes('://') ? host : 'https://' + host
     console.debug('host:', host)
     const url = new URL(host)
     console.debug('url.host:', url.host)
+    if (!url.host) {
+        throw new Error(`Invalid Hostname: ${hostname}`)
+    }
     return url.host
 }
 
