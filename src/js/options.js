@@ -313,20 +313,16 @@ async function editSubmit(event) {
 
 /**
  * @function getHost
- * @param host
+ * @param {String} host
  * @return {String}
  */
 function getHost(host) {
     host = host.toLowerCase().trim()
-    try {
-        const url = new URL(host)
-        return url.host
-    } catch (e) {} // eslint-disable-line no-empty
-    try {
-        const url = new URL('https://' + host)
-        return url.host
-    } catch (e) {} // eslint-disable-line no-empty
-    throw new Error('Unable to validate hostname')
+    host = host.includes('://') ? host : 'https://' + host
+    console.debug('host:', host)
+    const url = new URL(host)
+    console.debug('url.host:', url.host)
+    return url.host
 }
 
 /**
