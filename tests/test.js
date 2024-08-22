@@ -88,9 +88,12 @@ async function getPage(browser, name, size) {
 
     // Popup
     await worker.evaluate('chrome.action.openPopup();')
-    const popup = await getPage(browser, 'popup.html')
+    let popup = await getPage(browser, 'popup.html')
     console.log('popup:', popup)
     await popup.waitForNetworkIdle()
+    console.log('innerWidth:', await popup.evaluate('window.innerWidth'))
+    console.log('innerHeight:', await popup.evaluate('window.innerHeight'))
+    console.log('userAgent:', await popup.evaluate('navigator.userAgent'))
     await popup.screenshot(ssOptions('popup'))
     await popup.locator('[href="../html/options.html"]').click()
 
@@ -152,6 +155,12 @@ async function getPage(browser, name, size) {
     } catch (e) {} // eslint-disable-line no-empty
     await page.waitForNetworkIdle()
     await page.screenshot(ssOptions('success'))
+
+    await worker.evaluate('chrome.action.openPopup();')
+    popup = await getPage(browser, 'popup.html')
+    console.log('popup:', popup)
+    await popup.waitForNetworkIdle()
+    await popup.screenshot(ssOptions('popup'))
 
     try {
         // Intercepting auth throws: Error: net::ERR_ABORTED

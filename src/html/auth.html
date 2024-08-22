@@ -13,20 +13,18 @@
 </head>
 <body>
 
-<video id="bgvid" class="d-none" playsinline autoplay muted loop></video>
+<video class="d-none" playsinline autoplay muted loop></video>
 
 <div class="container-fluid pt-3 px-0 px-sm-4">
 <div id="auth-outer" class="rounded rounded-4 w-100 mx-auto mb-4 p-3">
 
-    <p class="text-center fs-4 mb-1">
-        <kbd class="ms-2 host clip" role="button" data-clipboard-target=".host" data-toast="Host Copied"></kbd>
-    </p>
-    <p class="text-center mb-1">
-        <i class="fa-regular fa-copy clip me-2" role="button" data-clipboard-target="#link" data-toast="URL Copied">
+    <div class="text-center fs-4"><kbd class="d-inline-block host" role="button" data-clipboard-target=".host" data-toast="Host Copied"></kbd></div>
+    <div class="text-center mb-2">
+        <i class="fa-regular fa-copy me-2" role="button" data-clipboard-target="#link" data-toast="URL Copied">
         </i><a id="link" href="" target="_blank" rel="noopener">url</a>
-    </p>
+    </div>
 
-    <div id="fail" class="alert alert-warning text-center my-2 d-none" role="alert">
+    <div id="fail" class="alert alert-warning text-center p-2 mb-2 d-none" role="alert">
         <b>Authentication Failed.</b> Please Try Again...
     </div>
 
@@ -93,35 +91,36 @@
     </form> <!-- auth-form -->
 
     <hr>
+
     <div class="text-center">
         <a class="link-body-emphasis text-decoration-none d-inline-block" href="../html/options.html">Open Options</a>
         <span class="mx-2">&bull;</span>
         <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
-           href="https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme">Get Support</a>
+           href="https://github.com/cssnr/auto-auth?tab=readme-ov-file#support">Get Support</a>
     </div>
 
 </div> <!-- auth-outer -->
-</div> <!-- container -->
+</div> <!-- container-fluid -->
 
 <div class="modal fade" id="ignore-modal" tabindex="-1" aria-labelledby="ignore-modal-label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="ignore-modal-label">Confirm Ignore Host</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"></button>
-            </div>
-            <div class="modal-body">
-                <p>Ignore host and remove any saved credentials?</p>
-                <p class="text-center"><kbd class="ms-2 host"></kbd></p>
-                <p class="mb-0">Ignored hosts can be removed from the <a href="../html/options.html">Options Page</a>.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning me-auto" id="ignore-host">Confirm Ignore</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            </div>
-        </div>
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="ignore-modal-label">Confirm Ignore Host</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"></button>
     </div>
-</div><!-- ignore-modal -->
+    <div class="modal-body">
+        <p>Ignore host and remove any saved credentials?</p>
+        <p class="text-center"><kbd class="ms-2 host"></kbd></p>
+        <p class="mb-0">Ignored hosts can be removed from the <a href="../html/options.html">Options Page</a>.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning me-auto" id="ignore-host">Confirm Ignore</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</div> <!-- modal-content -->
+</div> <!-- modal-dialog -->
+</div> <!-- ignore-modal -->
 
 <button type="button" class="btn btn-outline-primary" id="back-to-top">
     <i class="fa-regular fa-square-caret-up"></i>

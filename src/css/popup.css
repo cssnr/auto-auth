@@ -3,9 +3,13 @@
 body {
     min-width: 340px;
     width: 100%;
+    max-width: 100vw;
     overflow-x: hidden;
 }
 
-input::placeholder {
-    text-align: center;
+#hostname {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

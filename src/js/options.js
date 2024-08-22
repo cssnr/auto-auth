@@ -96,8 +96,8 @@ async function initOptions() {
     console.debug('initOptions')
 
     updateManifest()
-    await setShortcuts()
-    await checkPerms()
+    setShortcuts('#keyboard-shortcuts', true).then()
+    checkPerms().then()
 
     // const { options, sites } = await chrome.storage.sync.get([
     //     'options',
@@ -107,6 +107,7 @@ async function initOptions() {
     const { options } = await chrome.storage.sync.get(['options'])
     updateOptions(options)
     backgroundChange(options.radioBackground)
+
     const hosts = await Hosts.all()
     // console.debug('hosts:', hosts)
     updateTable(hosts)
@@ -227,20 +228,24 @@ function updateTable(data) {
  */
 async function deleteHost(event) {
     console.debug('deleteHost:', event)
-    const host = event.currentTarget?.dataset?.value
-    console.debug('host:', host)
-    const confirm = event.currentTarget?.id !== 'confirm-delete'
-    const { options } = await chrome.storage.sync.get(['options'])
-    if (options.confirmDelete && !!confirm) {
-        console.debug('Show Delete Modal')
-        confirmDelete.dataset.value = host
-        confirmDeleteHost.textContent = host
-        deleteModal.show()
-        return
+    try {
+        const host = event.currentTarget?.dataset?.value
+        console.debug('host:', host)
+        const confirm = event.currentTarget?.id !== 'confirm-delete'
+        const { options } = await chrome.storage.sync.get(['options'])
+        if (options.confirmDelete && !!confirm) {
+            console.debug('Show Delete Modal')
+            confirmDelete.dataset.value = host
+            confirmDeleteHost.textContent = host
+            deleteModal.show()
+            return
+        }
+        await Hosts.delete(host)
+        deleteModal.hide()
+        showToast(`Removed: ${host}`)
+    } catch (e) {
+        showToast(`Delete Error: ${e.message}`, 'danger')
     }
-    await Hosts.delete(host)
-    deleteModal.hide()
-    showToast(`Removed: ${host}`)
 }
 
 /**
@@ -275,31 +280,52 @@ async function editSubmit(event) {
     console.debug('editSubmit:', event)
     event.preventDefault()
     event.stopPropagation()
-    const hostname = editHostname.value.toLowerCase()
-    const username = editUsername.value
-    const password = editPassword.value
-    // console.debug('hostname ,username, password:', hostname, username, password)
-    if (
-        hostname === editHostname.dataset.original &&
-        username === editUsername.dataset.original &&
-        password === editPassword.dataset.original
-    ) {
+    try {
+        const hostname = getHost(editHostname.value)
+        const username = editUsername.value
+        const password = editPassword.value
+        // console.debug('hostname ,username, password:', hostname, username, password)
+        if (
+            hostname === editHostname.dataset.original &&
+            username === editUsername.dataset.original &&
+            password === editPassword.dataset.original
+        ) {
+            editModal.hide()
+            return showToast('No Changes Detected', 'warning')
+        }
+        // const { sites } = await chrome.storage.sync.get(['sites'])
+        // if (hostname !== editHostname.dataset.original) {
+        //     delete sites[editHostname.dataset.original]
+        // }
+        // sites[hostname] = `${username}:${password}`
+        // await chrome.storage.sync.set({ sites })
+        await Hosts.edit(
+            editHostname.dataset.original,
+            hostname,
+            `${username}:${password}`
+        )
         editModal.hide()
-        return showToast('No Changes Detected', 'warning')
+        showToast(`Updated Host: ${hostname}`, 'success')
+    } catch (e) {
+        showToast(`Error saving credentials: ${e.message}`, 'danger')
     }
-    // const { sites } = await chrome.storage.sync.get(['sites'])
-    // if (hostname !== editHostname.dataset.original) {
-    //     delete sites[editHostname.dataset.original]
-    // }
-    // sites[hostname] = `${username}:${password}`
-    // await chrome.storage.sync.set({ sites })
-    await Hosts.edit(
-        editHostname.dataset.original,
-        hostname,
-        `${username}:${password}`
-    )
-    editModal.hide()
-    showToast(`Updated Host: ${hostname}`, 'success')
+}
+
+/**
+ * @function getHost
+ * @param {String} hostname
+ * @return {String}
+ */
+function getHost(hostname) {
+    let host = hostname.toLowerCase().trim()
+    host = host.includes('://') ? host : 'https://' + host
+    console.debug('host:', host)
+    const url = new URL(host)
+    console.debug('url.host:', url.host)
+    if (!url.host) {
+        throw new Error(`Invalid Hostname: ${hostname}`)
+    }
+    return url.host
 }
 
 /**
@@ -351,29 +377,39 @@ async function exportHosts(event) {
 async function hostsInputChange(event) {
     console.debug('hostsInputChange:', event, hostsInput)
     event.preventDefault()
-    const fileReader = new FileReader()
-    fileReader.onload = async function doBannedImport() {
-        const results = JSON.parse(fileReader.result.toString())
-        // console.debug('results:', results)
-        // const { sites } = await chrome.storage.sync.get(['sites'])
-        const hosts = {}
-        let count = 0
-        for (const [key, value] of Object.entries(results)) {
-            count += 1
-            if (typeof value === 'object') {
-                const { username, password } = value
-                hosts[key] = `${username}:${password}`
-            } else if (typeof value === 'string') {
-                // const [username, password] = value.split(':')
-                hosts[key] = value
+    try {
+        const fileReader = new FileReader()
+        fileReader.onload = async function doBannedImport() {
+            const results = JSON.parse(fileReader.result.toString())
+            // console.debug('results:', results)
+            // const { sites } = await chrome.storage.sync.get(['sites'])
+            const hosts = {}
+            let count = 0
+            for (const [key, value] of Object.entries(results)) {
+                try {
+                    if (typeof value === 'object') {
+                        const { username, password } = value
+                        hosts[key] = `${username}:${password}`
+                    } else if (typeof value === 'string') {
+                        // const [username, password] = value.split(':')
+                        hosts[key] = value
+                    }
+                    count += 1
+                } catch (e) {
+                    console.log(`Error processing: ${key}`, 'color: Red')
+                }
             }
+            // console.debug('hosts:', hosts)
+            // await chrome.storage.sync.set({ sites })
+            await Hosts.update(hosts)
+            const total = Object.keys(results).length
+            showToast(`Imported/Updated ${count}/${total} Hosts.`, 'success')
         }
-        // console.debug('hosts:', hosts)
-        // await chrome.storage.sync.set({ sites })
-        await Hosts.update(hosts)
-        showToast(`Imported/Updated ${count} Hosts.`, 'success')
+        fileReader.readAsText(hostsInput.files[0])
+    } catch (e) {
+        console.log('Import error:', e)
+        showToast(`Import Error: ${e.message}`, 'warning')
     }
-    fileReader.readAsText(hostsInput.files[0])
 }
 
 /**
@@ -430,27 +466,51 @@ async function onChanged(changes, namespace) {
 /**
  * Set Keyboard Shortcuts
  * @function setShortcuts
- * @param {String} selector
+ * @param {String} [selector]
+ * @param {Boolean} [action]
  */
-async function setShortcuts(selector = '#keyboard-shortcuts') {
+async function setShortcuts(selector = '#keyboard-shortcuts', action = false) {
     if (!chrome.commands) {
         return console.debug('Skipping: chrome.commands')
     }
     const table = document.querySelector(selector)
+    if (!table) {
+        return console.warn(`${selector} table not found`)
+    }
+    table.classList.remove('d-none')
     const tbody = table.querySelector('tbody')
     const source = table.querySelector('tfoot > tr').cloneNode(true)
     const commands = await chrome.commands.getAll()
     for (const command of commands) {
-        // console.debug('command:', command)
-        const row = source.cloneNode(true)
-        // TODO: Chrome does not parse the description for _execute_action in manifest.json
-        let description = command.description
-        if (!description && command.name === '_execute_action') {
-            description = 'Show Popup'
+        try {
+            // console.debug('command:', command)
+            const row = source.cloneNode(true)
+            let description = command.description
+            // Note: Chrome does not parse the description for _execute_action in manifest.json
+            if (!description && command.name === '_execute_action') {
+                description = 'Show Popup Action'
+            }
+            row.querySelector('.description').textContent = description
+            row.querySelector('kbd').textContent = command.shortcut || 'Not Set'
+            tbody.appendChild(row)
+        } catch (e) {
+            console.warn('Error adding command:', command, e)
         }
-        row.querySelector('.description').textContent = description
-        row.querySelector('kbd').textContent = command.shortcut || 'Not Set'
-        tbody.appendChild(row)
+    }
+    if (action) {
+        try {
+            const userSettings = await chrome.action.getUserSettings()
+            const row = source.cloneNode(true)
+            row.querySelector('i').className = 'fa-solid fa-puzzle-piece me-1'
+            row.querySelector('.description').textContent =
+                'Toolbar Icon Pinned'
+            row.querySelector('kbd').textContent = userSettings.isOnToolbar
+                ? 'Yes'
+                : 'No'
+            tbody.appendChild(row)
+        } catch (e) {
+            console.log('Error adding pinned setting:', e)
+        }
     }
 }
 

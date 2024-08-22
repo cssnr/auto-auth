@@ -55,6 +55,14 @@
         })
     }
 
+    window.addEventListener('storage', (event) => {
+        // console.log('storage:', event)
+        if (event.key === 'theme') {
+            setTheme(event.newValue)
+            showActiveTheme(event.newValue)
+        }
+    })
+
     window
         .matchMedia('(prefers-color-scheme: dark)')
         .addEventListener('change', () => {

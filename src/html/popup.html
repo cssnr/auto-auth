@@ -14,6 +14,34 @@
 <body>
 
 <div class="container-fluid p-3">
+    <div class="d-flex flex-row align-items-center">
+        <div class="">
+            <a title="Options" href="../html/options.html"><img src="../images/logo32.png" height="32" width="32" alt="Auto Auth"></a>
+        </div>
+
+        <div class="flex-fill text-center">
+            <a class="link-body-emphasis text-decoration-none fs-4" title="Home Page" href="homepage_url">Auto Auth</a>
+            <span class="small">
+                <a class="link-body-emphasis text-decoration-none" title="Release Notes" href="version_url">
+                v<span class="version"></span></a>
+            </span>
+        </div>
+
+        <div class="dropdown">
+            <a class="nav-link hvr-grow" id="bd-theme-disabled" title="Theme Switcher" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i id="theme-icon" class="fa-solid fa-circle-half-stroke fa-lg" style="min-width: 20px;"></i> <i class="fa-solid fa-caret-down fa-xs mx-1"></i></a>
+            <ul class="dropdown-menu auto dropdown-menu-end" aria-labelledby="bd-theme-disabled">
+                <li><button class="dropdown-item" data-bs-theme-value="dark" aria-pressed="false">
+                    <i class="fa-regular fa-moon" style="min-width: 16px;"></i> <span class="ms-3">Dark</span></button></li>
+                <li><button class="dropdown-item" data-bs-theme-value="light" aria-pressed="false">
+                    <i class="fa-solid fa-sun" style="min-width: 16px;"></i> <span class="ms-3">Light</span></button></li>
+                <li><button class="dropdown-item" data-bs-theme-value="auto" aria-pressed="false">
+                    <i class="fa-solid fa-circle-half-stroke" style="min-width: 16px;"></i> <span class="ms-3">Auto</span></button></li>
+            </ul>
+        </div>
+    </div> <!-- d-flex -->
+
+    <hr class="mt-2">
 
     <div class="d-none grant-perms">
         <button class="btn btn-lg btn-success w-100 mb-1 grant-permissions" type="button"
@@ -25,23 +53,17 @@
         <div class="alert alert-danger text-center p-1" role="alert">
             Extension requires host permissions.
         </div>
-    </div>
+    </div> <!-- grant-perms -->
 
-    <div class="d-grid g-2 gap-2 has-perms">
-
-        <div id="host" class="text-center border border-2 rounded p-1">
+    <div class="d-grid g-2 gap-2 mb-3 has-perms">
+        <div id="hostname" class="text-center border border-2 rounded p-1">
             No Access to the Current Tab.
         </div>
-
         <a id="delete-saved" class="btn btn-outline-warning d-none">
             <i class="fa-regular fa-trash-can me-1"></i> Delete Saved Credentials</a>
-
-<!--        <a class="btn btn-primary" href="../html/panel.html">-->
-<!--            <i class="fa-regular fa-window-maximize me-1"></i> Show Extension Panel</a>-->
-
-        <hr class="mt-1">
-
     </div> <!-- d-grid -->
+
+<!--    <hr class="my-2">-->
 
     <form id="options-form" class="mb-3">
         <div class="form-check form-switch">
@@ -49,10 +71,10 @@
                    data-warning="text-danger-emphasis" data-related="disableWarning">
             <label class="form-check-label" for="tempDisabled" aria-describedby="tempDisabledHelp">
                 Temporarily Disable
-                <span data-bs-toggle="tooltip" data-bs-title="Temporarily Disable the Extension for Debugging.">
-                    <i class="fa-solid fa-circle-info ms-1"></i>
-                </span>
             </label>
+            <span data-bs-toggle="tooltip" data-bs-title="Temporarily Disable the Extension for Debugging.">
+                <i class="fa-solid fa-circle-info ms-1"></i>
+            </span>
         </div>
         <div id="disableWarning" class="alert alert-warning text-center mt-2 p-1" role="alert" style="display: none;">
             Extension is currently disabled!
@@ -61,56 +83,58 @@
             <input class="form-check-input" id="ignoreProxy" type="checkbox" role="switch">
             <label class="form-check-label" for="ignoreProxy" aria-describedby="ignoreProxyHelp">
                 Ignore Proxy Authentication
-                <span data-bs-toggle="tooltip" data-bs-title="Ignore HTTP 407 Proxy Auth Required Responses.">
-                    <i class="fa-solid fa-circle-info ms-1"></i>
-                </span>
             </label>
+            <span data-bs-toggle="tooltip" data-bs-title="Ignore HTTP 407 Proxy Auth Required Responses.">
+                <i class="fa-solid fa-circle-info ms-1"></i>
+            </span>
         </div>
         <div class="form-check form-switch">
             <input class="form-check-input" id="defaultSave" type="checkbox" role="switch">
             <label class="form-check-label" for="defaultSave" aria-describedby="defaultSaveHelp">
                 Save Authentication by Default
-                <span data-bs-toggle="tooltip" data-bs-title="Save Login Enabled by Default.">
-                    <i class="fa-solid fa-circle-info ms-1"></i>
-                </span>
             </label>
+            <span data-bs-toggle="tooltip" data-bs-title="Save Login Enabled by Default.">
+                <i class="fa-solid fa-circle-info ms-1"></i>
+            </span>
         </div>
         <div class="form-check form-switch">
             <input class="form-check-input" id="confirmDelete" type="checkbox" role="switch">
             <label class="form-check-label" for="confirmDelete" aria-describedby="confirmDeleteHelp">
                 Show Confirmation on Delete
-                <span data-bs-toggle="tooltip" data-bs-title="Show Confirmation Dialog on Delete.">
-                    <i class="fa-solid fa-circle-info ms-1"></i>
-                </span>
             </label>
+            <span data-bs-toggle="tooltip" data-bs-title="Show Confirmation Dialog on Delete.">
+                <i class="fa-solid fa-circle-info ms-1"></i>
+            </span>
         </div>
         <div class="form-check form-switch">
             <input class="form-check-input" id="contextMenu" type="checkbox" role="switch">
             <label class="form-check-label" for="contextMenu" aria-describedby="contextMenuHelp">
                 Enable Right Click Menu
-                <span data-bs-toggle="tooltip" data-bs-title="Show Context Menu on Right Click.">
-                    <i class="fa-solid fa-circle-info ms-1"></i>
-                </span>
             </label>
+            <span data-bs-toggle="tooltip" data-bs-title="Show Context Menu on Right Click.">
+                <i class="fa-solid fa-circle-info ms-1"></i>
+            </span>
         </div>
         <div class="form-check form-switch">
             <input class="form-check-input" id="showUpdate" type="checkbox" role="switch">
             <label class="form-check-label" for="showUpdate" aria-describedby="showUpdateHelp">
                 Show Release Notes on Update
-                <span data-bs-toggle="tooltip" data-bs-title="Show Release Notes on Version Update.">
-                    <i class="fa-solid fa-circle-info ms-1"></i>
-                </span>
             </label>
+            <span data-bs-toggle="tooltip" data-bs-title="Show Release Notes on Version Update.">
+                <i class="fa-solid fa-circle-info ms-1"></i>
+            </span>
         </div>
-    </form>
+    </form> <!-- options-form -->
+
     <a class="btn btn-outline-info w-100" href="../html/options.html">
         <i class="fa-solid fa-sliders me-1"></i> Open Options</a>
-    <hr>
-    <div class="d-flex justify-content-center align-items-center text-center small">
-        <img src="../images/logo16.png" width="16" height="16" alt="Auto Auth" title="Auto Auth">
-        <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover mx-2" rel="noopener"
-           href="homepage_url">Auto Auth</a> v<span class="version"></span>
-    </div>
+
+<!--    <hr>-->
+<!--    <div class="d-flex justify-content-center align-items-center text-center small">-->
+<!--        <img src="../images/logo16.png" width="16" height="16" alt="Auto Auth" title="Auto Auth">-->
+<!--        <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover mx-2" rel="noopener"-->
+<!--           href="homepage_url">Auto Auth</a> v<span class="version"></span>-->
+<!--    </div>-->
 </div> <!-- container -->
 
 <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">

@@ -78,7 +78,12 @@ Long-term Goals for Improved Security:
 ### Known Issues
 
 * Only allows saving 1 set of credentials per host
-* Most browsers will offer to save passwords on login and edit 
+* Most browsers will offer to save passwords on login and edit
+* A 401 response from a Service Worker is not properly intercepted:
+  - Firefox: Shows a generic 401 page, use `Ctrl+F5`
+    * Once credentials are saved, requests will work as normal.
+  - Chrome: Shows a default credentials prompt, Cancel and press `Ctrl+F5`
+    * This behavior may continue after saving credentials.
 
 > [!TIP]
 > **Don't see your issue here?**
@@ -126,13 +131,13 @@ If there is enough popularity/requests for these features, there are a couple op
 
 ## Support
 
-For help using the web extension, utilize any these resources:
+For help using the web extension, see:
 
 - Documentation: https://auto-auth.cssnr.com/docs/
 - Q&A Discussion: https://github.com/cssnr/auto-auth/discussions/categories/q-a
 - Request a Feature: https://github.com/cssnr/auto-auth/discussions/categories/feature-requests
 
-If you are experiencing an issue/bug or getting unexpected results, use:
+If you are experiencing an issue/bug or getting unexpected results, you can:
 
 - Report an Issue: https://github.com/cssnr/auto-auth/issues
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
