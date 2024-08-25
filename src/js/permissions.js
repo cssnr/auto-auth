@@ -25,8 +25,8 @@ document
  */
 async function domContentLoaded() {
     console.debug('domContentLoaded')
-    updateManifest()
-    await checkPerms()
+    void updateManifest()
+    void checkPerms()
 }
 
 /**

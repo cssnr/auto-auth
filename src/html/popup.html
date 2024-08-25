@@ -49,20 +49,28 @@
         <button class="btn btn-lg btn-success w-100 mb-1 grant-permissions" type="button"
                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
                 data-bs-title="This Extension Requires Host Permissions to Function.">
-            <i class="fa-solid fa-check-double me-1"></i> Grant Host Permissions</button>
-        <p class="text-center"><a href="../html/permissions.html" class="">
-            More Information on Permissions</a></p>
+            <i class="fa-solid fa-check-double me-1"></i>
+            Grant Host Permissions
+        </button>
+        <p class="text-center">
+            <a href="../html/permissions.html" class="">More Information on Permissions</a>
+        </p>
         <div class="alert alert-danger text-center p-1" role="alert">
             Extension requires host permissions.
         </div>
     </div> <!-- grant-perms -->
 
     <div class="d-grid g-2 gap-2 mb-3 has-perms">
-        <div id="hostname" class="text-center border border-2 rounded p-1">
+        <div id="hostname" class="text-center border border-2 rounded text-ellipsis p-1">
             No Access to the Current Tab.
         </div>
-        <a id="delete-saved" class="btn btn-outline-warning d-none">
-            <i class="fa-regular fa-trash-can me-1"></i> Delete Saved Credentials</a>
+        <button id="delete-saved" class="btn btn-outline-warning d-none">
+            <i class="fa-regular fa-trash-can me-1"></i>
+            Delete Saved Credentials
+        </button>
+        <div id="username" class="text-center text-ellipsis d-none">
+            Username: <span class="fw-bold text-success-emphasis"></span>
+        </div>
     </div> <!-- d-grid -->
 
 <!--    <hr class="my-2">-->

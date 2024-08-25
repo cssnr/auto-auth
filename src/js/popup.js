@@ -34,6 +34,7 @@ confirmDelete.addEventListener('click', deleteHost)
 
 const hostnameEl = document.getElementById('hostname')
 const deleteSaved = document.getElementById('delete-saved')
+const usernameEl = document.getElementById('username')
 
 /**
  * Initialize Popup
@@ -41,24 +42,15 @@ const deleteSaved = document.getElementById('delete-saved')
  */
 async function initPopup() {
     console.debug('initPopup')
-    updateManifest()
-
-    // const { options, sites } = await chrome.storage.sync.get([
-    //     'options',
-    //     'sites',
-    // ])
-    // console.debug('options, sites:', options, sites)
-    const { options } = await chrome.storage.sync.get(['options'])
-    updateOptions(options)
-
+    void updateManifest()
+    checkPerms().then((hasPerms) => {
+        if (!hasPerms) console.log('%cMissing Host Permissions', 'color: Red')
+    })
+    chrome.storage.sync
+        .get(['options'])
+        .then((items) => updateOptions(items.options))
     if (chrome.runtime.lastError) {
         showToast(chrome.runtime.lastError.message, 'warning')
-    }
-
-    // Check Host Permissions
-    const hasPerms = await checkPerms()
-    if (!hasPerms) {
-        console.log('%cMissing Host Permissions', 'color: Red')
     }
 
     // Check Tab Permissions
@@ -73,11 +65,12 @@ async function initPopup() {
             deleteSaved.classList.remove('d-none')
             deleteSaved.dataset.value = url.host
             deleteSaved.addEventListener('click', deleteHost)
+            usernameEl.querySelector('span').textContent = creds.split(':')[0]
+            usernameEl.classList.remove('d-none')
             confirmDelete.dataset.value = url.host
             confirmDeleteHost.textContent = url.host
         } else {
             hostnameEl.textContent = 'No Credentials Found for Tab.'
-            hostnameEl.classList.remove('border-success')
             deleteSaved.classList.add('d-none')
         }
     } else {

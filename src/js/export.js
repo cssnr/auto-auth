@@ -301,7 +301,7 @@ export async function linkClick(event, close = false) {
  * @function activateOrOpen
  * @param {String} url
  * @param {Boolean} [open]
- * @return {Promise<Boolean>}
+ * @return {Promise<chrome.tabs.Tab>}
  */
 export async function activateOrOpen(url, open = true) {
     console.debug('activateOrOpen:', url)
@@ -324,7 +324,7 @@ export async function activateOrOpen(url, open = true) {
  * Update DOM with Manifest Details
  * @function updateManifest
  */
-export function updateManifest() {
+export async function updateManifest() {
     try {
         const manifest = chrome.runtime.getManifest()
         document.querySelectorAll('.version').forEach((el) => {
