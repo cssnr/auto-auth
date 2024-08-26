@@ -25,6 +25,9 @@ Features.
     - [Known Issues](#Known-Issues)
 * [Configuration](#Configuration)
 * [Migration](#Migration)
+  -  [AutoAuth](#AutoAuth)
+  -  [Basic Authentication](#Basic-Authentication)
+  -  [Other or Manual](#Other-or-Manual)
 * [Security](#Security)
 * [Support](#Support)
 * [Development](#Development)
@@ -100,8 +103,9 @@ You can also access `Options` through the right-click context menu (enabled by d
 
 ## Migration
 
-Migration Guides from Other Web Extensions. If your extension is not explicitly listed here, it may not work. Feel free
-to [request a migration](https://github.com/cssnr/auto-auth/discussions/categories/feature-requests) to be added.
+Migration Guides from Other Web Extensions and manual import instructions.
+
+[AutoAuth](#AutoAuth) | [Basic Authentication](#Basic-Authentication) | [Other or Manual](#Other-or-Manual)
 
 ### AutoAuth
 
@@ -111,9 +115,9 @@ Firefox: Migration from: [steffanschlein/AutoAuth/](https://github.com/steffansc
 2. Find AutoAuth, click the 3 dots, then click Options
 3. Open Developer Tools `Ctrl+Shift+I` and go to Console tab
 4. Enter the following code: `await browser.storage.local.get()`
-5. Right-click on the resulting output and choose **Copy Object**
-6. Go to the Options Page (for this extension) and click Import Text
-7. Paste the copied text into the textarea and click Import
+5. Right-click on the resulting output and choose `Copy Object`
+6. Go to the Options Page (for this extension) and click `Import Text`
+7. Paste the copied text into the textarea and click `Import`
 
 ### Basic Authentication
 
@@ -123,13 +127,30 @@ from: [Basic Authentication](https://chromewebstore.google.com/detail/nanfgbiblb
 1. Go To this URL: `chrome-extension://nanfgbiblbcagfodkfeinbbhijihckml/options.html`
 2. Open Developer Tools `Ctrl+Shift+I` and go to Console tab
 3. Enter the following code: `await chrome.storage.local.get()`
-4. Right-click on the resulting output and choose **Copy Object**
-5. Go to the Options Page (for this extension) and click Import Text
-6. Paste the copied text into the textarea and click Import
+4. Right-click on the resulting output and choose `Copy Object`
+5. Go to the Options Page (for this extension) and click `Import Text`
+6. Paste the copied text into the textarea and click `Import`
 
 Note: Basic Authentication uses url match patterns vs hostnames. This import will attempt to parse the match pattern to
 a hostname; however, if the full hostname is not provided, may not import correctly. You can always edit the credentials
 manually or save new ones on the next login.
+
+### Other or Manual
+
+To manually migrate from other data exports you need to convert the data into a compatible JSON format.
+You can do this yourself, or get ChatGPT to convert the data for you. Convert the data to this JSON format:
+
+```json
+{
+    "example.com": "username:password",
+    "ignored.example.com": "ignored"
+}
+```
+
+To import the data, visit the extension's Options Page, click `Import Text` and paste the JSON text.
+
+You can also [request a migration](https://github.com/cssnr/auto-auth/discussions/categories/feature-requests) be added
+for your extension. If it is popular enough, it might get added.
 
 ## Security
 
