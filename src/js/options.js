@@ -391,7 +391,7 @@ async function importText(event) {
     }
     try {
         const data = JSON.parse(importTextarea.value)
-        console.debug('data:', data)
+        // console.debug('data:', data)
         await importCredentials(data)
         importModal.hide()
         importTextarea.value = ''
@@ -416,7 +416,7 @@ async function hostsInputChange(event) {
         const file = event.target.files.item(0)
         const text = await file.text()
         const data = JSON.parse(text)
-        console.debug('data:', data)
+        // console.debug('data:', data)
         await importCredentials(data)
     } catch (e) {
         console.log('Import error:', e)
@@ -430,14 +430,16 @@ async function hostsInputChange(event) {
  * @param {Object} data
  */
 async function importCredentials(data) {
-    console.debug('performImport:', data)
+    console.debug('importCredentials')
     const hosts = {}
     let count = 0
+    let total
     if ('credentialsArray' in data) {
-        // Basic Authentication
+        // Basic Authentication (nanfgbiblbcagfodkfeinbbhijihckml)
+        total = data.credentialsArray.length
         for (const item of data.credentialsArray) {
             try {
-                console.debug('item:', item)
+                // console.debug('item:', item)
                 const key = getHost(item.url)
                 hosts[key] = `${item.login}:${item.password}`
                 count += 1
@@ -446,16 +448,25 @@ async function importCredentials(data) {
             }
         }
     } else {
+        total = Object.keys(data).length
         for (const [key, value] of Object.entries(data)) {
-            console.debug(`${key}:`, value)
+            // console.debug(`${key}:`, value)
             try {
                 if (typeof value === 'object') {
-                    // AutoAuth
+                    // AutoAuth (steffanschlein)
                     const { username, password } = value
+                    if (!username || !password) {
+                        console.debug(`${key}: missing username or password`)
+                        continue
+                    }
                     hosts[key] = `${username}:${password}`
                 } else if (typeof value === 'string') {
                     // Auto Auth (this extension)
-                    // const [username, password] = value.split(':')
+                    const [username, password] = value.split(':')
+                    if (value !== 'ignored' && (!username || !password)) {
+                        console.debug(`${key}: missing username or password`)
+                        continue
+                    }
                     hosts[key] = value
                 }
                 count += 1
@@ -466,7 +477,6 @@ async function importCredentials(data) {
     }
     // console.debug('hosts:', hosts)
     await Hosts.update(hosts)
-    const total = Object.keys(data).length
     const type = count ? 'success' : 'warning'
     showToast(`Imported/Updated ${count}/${total} Hosts.`, type)
 }
