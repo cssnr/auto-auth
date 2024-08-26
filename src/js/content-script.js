@@ -21,14 +21,19 @@ if (!chrome.storage.onChanged.hasListener(onChanged)) {
     // console.debug('creds:', creds)
     if (creds) {
         tabEnabled = true
-        console.debug(
-            '%cFound Credentials for Current Site.',
-            'color: LimeGreen'
-        )
-        await chrome.runtime.sendMessage({
-            badgeText: 'On',
-            badgeColor: 'green',
-        })
+        if (creds === 'ignored') {
+            console.debug('%cSite is currently ignored.', 'color: Yellow')
+            await chrome.runtime.sendMessage({
+                badgeText: 'Off',
+                badgeColor: 'yellow',
+            })
+        } else {
+            console.debug('%cFound credentials for site.', 'color: LimeGreen')
+            await chrome.runtime.sendMessage({
+                badgeText: 'On',
+                badgeColor: 'green',
+            })
+        }
     }
 })()
 

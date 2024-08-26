@@ -60,18 +60,25 @@ async function initPopup() {
         const url = new URL(tab.url)
         const creds = await Hosts.get(url.host)
         if (creds) {
-            hostnameEl.classList.add('border-success')
+            if (creds === 'ignored') {
+                hostnameEl.classList.add('border-warning')
+                deleteSaved.querySelector('span').textContent =
+                    'Remove Host from Ignore'
+            } else {
+                hostnameEl.classList.add('border-success')
+                usernameEl.querySelector('span').textContent =
+                    creds.split(':')[0]
+                usernameEl.classList.remove('d-none')
+            }
             hostnameEl.textContent = url.host
             deleteSaved.classList.remove('d-none')
             deleteSaved.dataset.value = url.host
             deleteSaved.addEventListener('click', deleteHost)
-            usernameEl.querySelector('span').textContent = creds.split(':')[0]
-            usernameEl.classList.remove('d-none')
             confirmDelete.dataset.value = url.host
             confirmDeleteHost.textContent = url.host
         } else {
             hostnameEl.textContent = 'No Credentials Found for Tab.'
-            hostnameEl.classList.remove('border-success')
+            hostnameEl.classList.remove('border-success', 'border-warning')
             deleteSaved.classList.add('d-none')
             usernameEl.classList.add('d-none')
         }
