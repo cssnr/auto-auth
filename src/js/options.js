@@ -30,8 +30,9 @@ editForm.addEventListener('change', editChange)
 
 const hostsInput = document.getElementById('hosts-input')
 hostsInput.addEventListener('change', hostsInputChange)
-document.getElementById('import-hosts').addEventListener('click', importHosts)
 document.getElementById('export-hosts').addEventListener('click', exportHosts)
+document.getElementById('import-file').addEventListener('click', importHosts)
+document.getElementById('import-text').addEventListener('click', importText)
 
 document
     .querySelectorAll('.revoke-permissions')
@@ -86,6 +87,16 @@ editModalEl.addEventListener('hide.bs.modal', () => {
 editModalEl.addEventListener('hidePrevented.bs.modal', () => {
     console.log('Changes Detected!')
     editModalAlert.classList.remove('d-none')
+})
+
+const importModalEl = document.getElementById('import-modal')
+const importTextarea = document.getElementById('import-textarea')
+document.getElementById('clear-import').addEventListener('click', () => {
+    importTextarea.value = ''
+    importTextarea.focus()
+})
+importModalEl.addEventListener('shown.bs.modal', () => {
+    importTextarea.focus()
 })
 
 /**
@@ -335,17 +346,6 @@ async function editChange(event) {
 }
 
 /**
- * Import Hosts Click Callback
- * @function importHosts
- * @param {MouseEvent} event
- */
-async function importHosts(event) {
-    console.debug('importHosts:', event)
-    event.preventDefault()
-    hostsInput.click()
-}
-
-/**
  * Export Hosts Click Callback
  * @function exportHosts
  * @param {MouseEvent} event
@@ -366,6 +366,41 @@ async function exportHosts(event) {
 }
 
 /**
+ * Import Hosts Click Callback
+ * @function importHosts
+ * @param {MouseEvent} event
+ */
+async function importHosts(event) {
+    console.debug('importHosts:', event)
+    event.preventDefault()
+    hostsInput.click()
+}
+
+/**
+ * Import Text Click Callback
+ * @function importText
+ * @param {MouseEvent} event
+ */
+async function importText(event) {
+    console.debug('importText:', event)
+    event.preventDefault()
+    const text = importTextarea.value
+    console.debug('text:', text)
+    if (!text) {
+        importTextarea.focus()
+        return
+    }
+    try {
+        const data = JSON.parse(text)
+        console.debug('data:', data)
+    } catch (e) {
+        console.debug('JSON Parse Error:', e)
+        importTextarea.classList.add('is-invalid')
+        showToast('Error Parsing Input.', 'danger')
+    }
+}
+
+/**
  * Hosts Input Change Callback
  * @function hostsInputChange
  * @param {InputEvent} event
@@ -375,37 +410,45 @@ async function hostsInputChange(event) {
     event.preventDefault()
     try {
         const fileReader = new FileReader()
-        fileReader.onload = async function doBannedImport() {
+        fileReader.onload = async function () {
             const results = JSON.parse(fileReader.result.toString())
-            // console.debug('results:', results)
-            // const { sites } = await chrome.storage.sync.get(['sites'])
-            const hosts = {}
-            let count = 0
-            for (const [key, value] of Object.entries(results)) {
-                try {
-                    if (typeof value === 'object') {
-                        const { username, password } = value
-                        hosts[key] = `${username}:${password}`
-                    } else if (typeof value === 'string') {
-                        // const [username, password] = value.split(':')
-                        hosts[key] = value
-                    }
-                    count += 1
-                } catch (e) {
-                    console.log(`Error processing: ${key}`, 'color: Red')
-                }
-            }
-            // console.debug('hosts:', hosts)
-            // await chrome.storage.sync.set({ sites })
-            await Hosts.update(hosts)
-            const total = Object.keys(results).length
-            showToast(`Imported/Updated ${count}/${total} Hosts.`, 'success')
+            await importCredentials(results)
         }
         fileReader.readAsText(hostsInput.files[0])
     } catch (e) {
         console.log('Import error:', e)
         showToast(`Import Error: ${e.message}`, 'warning')
     }
+}
+
+/**
+ * Import Credentials
+ * @function importCredentials
+ * @param {Object} data
+ */
+async function importCredentials(data) {
+    console.debug('performImport:', data)
+    const hosts = {}
+    let count = 0
+    for (const [key, value] of Object.entries(data)) {
+        try {
+            if (typeof value === 'object') {
+                const { username, password } = value
+                hosts[key] = `${username}:${password}`
+            } else if (typeof value === 'string') {
+                // const [username, password] = value.split(':')
+                hosts[key] = value
+            }
+            count += 1
+        } catch (e) {
+            console.log(`Error processing: ${key}`, 'color: Red')
+        }
+    }
+    // console.debug('hosts:', hosts)
+    // await chrome.storage.sync.set({ sites })
+    await Hosts.update(hosts)
+    const total = Object.keys(data).length
+    showToast(`Imported/Updated ${count}/${total} Hosts.`, 'success')
 }
 
 /**

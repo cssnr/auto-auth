@@ -174,13 +174,18 @@
 
     <h5><i class="fa-solid fa-key me-2"></i> Saved Credentials</h5>
 
-    <div class="mb-1">
-        <input type="file" id="hosts-input" style="display: none;" />
-        <a id="import-hosts" class="link-body-emphasis text-decoration-none fst-italic small" role="button">
-            Import <i class="fa-solid fa-file-arrow-up ms-1"></i></a>
-        <span class="ms-2 me-1">/</span>
-        <a id="export-hosts" class="link-body-emphasis text-decoration-none fst-italic small" role="button">
+    <div class="mb-1 small">
+        <a id="export-hosts" class="link-body-emphasis text-decoration-none" role="button">
             Export <i class="fa-solid fa-file-arrow-down ms-1"></i></a>
+<!--        <span class="mx-1">/</span>-->
+        <span class="mx-1">&bull;</span>
+        <input type="file" id="hosts-input" style="display: none;" />
+        <a id="import-file" class="link-body-emphasis text-decoration-none" role="button">
+            Import File <i class="fa-solid fa-file-arrow-up ms-1"></i></a>
+<!--        <span class="mx-1">/</span>-->
+        <span class="mx-1">&bull;</span>
+        <a class="link-body-emphasis text-decoration-none" role="button" data-bs-toggle="modal" data-bs-target="#import-modal">
+            Import Text <i class="fa-solid fa-paste ms-1"></i></a>
     </div>
 
     <table id="hosts-table" class="table table-sm table-hover bg-transparent">
@@ -327,6 +332,33 @@
 </div> <!-- modal-content -->
 </div> <!-- modal-dialog -->
 </div><!-- edit-modal -->
+
+<div class="modal fade" id="import-modal" tabindex="-1" aria-labelledby="import-modal-label" aria-hidden="true">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="import-modal-label">Import Credentials</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"></button>
+    </div>
+    <div class="modal-body">
+        <div class="">
+            <label for="import-textarea" class="mb-1">Import Text</label>
+            <textarea class="form-control" placeholder="Paste text to import here..." id="import-textarea" style="height: 100px"></textarea>
+            <div class="invalid-feedback">
+                Please enter a message in the textarea.
+            </div>
+        </div>
+    </div> <!-- modal-body -->
+    <div class="modal-footer">
+        <button id="import-text" type="button" class="btn btn-success me-auto">
+            Import<i class="fa-solid fa-cloud-arrow-down ms-2"></i>
+        </button>
+        <button id="clear-import" type="button" class="btn btn-outline-warning">Clear</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</div> <!-- modal-content -->
+</div> <!-- modal-dialog -->
+</div><!-- import-modal -->
 
 <button type="button" class="btn btn-outline-primary" id="back-to-top">
     <i class="fa-regular fa-square-caret-up"></i>

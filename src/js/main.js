@@ -2,6 +2,10 @@
 
 import { showToast } from './export.js'
 
+document.querySelectorAll('.form-control').forEach((el) => {
+    el.addEventListener('focus', () => el.classList.remove('is-invalid'))
+})
+
 if (typeof ClipboardJS !== 'undefined') {
     const clipboard = new ClipboardJS(
         '[data-clipboard-text],[data-clipboard-target]'
