@@ -19,6 +19,9 @@
 Modern Chrome Web Extension and Firefox Browser Addon for Automatic Basic HTTP Authentication with many Options and
 Features.
 
+To take it for a test drive, install the addon and head over to: https://authenticationtest.com/HTTPAuth/  
+then enter the username `user` and password `pass`
+
 * [Install](#Install)
 * [Features](#Features)
     - [Upcoming Features](#Upcoming-Features)
@@ -109,7 +112,7 @@ Migration Guides from Other Web Extensions and manual import instructions.
 
 ### AutoAuth
 
-Firefox: Migration from: [steffanschlein/AutoAuth/](https://github.com/steffanschlein/AutoAuth/)
+Firefox: Migration from: [steffanschlein/AutoAuth](https://github.com/steffanschlein/AutoAuth)
 
 1. Open Addons Management (about:addons) `Ctrl+Shift+A`
 2. Find AutoAuth, click the 3 dots, then click Options
