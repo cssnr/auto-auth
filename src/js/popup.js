@@ -71,7 +71,9 @@ async function initPopup() {
             confirmDeleteHost.textContent = url.host
         } else {
             hostnameEl.textContent = 'No Credentials Found for Tab.'
+            hostnameEl.classList.remove('border-success')
             deleteSaved.classList.add('d-none')
+            usernameEl.classList.add('d-none')
         }
     } else {
         hostnameEl.classList.add('border-danger-subtle')
