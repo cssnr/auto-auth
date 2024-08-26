@@ -80,10 +80,10 @@ Long-term Goals for Improved Security:
 * Only allows saving 1 set of credentials per host
 * Most browsers will offer to save passwords on login and edit
 * A 401 response from a Service Worker is not properly intercepted:
-  - Firefox: Shows a generic 401 page, use `Ctrl+F5`
-    * Once credentials are saved, requests will work as normal.
-  - Chrome: Shows a default credentials prompt, Cancel and press `Ctrl+F5`
-    * This behavior may continue after saving credentials.
+    - Firefox: Shows a generic 401 page, use `Ctrl+F5`
+        * Once credentials are saved, requests will work as normal.
+    - Chrome: Shows a default credentials prompt, Cancel and press `Ctrl+F5`
+        * This behavior may continue after saving credentials.
 
 > [!TIP]
 > **Don't see your issue here?**
@@ -100,29 +100,43 @@ You can also access `Options` through the right-click context menu (enabled by d
 
 ## Migration
 
-Migration Guides from Other Web Extensions.
+Migration Guides from Other Web Extensions. If your extension is not explicitly listed here, it may not work. Feel free
+to [request a migration](https://github.com/cssnr/auto-auth/discussions/categories/feature-requests) to be added.
 
 ### AutoAuth
 
-Migration from: [steffanschlein/AutoAuth/](https://github.com/steffanschlein/AutoAuth/)
+Firefox: Migration from: [steffanschlein/AutoAuth/](https://github.com/steffanschlein/AutoAuth/)
 
 1. Open Addons Management (about:addons) `Ctrl+Shift+A`
 2. Find AutoAuth, click the 3 dots, then click Options
 3. Open Developer Tools `Ctrl+Shift+I` and go to Console tab
-4. Enter the following code: `await browser.storage.local.get() `
-5. Right-click on the `Object` and choose **Copy Object**
-6. Paste the results into a text file and save it
-7. Go to the Options Page (for this extension) and click Import
-8. Choose the file from step #6 and click Open
+4. Enter the following code: `await browser.storage.local.get()`
+5. Right-click on the resulting output and choose **Copy Object**
+6. Go to the Options Page (for this extension) and click Import Text
+7. Paste the copied text into the textarea and click Import
 
-You should now see all the credentials in the table on the Options Page.
+### Basic Authentication
+
+Chrome: Migration
+from: [Basic Authentication](https://chromewebstore.google.com/detail/nanfgbiblbcagfodkfeinbbhijihckml)
+
+1. Go To this URL: `chrome-extension://nanfgbiblbcagfodkfeinbbhijihckml/options.html`
+2. Open Developer Tools `Ctrl+Shift+I` and go to Console tab
+3. Enter the following code: `await chrome.storage.local.get()`
+4. Right-click on the resulting output and choose **Copy Object**
+5. Go to the Options Page (for this extension) and click Import Text
+6. Paste the copied text into the textarea and click Import
+
+Note: Basic Authentication uses url match patterns vs hostnames. This import will attempt to parse the match pattern to
+a hostname; however, if the full hostname is not provided, may not import correctly. You can always edit the credentials
+manually or save new ones on the next login.
 
 ## Security
 
 Since there is no API to manage or store credentials securely, usernames and passwords are stored in the web
-extension's [sync storage](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/sync). This
-will sync your credentials to all browsers you are logged into if sync is enabled for addons. Therefore, any computers
-you use a synced browser on will write the credentials to the file system in plain text.
+extension's [sync storage](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/sync).
+This will sync your credentials to all browsers you are logged into if sync is enabled for addons. Therefore, any
+computers you use a synced browser on will write the credentials to the file system in plain text.
 
 If there is enough popularity/requests for these features, there are a couple options to mitigate this:
 

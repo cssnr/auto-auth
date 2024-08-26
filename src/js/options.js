@@ -90,6 +90,7 @@ editModalEl.addEventListener('hidePrevented.bs.modal', () => {
 })
 
 const importModalEl = document.getElementById('import-modal')
+const importModal = new bootstrap.Modal(importModalEl)
 const importTextarea = document.getElementById('import-textarea')
 document.getElementById('clear-import').addEventListener('click', () => {
     importTextarea.value = ''
@@ -384,19 +385,22 @@ async function importHosts(event) {
 async function importText(event) {
     console.debug('importText:', event)
     event.preventDefault()
-    const text = importTextarea.value
-    console.debug('text:', text)
-    if (!text) {
+    if (!importTextarea.value) {
         importTextarea.focus()
         return
     }
     try {
-        const data = JSON.parse(text)
+        const data = JSON.parse(importTextarea.value)
         console.debug('data:', data)
+        await importCredentials(data)
+        importModal.hide()
+        importTextarea.value = ''
     } catch (e) {
-        console.debug('JSON Parse Error:', e)
+        console.debug('Import Error:', e)
+        importModalEl.querySelector('.invalid-feedback').textContent =
+            `Import Error: ${e.message}`
         importTextarea.classList.add('is-invalid')
-        showToast('Error Parsing Input.', 'danger')
+        // showToast(`Import Error: ${e.message}`, 'danger')
     }
 }
 
@@ -409,12 +413,11 @@ async function hostsInputChange(event) {
     console.debug('hostsInputChange:', event, hostsInput)
     event.preventDefault()
     try {
-        const fileReader = new FileReader()
-        fileReader.onload = async function () {
-            const results = JSON.parse(fileReader.result.toString())
-            await importCredentials(results)
-        }
-        fileReader.readAsText(hostsInput.files[0])
+        const file = event.target.files.item(0)
+        const text = await file.text()
+        const data = JSON.parse(text)
+        console.debug('data:', data)
+        await importCredentials(data)
     } catch (e) {
         console.log('Import error:', e)
         showToast(`Import Error: ${e.message}`, 'warning')
@@ -430,25 +433,42 @@ async function importCredentials(data) {
     console.debug('performImport:', data)
     const hosts = {}
     let count = 0
-    for (const [key, value] of Object.entries(data)) {
-        try {
-            if (typeof value === 'object') {
-                const { username, password } = value
-                hosts[key] = `${username}:${password}`
-            } else if (typeof value === 'string') {
-                // const [username, password] = value.split(':')
-                hosts[key] = value
+    if ('credentialsArray' in data) {
+        // Basic Authentication
+        for (const item of data.credentialsArray) {
+            try {
+                console.debug('item:', item)
+                const key = getHost(item.url)
+                hosts[key] = `${item.login}:${item.password}`
+                count += 1
+            } catch (e) {
+                console.log(`Error processing item:`, 'color: Red', item)
             }
-            count += 1
-        } catch (e) {
-            console.log(`Error processing: ${key}`, 'color: Red')
+        }
+    } else {
+        for (const [key, value] of Object.entries(data)) {
+            console.debug(`${key}:`, value)
+            try {
+                if (typeof value === 'object') {
+                    // AutoAuth
+                    const { username, password } = value
+                    hosts[key] = `${username}:${password}`
+                } else if (typeof value === 'string') {
+                    // Auto Auth (this extension)
+                    // const [username, password] = value.split(':')
+                    hosts[key] = value
+                }
+                count += 1
+            } catch (e) {
+                console.log(`Error processing: ${key}`, 'color: Red')
+            }
         }
     }
     // console.debug('hosts:', hosts)
-    // await chrome.storage.sync.set({ sites })
     await Hosts.update(hosts)
     const total = Object.keys(data).length
-    showToast(`Imported/Updated ${count}/${total} Hosts.`, 'success')
+    const type = count ? 'success' : 'warning'
+    showToast(`Imported/Updated ${count}/${total} Hosts.`, type)
 }
 
 /**
