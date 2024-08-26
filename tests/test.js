@@ -114,7 +114,7 @@ async function getPage(browser, name, size) {
 
     const [fileChooser] = await Promise.all([
         options.waitForFileChooser(),
-        options.click('#import-hosts'),
+        options.click('#import-file'),
     ])
     await fileChooser.accept(['./tests/secrets.txt'])
     await scrollPage(options)

@@ -174,13 +174,18 @@
 
     <h5><i class="fa-solid fa-key me-2"></i> Saved Credentials</h5>
 
-    <div class="mb-1">
-        <input type="file" id="hosts-input" style="display: none;" />
-        <a id="import-hosts" class="link-body-emphasis text-decoration-none fst-italic small" role="button">
-            Import <i class="fa-solid fa-file-arrow-up ms-1"></i></a>
-        <span class="ms-2 me-1">/</span>
-        <a id="export-hosts" class="link-body-emphasis text-decoration-none fst-italic small" role="button">
+    <div class="mb-1 small">
+        <a id="export-hosts" class="link-body-emphasis text-decoration-none" role="button">
             Export <i class="fa-solid fa-file-arrow-down ms-1"></i></a>
+<!--        <span class="mx-1">/</span>-->
+        <span class="mx-1">&bull;</span>
+        <input type="file" id="hosts-input" style="display: none;" />
+        <a id="import-file" class="link-body-emphasis text-decoration-none" role="button">
+            Import File <i class="fa-solid fa-file-arrow-up ms-1"></i></a>
+<!--        <span class="mx-1">/</span>-->
+        <span class="mx-1">&bull;</span>
+        <a class="link-body-emphasis text-decoration-none" role="button" data-bs-toggle="modal" data-bs-target="#import-modal">
+            Import Text <i class="fa-solid fa-paste ms-1"></i></a>
     </div>
 
     <table id="hosts-table" class="table table-sm table-hover bg-transparent">
@@ -222,7 +227,7 @@
            href="homepage_url">Home Page</a>
         <span class="mx-2">&bull;</span>
         <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
-           href="https://github.com/cssnr/auto-auth/discussions/categories/feature-requests">Request Feature</a>
+           href="https://github.com/cssnr/auto-auth?tab=readme-ov-file#Migration">Migration Guide</a>
         <span class="mx-2">&bull;</span>
         <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
            href="https://github.com/cssnr/auto-auth/issues">Open Issue</a>
@@ -328,6 +333,37 @@
 </div> <!-- modal-dialog -->
 </div><!-- edit-modal -->
 
+<div class="modal fade" id="import-modal" tabindex="-1" aria-labelledby="import-modal-label" aria-hidden="true">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="import-modal-label">Import Credentials</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"></button>
+    </div>
+    <div class="modal-body">
+        <div class="">
+            <label for="import-textarea" class="mb-1">
+                JSON Import <svg class="ms-1"><use xlink:href="#bi-braces" /></svg>
+            </label>
+            <textarea class="form-control" placeholder="Paste text to import here..." id="import-textarea" style="height: 100px"></textarea>
+            <div class="invalid-feedback"></div>
+            <div>
+                For data format, see the <a href="https://github.com/cssnr/auto-auth?tab=readme-ov-file#Migration" target="_blank" rel="noopener">
+                Migration Guide</a> on GitHub.
+            </div>
+        </div>
+    </div> <!-- modal-body -->
+    <div class="modal-footer">
+        <button id="import-text" type="button" class="btn btn-success me-auto">
+            Import<i class="fa-solid fa-cloud-arrow-down ms-2"></i>
+        </button>
+        <button id="clear-import" type="button" class="btn btn-outline-warning">Clear</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</div> <!-- modal-content -->
+</div> <!-- modal-dialog -->
+</div><!-- import-modal -->
+
 <button type="button" class="btn btn-outline-primary" id="back-to-top">
     <i class="fa-regular fa-square-caret-up"></i>
 </button> <!-- back-to-top -->
@@ -342,6 +378,9 @@
     </div>
     <i class="fa-regular fa-trash-can"></i>
     <i class="fa-regular fa-pen-to-square"></i>
+    <svg id="bi-braces" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-braces mb-1 ms-1" viewBox="0 0 16 16">
+        <path d="M2.114 8.063V7.9c1.005-.102 1.497-.615 1.497-1.6V4.503c0-1.094.39-1.538 1.354-1.538h.273V2h-.376C3.25 2 2.49 2.759 2.49 4.352v1.524c0 1.094-.376 1.456-1.49 1.456v1.299c1.114 0 1.49.362 1.49 1.456v1.524c0 1.593.759 2.352 2.372 2.352h.376v-.964h-.273c-.964 0-1.354-.444-1.354-1.538V9.663c0-.984-.492-1.497-1.497-1.6M13.886 7.9v.163c-1.005.103-1.497.616-1.497 1.6v1.798c0 1.094-.39 1.538-1.354 1.538h-.273v.964h.376c1.613 0 2.372-.759 2.372-2.352v-1.524c0-1.094.376-1.456 1.49-1.456V7.332c-1.114 0-1.49-.362-1.49-1.456V4.352C13.51 2.759 12.75 2 11.138 2h-.376v.964h.273c.964 0 1.354.444 1.354 1.538V6.3c0 .984.492 1.497 1.497 1.6"/>
+    </svg>
 </div> <!-- d-none -->
 
 <script type="text/javascript" src="../dist/jquery/jquery.min.js"></script>
