@@ -94,19 +94,15 @@ editModalEl.addEventListener('hidePrevented.bs.modal', () => {
  */
 async function initOptions() {
     console.debug('initOptions')
-
-    updateManifest()
-    setShortcuts('#keyboard-shortcuts', true).then()
-    checkPerms().then()
-
-    // const { options, sites } = await chrome.storage.sync.get([
-    //     'options',
-    //     'sites',
-    // ])
-    // console.debug('options, sites:', options, sites)
-    const { options } = await chrome.storage.sync.get(['options'])
-    updateOptions(options)
-    backgroundChange(options.radioBackground)
+    void updateManifest()
+    void setShortcuts('#keyboard-shortcuts', true)
+    checkPerms().then((hasPerms) => {
+        if (!hasPerms) console.log('%cMissing Host Permissions', 'color: Red')
+    })
+    chrome.storage.sync.get(['options']).then((items) => {
+        updateOptions(items.options)
+        backgroundChange(items.options.radioBackground)
+    })
 
     const hosts = await Hosts.all()
     // console.debug('hosts:', hosts)
@@ -202,7 +198,7 @@ function updateTable(data) {
         const user = document.createTextNode(username)
         const cell3 = row.insertCell()
         cell3.appendChild(user)
-        cell3.classList.add('d-none', 'd-sm-table-cell')
+        cell3.classList.add('text-break', 'd-none', 'd-sm-table-cell')
 
         const editBtn = document.createElement('a')
         const edit = document

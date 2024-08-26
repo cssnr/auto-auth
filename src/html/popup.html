@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<div class="container-fluid p-3">
+<div class="container-fluid p-2">
     <div class="d-flex flex-row align-items-center">
         <div class="">
             <a title="Options" href="../html/options.html"><img src="../images/logo32.png" height="32" width="32" alt="Auto Auth"></a>
@@ -40,27 +40,37 @@
             </ul>
         </div>
     </div> <!-- d-flex -->
+</div>
 
-    <hr class="mt-2">
+<hr class="my-0">
 
+<div class="container-fluid p-3">
     <div class="d-none grant-perms">
         <button class="btn btn-lg btn-success w-100 mb-1 grant-permissions" type="button"
                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
                 data-bs-title="This Extension Requires Host Permissions to Function.">
-            <i class="fa-solid fa-check-double me-1"></i> Grant Host Permissions</button>
-        <p class="text-center"><a href="../html/permissions.html" class="">
-            More Information on Permissions</a></p>
+            <i class="fa-solid fa-check-double me-1"></i>
+            Grant Host Permissions
+        </button>
+        <p class="text-center">
+            <a href="../html/permissions.html" class="">More Information on Permissions</a>
+        </p>
         <div class="alert alert-danger text-center p-1" role="alert">
             Extension requires host permissions.
         </div>
     </div> <!-- grant-perms -->
 
     <div class="d-grid g-2 gap-2 mb-3 has-perms">
-        <div id="hostname" class="text-center border border-2 rounded p-1">
+        <div id="hostname" class="text-center border border-2 rounded text-ellipsis p-1">
             No Access to the Current Tab.
         </div>
-        <a id="delete-saved" class="btn btn-outline-warning d-none">
-            <i class="fa-regular fa-trash-can me-1"></i> Delete Saved Credentials</a>
+        <button id="delete-saved" class="btn btn-outline-warning d-none">
+            <i class="fa-regular fa-trash-can me-1"></i>
+            Delete Saved Credentials
+        </button>
+        <div id="username" class="text-center text-ellipsis d-none">
+            Username: <span class="fw-bold text-success-emphasis"></span>
+        </div>
     </div> <!-- d-grid -->
 
 <!--    <hr class="my-2">-->
@@ -128,13 +138,6 @@
 
     <a class="btn btn-outline-info w-100" href="../html/options.html">
         <i class="fa-solid fa-sliders me-1"></i> Open Options</a>
-
-<!--    <hr>-->
-<!--    <div class="d-flex justify-content-center align-items-center text-center small">-->
-<!--        <img src="../images/logo16.png" width="16" height="16" alt="Auto Auth" title="Auto Auth">-->
-<!--        <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover mx-2" rel="noopener"-->
-<!--           href="homepage_url">Auto Auth</a> v<span class="version"></span>-->
-<!--    </div>-->
 </div> <!-- container -->
 
 <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">
