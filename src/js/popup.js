@@ -14,9 +14,11 @@ import {
 chrome.storage.onChanged.addListener(onChanged)
 
 document.addEventListener('DOMContentLoaded', initPopup)
+// noinspection JSCheckFunctionSignatures
 document
     .querySelectorAll('.grant-permissions')
     .forEach((el) => el.addEventListener('click', (e) => grantPerms(e, true)))
+// noinspection JSCheckFunctionSignatures
 document
     .querySelectorAll('a[href]')
     .forEach((el) => el.addEventListener('click', (e) => linkClick(e, true)))
@@ -42,13 +44,15 @@ const usernameEl = document.getElementById('username')
  */
 async function initPopup() {
     console.debug('initPopup')
-    void updateManifest()
+    // noinspection ES6MissingAwait
+    updateManifest()
     checkPerms().then((hasPerms) => {
         if (!hasPerms) console.log('%cMissing Host Permissions', 'color: Red')
     })
     chrome.storage.sync
         .get(['options'])
         .then((items) => updateOptions(items.options))
+
     if (chrome.runtime.lastError) {
         showToast(chrome.runtime.lastError.message, 'warning')
     }

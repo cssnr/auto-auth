@@ -106,8 +106,10 @@ importModalEl.addEventListener('shown.bs.modal', () => {
  */
 async function initOptions() {
     console.debug('initOptions')
-    void updateManifest()
-    void setShortcuts('#keyboard-shortcuts', true)
+    // noinspection ES6MissingAwait
+    updateManifest()
+    // noinspection ES6MissingAwait
+    setShortcuts('#keyboard-shortcuts', true)
     checkPerms().then((hasPerms) => {
         if (!hasPerms) console.log('%cMissing Host Permissions', 'color: Red')
     })

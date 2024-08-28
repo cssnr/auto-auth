@@ -261,6 +261,7 @@ function onMessage(message, sender, sendResponse) {
     const tabId = message.tabId || sender.tab?.id
     if ('badgeColor' in message && tabId) {
         console.debug(`tabId: ${tabId} color: ${message.badgeColor}`)
+        // noinspection JSIgnoredPromiseFromCall
         chrome.action.setBadgeBackgroundColor({
             tabId: tabId,
             color: message.badgeColor,
@@ -268,6 +269,7 @@ function onMessage(message, sender, sendResponse) {
     }
     if ('badgeText' in message && tabId) {
         console.debug(`tabId: ${tabId} text: ${message.badgeText}`)
+        // noinspection JSIgnoredPromiseFromCall
         chrome.action.setBadgeText({
             tabId: tabId,
             text: message.badgeText,

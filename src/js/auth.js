@@ -46,13 +46,8 @@ async function domContentLoaded() {
     link.href = url.href
     document.getElementById('hostname').value = url.host
 
-    // const { options, sites } = await chrome.storage.sync.get([
-    //     'options',
-    //     'sites',
-    // ])
     const { options } = await chrome.storage.sync.get(['options'])
     const { session } = await chrome.storage.session.get(['session'])
-    // console.debug('options, sites:', options, sites)
     setBackground(options)
 
     const creds = await Hosts.get(url.host)
