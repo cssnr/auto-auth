@@ -2,8 +2,8 @@
 
 import { Hosts, checkPerms, showPanel, githubURL } from './export.js'
 
-chrome.runtime.onStartup.addListener(onStartup)
 chrome.runtime.onInstalled.addListener(onInstalled)
+chrome.runtime.onStartup.addListener(onStartup)
 chrome.contextMenus?.onClicked.addListener(onClicked)
 chrome.commands?.onCommand.addListener(onCommand)
 chrome.runtime.onMessage.addListener(onMessage)
@@ -137,35 +137,12 @@ function webRequestFinished(requestDetails) {
 }
 
 /**
- * On Startup Callback
- * @function onStartup
- */
-async function onStartup() {
-    console.log('onStartup')
-    const { session } = await chrome.storage.session.get(['session'])
-    if (!session) {
-        await chrome.storage.session.set({ session: {} })
-        console.debug('onStartup: Initialized Empty session')
-    }
-    const { options } = await chrome.storage.sync.get(['options'])
-    await updateIcon(options)
-    if (typeof browser !== 'undefined') {
-        console.log('Firefox CTX Menu Workaround')
-        // console.debug('options:', options)
-        if (options.contextMenu) {
-            createContextMenus()
-        }
-    }
-}
-
-/**
  * On Installed Callback
  * @function onInstalled
- * @param {InstalledDetails} details
+ * @param {chrome.runtime.InstalledDetails} details
  */
 async function onInstalled(details) {
     console.log('onInstalled:', details)
-    // const uninstallURL = new URL('https://link-extractor.cssnr.com/uninstall/')
     const options = await setDefaultOptions({
         tempDisabled: false,
         ignoreProxy: false,
@@ -199,10 +176,41 @@ async function onInstalled(details) {
             }
         }
     }
-    // uninstallURL.searchParams.append('version', manifest.version)
-    // console.log('uninstallURL:', uninstallURL.href)
-    // await chrome.runtime.setUninstallURL(uninstallURL.href)
-    await chrome.runtime.setUninstallURL(`${githubURL}/issues`)
+    setUninstallURL()
+}
+
+/**
+ * On Startup Callback
+ * @function onStartup
+ */
+async function onStartup() {
+    console.log('onStartup')
+    const { session } = await chrome.storage.session.get(['session'])
+    if (!session) {
+        await chrome.storage.session.set({ session: {} })
+        console.debug('onStartup: Initialized Empty session')
+    }
+    const { options } = await chrome.storage.sync.get(['options'])
+    // console.debug('options:', options)
+    await updateIcon(options)
+    // noinspection JSUnresolvedReference
+    if (typeof browser !== 'undefined') {
+        console.log('Firefox CTX Menu Workaround')
+        if (options.contextMenu) {
+            createContextMenus()
+        }
+        setUninstallURL()
+    }
+}
+
+function setUninstallURL() {
+    // const manifest = chrome.runtime.getManifest()
+    // const url = new URL('https://link-extractor.cssnr.com/uninstall/')
+    // url.searchParams.append('version', manifest.version)
+    // chrome.runtime.setUninstallURL(url.href)
+    // console.debug(`setUninstallURL: ${url.href}`)
+    chrome.runtime.setUninstallURL(`${githubURL}/issues`)
+    console.debug(`setUninstallURL: ${githubURL}/issues`)
 }
 
 /**
@@ -228,7 +236,7 @@ async function onClicked(ctx, tab) {
  * @param {String} command
  */
 async function onCommand(command) {
-    console.debug(`onCommand: ${command}`)
+    console.debug('onCommand:', command)
     if (command === 'openOptions') {
         await chrome.runtime.openOptionsPage()
     } else if (command === 'showPanel') {
@@ -253,6 +261,7 @@ function onMessage(message, sender, sendResponse) {
     const tabId = message.tabId || sender.tab?.id
     if ('badgeColor' in message && tabId) {
         console.debug(`tabId: ${tabId} color: ${message.badgeColor}`)
+        // noinspection JSIgnoredPromiseFromCall
         chrome.action.setBadgeBackgroundColor({
             tabId: tabId,
             color: message.badgeColor,
@@ -260,6 +269,7 @@ function onMessage(message, sender, sendResponse) {
     }
     if ('badgeText' in message && tabId) {
         console.debug(`tabId: ${tabId} text: ${message.badgeText}`)
+        // noinspection JSIgnoredPromiseFromCall
         chrome.action.setBadgeText({
             tabId: tabId,
             text: message.badgeText,

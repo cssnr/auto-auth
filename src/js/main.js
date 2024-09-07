@@ -6,7 +6,9 @@ document.querySelectorAll('.form-control').forEach((el) => {
     el.addEventListener('focus', () => el.classList.remove('is-invalid'))
 })
 
+// noinspection TypeScriptUMDGlobal
 if (typeof ClipboardJS !== 'undefined') {
+    // noinspection TypeScriptUMDGlobal
     const clipboard = new ClipboardJS(
         '[data-clipboard-text],[data-clipboard-target]'
     )
@@ -14,7 +16,9 @@ if (typeof ClipboardJS !== 'undefined') {
         // console.debug('clipboard.success:', event)
         const text = event.text.trim()
         console.debug(`text: "${text}"`)
+        // noinspection JSUnresolvedReference
         if (event.trigger.dataset.toast) {
+            // noinspection JSUnresolvedReference
             showToast(event.trigger.dataset.toast, 'success')
         } else {
             showToast('Copied to Clipboard', 'success')

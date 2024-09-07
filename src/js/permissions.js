@@ -25,8 +25,10 @@ document
  */
 async function domContentLoaded() {
     console.debug('domContentLoaded')
-    void updateManifest()
-    void checkPerms()
+    // noinspection ES6MissingAwait
+    updateManifest()
+    // noinspection ES6MissingAwait
+    checkPerms()
 }
 
 /**

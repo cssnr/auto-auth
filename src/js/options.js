@@ -106,8 +106,10 @@ importModalEl.addEventListener('shown.bs.modal', () => {
  */
 async function initOptions() {
     console.debug('initOptions')
-    void updateManifest()
-    void setShortcuts('#keyboard-shortcuts', true)
+    // noinspection ES6MissingAwait
+    updateManifest()
+    // noinspection ES6MissingAwait
+    setShortcuts('#keyboard-shortcuts', true)
     checkPerms().then((hasPerms) => {
         if (!hasPerms) console.log('%cMissing Host Permissions', 'color: Red')
     })
@@ -592,13 +594,15 @@ async function copySupport(event) {
     console.debug('copySupport:', event)
     event.preventDefault()
     const manifest = chrome.runtime.getManifest()
-    const { options } = await chrome.storage.sync.get(['options'])
     const permissions = await chrome.permissions.getAll()
+    const { options } = await chrome.storage.sync.get(['options'])
+    const userSettings = await chrome.action.getUserSettings()
     const result = [
         `${manifest.name} - ${manifest.version}`,
         navigator.userAgent,
         `permissions.origins: ${JSON.stringify(permissions.origins)}`,
         `options: ${JSON.stringify(options)}`,
+        `pinned: ${userSettings.isOnToolbar ? 'yes' : 'no'}`,
     ]
     await navigator.clipboard.writeText(result.join('\n'))
     showToast('Support Information Copied.', 'success')

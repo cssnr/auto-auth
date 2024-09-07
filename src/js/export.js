@@ -375,7 +375,8 @@ export async function checkPerms() {
  */
 export async function grantPerms(event, close = false) {
     console.debug('grantPerms:', event)
-    requestPerms() // Firefox: Do NOT await so that we can call window.close()
+    // noinspection ES6MissingAwait
+    requestPerms()
     if (close) {
         window.close()
     }
