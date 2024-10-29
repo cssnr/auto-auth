@@ -21,12 +21,12 @@
     "jquery": "^3.7.1"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.268",
+    "@types/chrome": "^0.0.279",
     "eslint": "^8.57.0",
     "gulp": "^4.0.2",
-    "json-merger": "^1.1.10",
+    "json-merger": "^2.0.0",
     "prettier": "^3.3.3",
     "puppeteer": "^22.15.0",
-    "web-ext": "^8.2.0"
+    "web-ext": "^8.3.0"
   }
 }
