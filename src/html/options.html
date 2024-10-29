@@ -13,9 +13,8 @@
 </head>
 <body>
 
-<div class="container-fluid py-3 px-1 px-sm-3 ">
-<div class="card w-100 mx-auto">
-<div class="card-body">
+<div class="container-fluid p-0 p-sm-3">
+<div class="rounded rounded-3 border border-1 mx-auto p-3" style="max-width: 800px;">
     <div class="d-flex flex-row justify-content-center align-items-center">
         <img src="../images/logo48.png" class="me-2" height="48" width="48" alt="Auto Auth" title="Auto Auth">
         <div>
@@ -25,6 +24,10 @@
                 v<span class="version"></span></a>
         </div>
     </div> <!-- header -->
+
+    <div class="d-flex flex-row align-items-center justify-content-center">
+        <hr class="w-100 my-0"><span class="text-nowrap mx-2">Keyboard Shortcuts</span><hr class="w-100 my-0">
+    </div>
 
     <table id="keyboard-shortcuts" class="table table-sm table-borderless table-hover d-none">
         <caption class="visually-hidden">Keyboard Shortcuts</caption>
@@ -37,7 +40,16 @@
         </tr>
         </tfoot>
     </table>
-    <hr>
+    <div class="mb-2">
+        Manage Keyboard Shortcuts:
+        <a class="text-decoration-none d-inline-block d-none firefox" href="https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox" target="_blank" rel="noopener">
+            https://mzl.la/3Qwp5QQ <i class="fa-solid fa-arrow-up-right-from-square fa-xs"></i></a>
+        <a id="chrome-shortcuts" class="d-inline-block d-none chrome" role="button">chrome://extensions/shortcuts</a>
+    </div>
+
+    <div class="d-flex flex-row align-items-center justify-content-center">
+        <hr class="w-100 my-0"><span class="text-nowrap mx-2">Extension Options</span><hr class="w-100 my-0">
+    </div>
 
     <div class="d-none my-3 grant-perms">
         <button class="btn btn-lg btn-success w-100 mb-2 grant-permissions" type="button"
@@ -149,7 +161,9 @@
 <!--        </div>-->
 <!--    </form>-->
 
-    <hr>
+    <div class="d-flex flex-row align-items-center justify-content-center">
+        <hr class="w-100 my-0"><span class="text-nowrap mx-2">Credentials</span><hr class="w-100 my-0">
+    </div>
 
     <h5><i class="fa-solid fa-key me-2"></i> Saved Credentials</h5>
 
@@ -211,8 +225,7 @@
         <a class="link-body-emphasis text-decoration-none d-inline-block" target="_blank" rel="noopener"
            href="https://github.com/cssnr/auto-auth/issues">Open Issue</a>
     </div>
-</div> <!-- card-body -->
-</div> <!-- card -->
+</div> <!-- rounded -->
 </div> <!-- container -->
 
 <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">
@@ -351,16 +364,16 @@
     <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 </div> <!-- toast -->
 
-<div class="d-none">
-    <div class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+<div id="clones" class="d-none">
+    <div class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="8000">
         <div class="toast-body"></div>
     </div>
-    <i class="fa-regular fa-trash-can"></i>
-    <i class="fa-regular fa-pen-to-square"></i>
     <svg id="bi-braces" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-braces mb-1 ms-1" viewBox="0 0 16 16">
         <path d="M2.114 8.063V7.9c1.005-.102 1.497-.615 1.497-1.6V4.503c0-1.094.39-1.538 1.354-1.538h.273V2h-.376C3.25 2 2.49 2.759 2.49 4.352v1.524c0 1.094-.376 1.456-1.49 1.456v1.299c1.114 0 1.49.362 1.49 1.456v1.524c0 1.593.759 2.352 2.372 2.352h.376v-.964h-.273c-.964 0-1.354-.444-1.354-1.538V9.663c0-.984-.492-1.497-1.497-1.6M13.886 7.9v.163c-1.005.103-1.497.616-1.497 1.6v1.798c0 1.094-.39 1.538-1.354 1.538h-.273v.964h.376c1.613 0 2.372-.759 2.372-2.352v-1.524c0-1.094.376-1.456 1.49-1.456V7.332c-1.114 0-1.49-.362-1.49-1.456V4.352C13.51 2.759 12.75 2 11.138 2h-.376v.964h.273c.964 0 1.354.444 1.354 1.538V6.3c0 .984.492 1.497 1.497 1.6"/>
     </svg>
-</div> <!-- d-none -->
+    <i class="fa-regular fa-trash-can"></i>
+    <i class="fa-regular fa-pen-to-square"></i>
+</div> <!-- clones -->
 
 <script type="text/javascript" src="../dist/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="../dist/bootstrap/bootstrap.bundle.min.js"></script>

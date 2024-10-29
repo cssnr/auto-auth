@@ -434,6 +434,21 @@ export async function onRemoved(permissions) {
 }
 
 /**
+ * @function updateBrowser
+ * @return {Promise<void>}
+ */
+export async function updateBrowser() {
+    let selector = '.chrome'
+    // noinspection JSUnresolvedReference
+    if (typeof browser !== 'undefined') {
+        selector = '.firefox'
+    }
+    document
+        .querySelectorAll(selector)
+        .forEach((el) => el.classList.remove('d-none'))
+}
+
+/**
  * Show Bootstrap Toast
  * @function showToast
  * @param {String} message
@@ -441,7 +456,7 @@ export async function onRemoved(permissions) {
  */
 export function showToast(message, type = 'primary') {
     console.debug(`showToast: ${type}: ${message}`)
-    const clone = document.querySelector('.d-none > .toast')
+    const clone = document.querySelector('#clones > .toast')
     const container = document.getElementById('toast-container')
     if (!clone || !container) {
         return console.warn('Missing clone or container:', clone, container)
