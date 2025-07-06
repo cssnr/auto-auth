@@ -52,6 +52,8 @@ then enter the username `user` and password `pass`
 All **Chromium** Based Browsers can install the extension from
 the [Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm).
 
+[![QR Code GitHub](https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/auto-auth/qr-firefox.png)](https://addons.mozilla.org/addon/auto-auth)
+
 ## Features
 
 - Save Logins for HTTP Basic Authentication
@@ -83,8 +85,10 @@ Long-term Goals for Improved Security:
 
 ### Known Issues
 
-- Only allows saving 1 set of credentials per host
-- Most browsers will offer to save passwords on login and edit
+- Only allows saving 1 set of credentials per host.
+- Most browsers will offer to save passwords on login and edit.
+- Incognito and Private Browsing will not allow logging into new sites.
+    - You must save the credentials first or add them manually.
 - A 401 response from a Service Worker is not properly intercepted:
     - Firefox: Shows a generic 401 page, use `Ctrl+F5`
         - Once credentials are saved, requests will work as normal.
