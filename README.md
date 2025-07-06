@@ -11,6 +11,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_auto-auth&metric=alert_status&label=quality)](https://sonarcloud.io/summary/overall?id=cssnr_auto-auth)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/auto-auth?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/auto-auth/graphs/commit-activity)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/auto-auth?logo=htmx&logoColor=white)](https://github.com/cssnr/auto-auth)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/auto-auth?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/auto-auth)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white&label=org%20stars)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 
@@ -19,7 +20,7 @@
 Modern Chrome Web Extension and Firefox Browser Addon for Automatic Basic HTTP Authentication with many Options and
 Features.
 
-To take it for a test drive, install the addon and head over to: https://authenticationtest.com/HTTPAuth/  
+To take it for a test drive, [install](#Install) the addon and head over to: https://authenticationtest.com/HTTPAuth/  
 then enter the username `user` and password `pass`
 
 - [Install](#Install)
