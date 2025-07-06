@@ -255,6 +255,7 @@ function hideShowElement(selector, show, speed = 'fast') {
 function addWarningClass(element, value, warning) {
     // console.debug('addWarningClass:', value, element)
     if (value) {
+        // NOSONAR
         element.classList.add(warning)
     } else {
         element.classList.remove(warning)
