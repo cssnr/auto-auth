@@ -70,6 +70,7 @@ async function getPage(browser, name, size) {
         args: [
             `--disable-extensions-except=${pathToExtension}`,
             `--load-extension=${pathToExtension}`,
+            '--no-sandbox',
         ],
         dumpio: true,
         // headless: false,
@@ -85,6 +86,8 @@ async function getPage(browser, name, size) {
     )
     const worker = await workerTarget.worker()
     console.log('worker:', worker)
+
+    await new Promise((resolve) => setTimeout(resolve, 1000))
 
     // Popup
     await worker.evaluate('chrome.action.openPopup();')
@@ -152,7 +155,9 @@ async function getPage(browser, name, size) {
     try {
         // Intercepting auth throws: Error: net::ERR_ABORTED
         await page.goto('https://authenticationtest.com/HTTPAuth/')
-    } catch (e) {} // eslint-disable-line no-empty
+    } catch (e) {
+        console.debug('e:', e)
+    }
     await page.waitForNetworkIdle()
     await page.screenshot(ssOptions('success'))
 
@@ -165,7 +170,9 @@ async function getPage(browser, name, size) {
     try {
         // Intercepting auth throws: Error: net::ERR_ABORTED
         await page.goto('https://httpbin.org/basic-auth/guest/guest')
-    } catch (e) {} // eslint-disable-line no-empty
+    } catch (e) {
+        console.debug('e:', e)
+    }
     await page.waitForNetworkIdle()
     await page.screenshot(ssOptions('auth'))
 

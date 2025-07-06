@@ -15,21 +15,26 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
-      - name: "Setup Node"
+      - name: "Setup Node 22"
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: npm
+
+      - name: "Install"
+        run: |
+          npm install
 
       - name: "Update Manifest Version"
         if: ${{ github.event_name == 'release' }}
         uses: cssnr/update-json-value-action@v1
 
-      - name: "Build All"
+      - name: "Build"
         run: |
-          npm ci
           npm run build
 
       - name: "Upload to Actions"
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         uses: actions/upload-artifact@v4
         with:
           name: artifacts
@@ -39,8 +44,25 @@ jobs:
         if: ${{ github.event_name == 'release' }}
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: web-ext-artifacts/*
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
+
+      - name: "Update Release Notes Action"
+        if: ${{ github.event_name == 'release' }}
+        continue-on-error: true
+        uses: smashedr/update-release-notes-action@master
+        with:
+          type: generic
+
+      - name: "Package Changelog Action"
+        if: ${{ github.event_name == 'release' }}
+        continue-on-error: true
+        uses: cssnr/package-changelog-action@v1
+
+      - name: "Send Failure Notification"
+        if: ${{ failure() && github.event_name == 'release' }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}

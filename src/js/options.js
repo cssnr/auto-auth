@@ -14,6 +14,7 @@ import {
     showToast,
     textFileDownload,
     updateManifest,
+    updateBrowser,
     updateOptions,
 } from './export.js'
 
@@ -62,6 +63,14 @@ document
     .getElementsByName('radioBackground')
     .forEach((el) => el.addEventListener('change', backgroundChange))
 
+document.getElementById('chrome-shortcuts').addEventListener('click', () => {
+    // noinspection JSIgnoredPromiseFromCall
+    chrome.tabs.update({ url: 'chrome://extensions/shortcuts' })
+})
+
+const trashCan = document.querySelector('#clones > .fa-trash-can')
+const faPen = document.querySelector('#clones > .fa-pen-to-square')
+
 const bgPictureInput = document.getElementById('bgPictureInput')
 const bgVideoInput = document.getElementById('bgVideoInput')
 
@@ -108,6 +117,8 @@ async function initOptions() {
     console.debug('initOptions')
     // noinspection ES6MissingAwait
     updateManifest()
+    // noinspection ES6MissingAwait
+    updateBrowser()
     // noinspection ES6MissingAwait
     setShortcuts('#keyboard-shortcuts', true)
     checkPerms().then((hasPerms) => {
@@ -182,9 +193,7 @@ function updateTable(data) {
         // console.debug('username:', username)
 
         const deleteBtn = document.createElement('a')
-        const trash = document
-            .querySelector('.d-none > .fa-regular.fa-trash-can')
-            .cloneNode(true)
+        const trash = trashCan.cloneNode(true)
         deleteBtn.appendChild(trash)
         deleteBtn.title = 'Delete'
         deleteBtn.dataset.value = key
@@ -215,9 +224,7 @@ function updateTable(data) {
         cell3.classList.add('text-break', 'd-none', 'd-sm-table-cell')
 
         const editBtn = document.createElement('a')
-        const edit = document
-            .querySelector('.d-none > .fa-pen-to-square')
-            .cloneNode(true)
+        const edit = faPen.cloneNode(true)
         editBtn.appendChild(edit)
         editBtn.title = 'Edit'
         editBtn.dataset.value = key
@@ -446,7 +453,7 @@ async function importCredentials(data) {
                 hosts[key] = `${item.login}:${item.password}`
                 count += 1
             } catch (e) {
-                console.log(`Error processing item:`, 'color: Red', item)
+                console.log(`Error processing item:`, 'color: Red', item, e)
             }
         }
     } else {
@@ -473,7 +480,7 @@ async function importCredentials(data) {
                 }
                 count += 1
             } catch (e) {
-                console.log(`Error processing: ${key}`, 'color: Red')
+                console.log(`Error processing: ${key}`, 'color: Red', e)
             }
         }
     }

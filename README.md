@@ -11,6 +11,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_auto-auth&metric=alert_status&label=quality)](https://sonarcloud.io/summary/overall?id=cssnr_auto-auth)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/auto-auth?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/auto-auth/graphs/commit-activity)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/auto-auth?logo=htmx&logoColor=white)](https://github.com/cssnr/auto-auth)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/auto-auth?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/auto-auth)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white&label=org%20stars)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 
@@ -19,28 +20,28 @@
 Modern Chrome Web Extension and Firefox Browser Addon for Automatic Basic HTTP Authentication with many Options and
 Features.
 
-To take it for a test drive, install the addon and head over to: https://authenticationtest.com/HTTPAuth/  
+To take it for a test drive, [install](#Install) the addon and head over to: https://authenticationtest.com/HTTPAuth/  
 then enter the username `user` and password `pass`
 
-* [Install](#Install)
-* [Features](#Features)
+- [Install](#Install)
+- [Features](#Features)
     - [Upcoming Features](#Upcoming-Features)
     - [Known Issues](#Known-Issues)
-* [Configuration](#Configuration)
-* [Migration](#Migration)
-  -  [AutoAuth](#AutoAuth)
-  -  [Basic Authentication](#Basic-Authentication)
-  -  [Other or Manual](#Other-or-Manual)
-* [Security](#Security)
-* [Support](#Support)
-* [Development](#Development)
+- [Configuration](#Configuration)
+- [Migration](#Migration)
+    - [AutoAuth](#AutoAuth)
+    - [Basic Authentication](#Basic-Authentication)
+    - [Other or Manual](#Other-or-Manual)
+- [Security](#Security)
+- [Support](#Support)
+- [Development](#Development)
     - [Building](#Building)
-* [Contributing](#Contributing)
+- [Contributing](#Contributing)
 
 ## Install
 
-* [Google Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
-* [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/auto-auth)
+- [Google Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
+- [Mozilla Firefox Add-ons](https://addons.mozilla.org/addon/auto-auth)
 
 [![Chrome](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/chrome_48.png)](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
 [![Firefox](https://raw.githubusercontent.com/smashedr/logo-icons/master/browsers/firefox_48.png)](https://addons.mozilla.org/addon/auto-auth)
@@ -51,6 +52,8 @@ then enter the username `user` and password `pass`
 
 All **Chromium** Based Browsers can install the extension from
 the [Chrome Web Store](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm).
+
+[![QR Code GitHub](https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/auto-auth/qr-firefox.png)](https://addons.mozilla.org/addon/auto-auth)
 
 ## Features
 
@@ -83,13 +86,15 @@ Long-term Goals for Improved Security:
 
 ### Known Issues
 
-* Only allows saving 1 set of credentials per host
-* Most browsers will offer to save passwords on login and edit
-* A 401 response from a Service Worker is not properly intercepted:
+- Only allows saving 1 set of credentials per host.
+- Most browsers will offer to save passwords on login and edit.
+- Incognito and Private Browsing will not allow logging into new sites.
+    - You must save the credentials first or add them manually.
+- A 401 response from a Service Worker is not properly intercepted:
     - Firefox: Shows a generic 401 page, use `Ctrl+F5`
-        * Once credentials are saved, requests will work as normal.
+        - Once credentials are saved, requests will work as normal.
     - Chrome: Shows a default credentials prompt, Cancel and press `Ctrl+F5`
-        * This behavior may continue after saving credentials.
+        - This behavior may continue after saving credentials.
 
 > [!TIP]
 > **Don't see your issue here?**
@@ -272,15 +277,16 @@ or [Mozilla](https://addons.mozilla.org/addon/auto-auth) and to star this projec
 
 Other Web Extensions I have created and published:
 
-- [Link Extractor](https://github.com/cssnr/link-extractor)
-- [Open Links in New Tab](https://github.com/cssnr/open-links-in-new-tab)
-- [Auto Auth](https://github.com/cssnr/auto-auth)
-- [Cache Cleaner](https://github.com/cssnr/cache-cleaner)
-- [HLS Video Downloader](https://github.com/cssnr/hls-video-downloader)
-- [SMWC Web Extension](https://github.com/cssnr/smwc-web-extension)
-- [PlayDrift Extension](https://github.com/cssnr/playdrift-extension)
-- [ASN Plus](https://github.com/cssnr/asn-plus)
-- [Aviation Tools](https://github.com/cssnr/aviation-tools)
-- [Text Formatter](https://github.com/cssnr/text-formatter)
+- [Link Extractor](https://github.com/cssnr/link-extractor?tab=readme-ov-file#readme)
+- [Open Links in New Tab](https://github.com/cssnr/open-links-in-new-tab?tab=readme-ov-file#readme)
+- [Auto Auth](https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme)
+- [Cache Cleaner](https://github.com/cssnr/cache-cleaner?tab=readme-ov-file#readme)
+- [HLS Video Downloader](https://github.com/cssnr/hls-video-downloader?tab=readme-ov-file#readme)
+- [Obtainium Extension](https://github.com/cssnr/obtainium-extension?tab=readme-ov-file#readme)
+- [SMWC Web Extension](https://github.com/cssnr/smwc-web-extension?tab=readme-ov-file#readme)
+- [PlayDrift Extension](https://github.com/cssnr/playdrift-extension?tab=readme-ov-file#readme)
+- [ASN Plus](https://github.com/cssnr/asn-plus?tab=readme-ov-file#readme)
+- [Aviation Tools](https://github.com/cssnr/aviation-tools?tab=readme-ov-file#readme)
+- [Text Formatter](https://github.com/cssnr/text-formatter?tab=readme-ov-file#readme)
 
 For a full list of current projects visit: [https://cssnr.github.io/](https://cssnr.github.io/)
