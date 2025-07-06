@@ -453,7 +453,7 @@ async function importCredentials(data) {
                 hosts[key] = `${item.login}:${item.password}`
                 count += 1
             } catch (e) {
-                console.log(`Error processing item:`, 'color: Red', item)
+                console.log(`Error processing item:`, 'color: Red', item, e)
             }
         }
     } else {
@@ -480,7 +480,7 @@ async function importCredentials(data) {
                 }
                 count += 1
             } catch (e) {
-                console.log(`Error processing: ${key}`, 'color: Red')
+                console.log(`Error processing: ${key}`, 'color: Red', e)
             }
         }
     }
