@@ -348,7 +348,7 @@ async function addHost(event) {
     const existing = await Hosts.get(url.hostname)
     console.debug('existing:', existing)
     if (existing) {
-        showToast(`Host Exists: ${url.hostname}`, 'warning')
+        // showToast(`Host Exists: ${url.hostname}`, 'warning')
         document.getElementById('hostnameValidation').textContent =
             'Hostname Already Exist!'
         input.focus()
