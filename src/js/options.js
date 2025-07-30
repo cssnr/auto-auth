@@ -114,6 +114,10 @@ importModalEl.addEventListener('shown.bs.modal', () => {
     importTextarea.focus()
 })
 
+$('.form-control').on('change input', function () {
+    $(this).removeClass('is-invalid')
+})
+
 /**
  * Initialize Options
  * @function initOptions
@@ -236,16 +240,23 @@ async function deleteHost(event) {
 async function editClick(event) {
     console.debug('editClick:', event)
     const target = event.currentTarget
+    const inputs = editModalEl.querySelectorAll('input')
     if (target.dataset.action === 'add') {
+        // Process Add
         console.debug('%c Add Host editClick', 'color: Lime')
         document.getElementById('edit-modal-label').textContent = 'Add Host'
         editForm.dataset.action = 'add'
-        editModalEl.querySelectorAll('input').forEach((el) => (el.value = ''))
+        inputs.forEach((el) => {
+            el.classList.remove('is-invalid')
+            el.value = ''
+        })
         editModal.show()
         return
     }
+    // Process Edit
     document.getElementById('edit-modal-label').textContent = 'Edit Host'
     editForm.dataset.action = 'edit'
+    inputs.forEach((el) => el.classList.remove('is-invalid'))
     const host = target?.dataset?.value
     console.debug('host:', host)
     const creds = await Hosts.get(host)
@@ -288,6 +299,7 @@ async function editSubmit(event) {
             editModal.hide()
             return showToast('No Changes Detected', 'warning')
         }
+        // TODO: Validate Hostname/Username/Password
         // const { sites } = await chrome.storage.sync.get(['sites'])
         // if (hostname !== editHostname.dataset.original) {
         //     delete sites[editHostname.dataset.original]
@@ -314,6 +326,7 @@ async function editSubmit(event) {
 async function addHost(event) {
     console.debug('addHost:', event)
     event.preventDefault()
+    /** @type {HTMLInputElement} */
     const input = event.target.elements['hostname']
     console.debug('input:', input)
     let value = input.value
@@ -336,21 +349,31 @@ async function addHost(event) {
     console.debug('existing:', existing)
     if (existing) {
         showToast(`Host Exists: ${url.hostname}`, 'warning')
+        document.getElementById('hostnameValidation').textContent =
+            'Hostname Already Exist!'
         input.focus()
         input.select()
+        input.classList.add('is-invalid')
         return console.debug('Existing Host: url:', url)
     }
-    // TODO: Validate username/password
+    /** @type {HTMLInputElement} */
     const usernameEl = event.target.elements['username']
     console.log('username:', usernameEl.value)
     if (!usernameEl.value) {
+        document.getElementById('usernameValidation').textContent =
+            'Username Required!'
         usernameEl.focus()
+        usernameEl.classList.add('is-invalid')
         return console.debug('No username')
     }
+    /** @type {HTMLInputElement} */
     const passwordEl = event.target.elements['password']
     console.log('password:', passwordEl.value)
     if (!passwordEl.value) {
+        document.getElementById('passwordValidation').textContent =
+            'Password Required!'
         passwordEl.focus()
+        passwordEl.classList.add('is-invalid')
         return console.debug('No password')
     }
     console.log(`Adding Host: ${url.hostname}`, url)
