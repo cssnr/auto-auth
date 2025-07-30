@@ -170,15 +170,16 @@
     <div class="mb-1 small">
         <a id="export-hosts" class="link-body-emphasis text-decoration-none" role="button">
             Export <i class="fa-solid fa-file-arrow-down ms-1"></i></a>
-<!--        <span class="mx-1">/</span>-->
         <span class="mx-1">&bull;</span>
         <input type="file" id="hosts-input" style="display: none;" />
         <a id="import-file" class="link-body-emphasis text-decoration-none" role="button">
             Import File <i class="fa-solid fa-file-arrow-up ms-1"></i></a>
-<!--        <span class="mx-1">/</span>-->
         <span class="mx-1">&bull;</span>
         <a class="link-body-emphasis text-decoration-none" role="button" data-bs-toggle="modal" data-bs-target="#import-modal">
             Import Text <i class="fa-solid fa-paste ms-1"></i></a>
+        <span class="mx-1">&bull;</span>
+        <a id="add-hosts" data-action="add" class="link-body-emphasis text-decoration-none" role="button">
+            Add Host <i class="fa-solid fa-add ms-1"></i></a>
     </div>
 
     <table id="hosts-table" class="table table-sm table-hover bg-transparent">
