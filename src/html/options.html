@@ -168,18 +168,19 @@
     <h5><i class="fa-solid fa-key me-2"></i> Saved Credentials</h5>
 
     <div class="mb-1 small">
-        <a id="export-hosts" class="link-body-emphasis text-decoration-none" role="button">
+        <a id="export-hosts" class="link-body-emphasis text-decoration-none d-inline-block" role="button">
             Export <i class="fa-solid fa-file-arrow-down ms-1"></i></a>
-<!--        <span class="mx-1">/</span>-->
         <span class="mx-1">&bull;</span>
         <input type="file" id="hosts-input" style="display: none;" />
-        <a id="import-file" class="link-body-emphasis text-decoration-none" role="button">
+        <a id="import-file" class="link-body-emphasis text-decoration-none d-inline-block" role="button">
             Import File <i class="fa-solid fa-file-arrow-up ms-1"></i></a>
-<!--        <span class="mx-1">/</span>-->
         <span class="mx-1">&bull;</span>
-        <a class="link-body-emphasis text-decoration-none" role="button" data-bs-toggle="modal" data-bs-target="#import-modal">
+        <a class="link-body-emphasis text-decoration-none d-inline-block" role="button" data-bs-toggle="modal" data-bs-target="#import-modal">
             Import Text <i class="fa-solid fa-paste ms-1"></i></a>
     </div>
+
+    <button id="add-hosts" data-action="add" class="btn btn-outline-success ms-2 my-2">
+        Add Host <i class="fa-solid fa-add ms-1"></i></button>
 
     <table id="hosts-table" class="table table-sm table-hover bg-transparent">
         <caption>Saved Credentials</caption>
@@ -260,8 +261,8 @@
         <form id="edit-form" name="edit-form" class="mb-3" autocomplete="off">
 
             <label for="hostname" class="form-label"><i class="fa-solid fa-globe me-2"></i> Hostname</label>
-            <div class="input-group col-12 mb-3">
-                <input id="hostname" placeholder="hostname" aria-describedby="hostnameHelp" type="text" class="form-control" autocomplete="off" required>
+            <div class="input-group has-validation col-12 mb-3">
+                <input id="hostname" placeholder="hostname" aria-describedby="hostnameHelp hostnameValidation" type="text" class="form-control" autocomplete="off" required>
                 <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1"
                         data-copy-input="#hostname" data-copy-text="Hostname Copied."
                         data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Copy Hostname">
@@ -271,12 +272,13 @@
 <!--                        data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Hostname">-->
 <!--                    <i class="fa-regular fa-paste"></i>-->
 <!--                </button>-->
+                <div id="hostnameValidation" class="invalid-feedback"></div>
             </div>
             <div class="form-text visually-hidden" id="hostnameHelp">Basic Authentication Hostname.</div>
 
             <label for="username" class="form-label"><i class="fa-solid fa-user me-2"></i> Username</label>
-            <div class="input-group col-12 mb-3">
-                <input id="username" placeholder="username" aria-describedby="usernameHelp" type="text" class="form-control" autocomplete="off" required>
+            <div class="input-group has-validation col-12 mb-3">
+                <input id="username" placeholder="username" aria-describedby="usernameHelp usernameValidation" type="text" class="form-control" autocomplete="off" required>
                 <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1"
                         data-copy-input="#username" data-copy-text="Username Copied."
                         data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Copy Username">
@@ -286,12 +288,13 @@
 <!--                        data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Username">-->
 <!--                    <i class="fa-regular fa-paste"></i>-->
 <!--                </button>-->
+                <div id="usernameValidation" class="invalid-feedback"></div>
             </div>
             <div class="form-text visually-hidden" id="usernameHelp">Basic Authentication Username.</div>
 
             <label for="password" class="form-label"><i class="fa-solid fa-key me-2"></i> Password</label>
-            <div class="input-group col-12 mb-3">
-                <input id="password" placeholder="password" aria-describedby="passwordHelp" type="password" class="form-control" autocomplete="off" required>
+            <div class="input-group has-validation col-12 mb-3">
+                <input id="password" placeholder="password" aria-describedby="passwordHelp passwordValidation" type="password" class="form-control" autocomplete="off" required>
                 <button class="btn btn-outline-success" type="button" data-bs-toggle="tooltip" data-show-hide="#password" tabindex="-1"
                         data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Show/Hide Password"
                         data-class-on="btn-outline-warning" data-class-off="btn-outline-success">
@@ -306,6 +309,7 @@
 <!--                        data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Password">-->
 <!--                    <i class="fa-regular fa-paste"></i>-->
 <!--                </button>-->
+                <div id="passwordValidation" class="invalid-feedback"></div>
             </div>
             <div class="form-text visually-hidden" id="passwordHelp">Basic Authentication Password.</div>
 
