@@ -407,6 +407,7 @@ function addContext(context) {
             context[1] = Math.random().toString().substring(2, 7)
             context.push('separator', 'separator')
         }
+        // noinspection JSCheckFunctionSignatures
         chrome.contextMenus.create({
             contexts: context[0],
             id: context[1],

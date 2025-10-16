@@ -204,8 +204,8 @@ export function updateOptions(options) {
         }
         // Option Key should be `radioXXX` and values should be the option IDs
         if (key.startsWith('radio')) {
-            key = value
-            value = true
+            key = value // NOSONAR
+            value = true // NOSONAR
         }
         // console.debug(`${key}: ${value}`)
         const el = document.getElementById(key)

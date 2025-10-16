@@ -112,15 +112,16 @@ async function submitAuth(event) {
     const pass = event.target.elements.password.value
     // console.debug('host, user, pass:', host, user, pass)
 
-    if (event.target.elements.saveCreds.checked) {
+    // noinspection JSUnresolvedReference
+    if (event.target.elements.saveCreds?.checked) {
         // const { sites } = await chrome.storage.sync.get(['sites'])
         // sites[host] = `${user}:${pass}`
         // await chrome.storage.sync.set({ sites })
         await Hosts.set(url.host, `${user}:${pass}`)
         console.log(
             '%cCredentials Saved.',
-            `Loading: ${url.href}`,
-            'color: LimeGreen'
+            'color: LimeGreen',
+            `Loading: ${url.href}`
         )
     } else {
         const { session } = await chrome.storage.session.get(['session'])
@@ -128,8 +129,8 @@ async function submitAuth(event) {
         await chrome.storage.session.set({ session })
         console.log(
             '%cCredentials Saved for Session Only.',
-            `Loading: ${url.href}`,
-            'color: SpringGreen'
+            'color: SpringGreen',
+            `Loading: ${url.href}`
         )
     }
     const tab = await chrome.tabs.getCurrent()
