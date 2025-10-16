@@ -359,13 +359,13 @@ async function addHost(event) {
     /** @type {HTMLInputElement} */
     const usernameEl = event.target.elements['username']
     console.log('username:', usernameEl.value)
-    if (!usernameEl.value) {
-        document.getElementById('usernameValidation').textContent =
-            'Username Required!'
-        usernameEl.focus()
-        usernameEl.classList.add('is-invalid')
-        return console.debug('No username')
-    }
+    // if (!usernameEl.value) {
+    //     document.getElementById('usernameValidation').textContent =
+    //         'Username Required!'
+    //     usernameEl.focus()
+    //     usernameEl.classList.add('is-invalid')
+    //     return console.debug('No username')
+    // }
     /** @type {HTMLInputElement} */
     const passwordEl = event.target.elements['password']
     console.log('password:', passwordEl.value)

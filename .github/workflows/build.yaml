@@ -11,19 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
+    permissions:
+      contents: write
+
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: "Setup Node 22"
-        uses: actions/setup-node@v4
+      - name: "Setup Node 24"
+        uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
 
       - name: "Install"
         run: |
-          npm install
+          npm ci
 
       - name: "Update Manifest Version"
         if: ${{ github.event_name == 'release' }}
@@ -40,14 +43,20 @@ jobs:
           name: artifacts
           path: web-ext-artifacts/
 
+      #- name: "Upload to Release"
+      #  if: ${{ github.event_name == 'release' }}
+      #  uses: svenstaro/upload-release-action@v2
+      #  with:
+      #    file: web-ext-artifacts/*
+      #    tag: ${{ github.ref }}
+      #    overwrite: true
+      #    file_glob: true
+
       - name: "Upload to Release"
         if: ${{ github.event_name == 'release' }}
-        uses: svenstaro/upload-release-action@v2
+        uses: cssnr/upload-release-action@v1
         with:
-          file: web-ext-artifacts/*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
+          globs: web-ext-artifacts/*
 
       - name: "Update Release Notes Action"
         if: ${{ github.event_name == 'release' }}
