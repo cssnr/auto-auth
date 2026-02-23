@@ -79,6 +79,10 @@ const editHostname = document.getElementById('hostname')
 const editUsername = document.getElementById('username')
 const editPassword = document.getElementById('password')
 
+document
+    .getElementById('usernameSwitch')
+    .addEventListener('change', (e) => (editUsername.required = !e.currentTarget.checked))
+
 const confirmDelete = document.getElementById('confirm-delete')
 const confirmDeleteHost = document.getElementById('delete-host')
 const deleteModal = new bootstrap.Modal('#delete-modal')
@@ -309,7 +313,7 @@ async function editSubmit(event) {
         await Hosts.edit(
             editHostname.dataset.original,
             hostname,
-            `${username}:${password}`
+            `${username}:${password}`,
         )
         editModal.hide()
         showToast(`Updated Host: ${hostname}`, 'success')
@@ -370,8 +374,7 @@ async function addHost(event) {
     const passwordEl = event.target.elements['password']
     console.log('password:', passwordEl.value)
     if (!passwordEl.value) {
-        document.getElementById('passwordValidation').textContent =
-            'Password Required!'
+        document.getElementById('passwordValidation').textContent = 'Password Required!'
         passwordEl.focus()
         passwordEl.classList.add('is-invalid')
         return console.debug('No password')
@@ -634,11 +637,8 @@ async function setShortcuts(selector = '#keyboard-shortcuts', action = false) {
             const userSettings = await chrome.action.getUserSettings()
             const row = source.cloneNode(true)
             row.querySelector('i').className = 'fa-solid fa-puzzle-piece me-1'
-            row.querySelector('.description').textContent =
-                'Toolbar Icon Pinned'
-            row.querySelector('kbd').textContent = userSettings.isOnToolbar
-                ? 'Yes'
-                : 'No'
+            row.querySelector('.description').textContent = 'Toolbar Icon Pinned'
+            row.querySelector('kbd').textContent = userSettings.isOnToolbar ? 'Yes' : 'No'
             tbody.appendChild(row)
         } catch (e) {
             console.log('Error adding pinned setting:', e)

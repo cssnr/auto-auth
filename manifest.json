@@ -6,12 +6,7 @@
   "author": "Shane",
   "version": "0.0.1",
   "manifest_version": 3,
-  "permissions": [
-    "contextMenus",
-    "storage",
-    "webRequest",
-    "webRequestAuthProvider"
-  ],
+  "permissions": ["contextMenus", "storage", "webRequest", "webRequestAuthProvider"],
   "host_permissions": ["*://*/*"],
   "content_scripts": [
     {

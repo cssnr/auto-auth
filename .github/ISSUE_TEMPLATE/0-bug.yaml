@@ -1,10 +1,15 @@
 name: "⚠️ Report an Issue"
-description: "Something Not Working Right? Please let us know..."
+description: "Please let us know if something is not right..."
 labels: ["bug"]
 assignees:
   - smashedr
 
 body:
+  - type: markdown
+    attributes:
+      value: |
+        All issues will be responded too.
+
   - type: input
     id: website
     validations:
@@ -26,13 +31,14 @@ body:
   - type: textarea
     id: logs
     validations:
-      required: true
+      required: false
     attributes:
-      label: Support Information
-      description: Open the extension options, scroll to the bottom, click Copy Support Information and paste below.
+      label: Log Output
+      description: Paste any relevant logs or output in this box.
+      placeholder: Output is automatically wrapped in a code block.
       render: shell
 
   - type: markdown
     attributes:
       value: |
-        All issues/bugs that we can verify will be fixed. Thank you for taking the time to make this report!
+        Thank you for taking the time to make this report!

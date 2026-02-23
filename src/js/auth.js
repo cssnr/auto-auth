@@ -27,6 +27,10 @@ document
 const userInput = document.getElementById('username')
 const passInput = document.getElementById('password')
 
+document
+    .getElementById('usernameSwitch')
+    .addEventListener('change', (e) => (userInput.required = !e.currentTarget.checked))
+
 const saveCreds = document.getElementById('saveCreds')
 saveCreds.addEventListener('change', saveChange)
 
@@ -118,11 +122,7 @@ async function submitAuth(event) {
         // sites[host] = `${user}:${pass}`
         // await chrome.storage.sync.set({ sites })
         await Hosts.set(url.host, `${user}:${pass}`)
-        console.log(
-            '%cCredentials Saved.',
-            'color: LimeGreen',
-            `Loading: ${url.href}`
-        )
+        console.log('%cCredentials Saved.', 'color: LimeGreen', `Loading: ${url.href}`)
     } else {
         const { session } = await chrome.storage.session.get(['session'])
         session[host] = `${user}:${pass}`
@@ -130,7 +130,7 @@ async function submitAuth(event) {
         console.log(
             '%cCredentials Saved for Session Only.',
             'color: SpringGreen',
-            `Loading: ${url.href}`
+            `Loading: ${url.href}`,
         )
     }
     const tab = await chrome.tabs.getCurrent()

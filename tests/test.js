@@ -47,12 +47,10 @@ async function scrollPage(page) {
 async function getPage(browser, name, size) {
     console.debug(`getPage: ${name}`, size)
     const target = await browser.waitForTarget(
-        (target) => target.type() === 'page' && target.url().endsWith(name)
+        (target) => target.type() === 'page' && target.url().endsWith(name),
     )
     const page = await target.asPage()
-    await page.emulateMediaFeatures([
-        { name: 'prefers-color-scheme', value: 'dark' },
-    ])
+    await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'dark' }])
     if (size) {
         const [width, height] = size.split('x').map((x) => parseInt(x))
         await page.setViewport({ width, height })
@@ -82,7 +80,7 @@ async function getPage(browser, name, size) {
     const workerTarget = await browser.waitForTarget(
         (target) =>
             target.type() === 'service_worker' &&
-            target.url().endsWith('service-worker.js')
+            target.url().endsWith('service-worker.js'),
     )
     const worker = await workerTarget.worker()
     console.log('worker:', worker)
@@ -145,9 +143,7 @@ async function getPage(browser, name, size) {
 
     // Page
     const page = await browser.newPage()
-    await page.emulateMediaFeatures([
-        { name: 'prefers-color-scheme', value: 'dark' },
-    ])
+    await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'dark' }])
     page.on('console', (msg) => console.log(`console:`, msg.text()))
     console.log('page:', page)
 

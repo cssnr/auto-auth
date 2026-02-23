@@ -4,9 +4,7 @@
     const getStoredTheme = () => localStorage.getItem('theme')
     const setStoredTheme = (theme) => localStorage.setItem('theme', theme)
     const getMediaMatch = () =>
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-            ? 'dark'
-            : 'light'
+        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 
     const getPreferredTheme = () => {
         const storedTheme = getStoredTheme()
@@ -20,10 +18,7 @@
     const setTheme = (theme) => {
         // console.debug(`setTheme: ${theme}`)
         if (theme === 'auto') {
-            document.documentElement.setAttribute(
-                'data-bs-theme',
-                getMediaMatch()
-            )
+            document.documentElement.setAttribute('data-bs-theme', getMediaMatch())
         } else {
             document.documentElement.setAttribute('data-bs-theme', theme)
         }
@@ -63,16 +58,14 @@
         }
     })
 
-    window
-        .matchMedia('(prefers-color-scheme: dark)')
-        .addEventListener('change', () => {
-            const storedTheme = getStoredTheme()
-            console.debug('prefers-color-scheme: change:', storedTheme)
-            if (storedTheme === 'auto') {
-                const preferred = getPreferredTheme()
-                setTheme(preferred)
-            }
-        })
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        const storedTheme = getStoredTheme()
+        console.debug('prefers-color-scheme: change:', storedTheme)
+        if (storedTheme === 'auto') {
+            const preferred = getPreferredTheme()
+            setTheme(preferred)
+        }
+    })
 
     window.addEventListener('DOMContentLoaded', () => {
         const preferred = getPreferredTheme()

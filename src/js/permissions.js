@@ -1,12 +1,6 @@
 // JS for permissions.html
 
-import {
-    checkPerms,
-    grantPerms,
-    linkClick,
-    onRemoved,
-    updateManifest,
-} from './export.js'
+import { checkPerms, grantPerms, linkClick, onRemoved, updateManifest } from './export.js'
 
 chrome.permissions.onAdded.addListener(onAdded)
 chrome.permissions.onRemoved.addListener(onRemoved)

@@ -93,7 +93,7 @@ export function textFileDownload(filename, text) {
     const element = document.createElement('a')
     element.setAttribute(
         'href',
-        'data:text/plain;charset=utf-8,' + encodeURIComponent(text)
+        'data:text/plain;charset=utf-8,' + encodeURIComponent(text),
     )
     element.setAttribute('download', filename)
     element.classList.add('d-none')
@@ -114,6 +114,22 @@ export function showHidePassword(event) {
         input.type = 'password'
         el.classList.remove(el.dataset.classOn)
         el.classList.add(el.dataset.classOff)
+    }
+}
+
+/**
+ * Open Popup Click Callback
+ * @function openPopup
+ * @param {Event} [event]
+ */
+export async function openPopup(event) {
+    console.debug('openPopup:', event)
+    event?.preventDefault()
+    // Note: This fails if popup is already open (ex. double clicks)
+    try {
+        await chrome.action.openPopup()
+    } catch (e) {
+        console.debug(e)
     }
 }
 
@@ -443,9 +459,7 @@ export async function updateBrowser() {
     if (typeof browser !== 'undefined') {
         selector = '.firefox'
     }
-    document
-        .querySelectorAll(selector)
-        .forEach((el) => el.classList.remove('d-none'))
+    document.querySelectorAll(selector).forEach((el) => el.classList.remove('d-none'))
 }
 
 /**

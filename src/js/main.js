@@ -9,9 +9,7 @@ document.querySelectorAll('.form-control').forEach((el) => {
 // noinspection TypeScriptUMDGlobal
 if (typeof ClipboardJS !== 'undefined') {
     // noinspection TypeScriptUMDGlobal
-    const clipboard = new ClipboardJS(
-        '[data-clipboard-text],[data-clipboard-target]'
-    )
+    const clipboard = new ClipboardJS('[data-clipboard-text],[data-clipboard-target]')
     clipboard.on('success', function (event) {
         // console.debug('clipboard.success:', event)
         const text = event.text.trim()
@@ -44,10 +42,7 @@ if (backToTop) {
  * @function onScroll
  */
 function onScroll() {
-    if (
-        document.body.scrollTop > 20 ||
-        document.documentElement.scrollTop > 20
-    ) {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
         backToTop.style.display = 'block'
     } else {
         backToTop.style.display = 'none'
