@@ -59,7 +59,7 @@ async function domContentLoaded() {
 
     const tempSave = sessionStorage.getItem(url.host)
     if (tempSave) {
-        saveCreds.checked = !!parseInt(tempSave)
+        saveCreds.checked = !!Number.parseInt(tempSave)
     } else {
         saveCreds.checked = options.defaultSave
     }
