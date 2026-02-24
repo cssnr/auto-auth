@@ -21,8 +21,9 @@ async function domContentLoaded() {
     console.debug('domContentLoaded')
     // noinspection ES6MissingAwait
     updateManifest()
-    // noinspection ES6MissingAwait
-    checkPerms()
+    checkPerms().then((hasPerms) => {
+        if (!hasPerms) console.log('%cMissing Host Permissions', 'color: Red')
+    })
 }
 
 /**
@@ -32,8 +33,10 @@ async function domContentLoaded() {
 async function onAdded(permissions) {
     console.debug('onAdded', permissions)
     const hasPerms = await checkPerms()
-    if (hasPerms && window.opener) {
-        await chrome.runtime.openOptionsPage()
+    if (hasPerms) {
+        if (document.hasFocus()) {
+            await chrome.runtime.openOptionsPage()
+        }
         window.close()
     }
 }
