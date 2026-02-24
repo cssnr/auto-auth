@@ -32,13 +32,17 @@
 
         <label for="username" class="form-label"><i class="fa-solid fa-user me-2"></i> Username</label>
         <div class="input-group input-group-lg col-12">
-            <input id="username" placeholder="username" aria-describedby="usernameHelp" type="text" class="form-control" autocomplete="off" required autofocus>
+            <input id="username" placeholder="username" aria-describedby="usernameHelp" type="text" class="form-control" autocomplete="off" autofocus required>
 <!--            <button class="btn btn-outline-info" type="button" data-bs-toggle="tooltip" tabindex="-1" data-paste-input="#username"-->
 <!--                    data-bs-placement="bottom" data-bs-trigger="hover" data-bs-title="Paste Username">-->
 <!--                <i class="fa-regular fa-paste"></i>-->
 <!--            </button>-->
         </div>
-        <div class="form-text mb-3" id="usernameHelp">Basic Authentication Username.</div>
+        <div class="form-text ms-2" id="usernameHelp">Basic Authentication Username.</div>
+        <div class="form-check form-switch ms-2 mb-3">
+            <input class="form-check-input" type="checkbox" role="switch" id="usernameSwitch" tabindex="-1">
+            <label class="form-check-label" for="usernameSwitch">No Username</label>
+        </div>
 
         <label for="password" class="form-label"><i class="fa-solid fa-key me-2"></i> Password</label>
         <div class="input-group input-group-lg col-12">
@@ -53,7 +57,7 @@
 <!--                <i class="fa-regular fa-paste"></i>-->
 <!--            </button>-->
         </div>
-        <div class="form-text mb-3" id="passwordHelp">Basic Authentication Password.</div>
+        <div class="form-text ms-2 mb-3" id="passwordHelp">Basic Authentication Password.</div>
 
         <input type="hidden" id="hostname" name="hostname">
 

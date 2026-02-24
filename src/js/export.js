@@ -93,13 +93,13 @@ export function textFileDownload(filename, text) {
     const element = document.createElement('a')
     element.setAttribute(
         'href',
-        'data:text/plain;charset=utf-8,' + encodeURIComponent(text)
+        'data:text/plain;charset=utf-8,' + encodeURIComponent(text),
     )
     element.setAttribute('download', filename)
     element.classList.add('d-none')
     document.body.appendChild(element)
     element.click()
-    document.body.removeChild(element)
+    element.remove()
 }
 
 export function showHidePassword(event) {
@@ -115,21 +115,6 @@ export function showHidePassword(event) {
         el.classList.remove(el.dataset.classOn)
         el.classList.add(el.dataset.classOff)
     }
-}
-
-/**
- * Show Extension Panel
- * @function showPanel
- * @param {Number} height
- * @param {Number} width
- */
-export async function showPanel(height = 520, width = 480) {
-    return await chrome.windows.create({
-        type: 'panel',
-        url: '/html/panel.html',
-        width,
-        height,
-    })
 }
 
 /**
@@ -177,35 +162,44 @@ export async function saveOptions(event) {
     } else if (event.target.type === 'checkbox') {
         value = event.target.checked
     } else if (event.target.type === 'number') {
-        value = event.target.value.toString()
+        const number = Number.parseFloat(event.target.value)
+        let min = Number.parseFloat(event.target.min)
+        let max = Number.parseFloat(event.target.max)
+        if (!Number.isNaN(number) && number >= min && number <= max) {
+            event.target.value = number.toString()
+            value = number
+        } else {
+            event.target.value = options[event.target.id]
+            return
+        }
     } else {
         value = event.target.value
     }
-    if (value !== undefined) {
-        options[key] = value
-        console.log(`%cSet: ${key}:`, 'color: Lime', value)
-        await chrome.storage.sync.set({ options })
+    if (value === undefined) {
+        console.warn(`No Value for key: ${key}`)
     } else {
-        console.warn('No Value for key:', key)
+        options[key] = value
+        console.log(`Set %c${key}:`, 'color: Khaki', value)
+        await chrome.storage.sync.set({ options })
     }
 }
 
 /**
- * Update Options based on type
+ * Update Options
  * @function initOptions
  * @param {Object} options
  */
 export function updateOptions(options) {
     console.debug('updateOptions:', options)
     for (let [key, value] of Object.entries(options)) {
-        if (typeof value === 'undefined') {
+        if (value === undefined) {
             console.warn('Value undefined for key:', key)
             continue
         }
         // Option Key should be `radioXXX` and values should be the option IDs
         if (key.startsWith('radio')) {
-            key = value
-            value = true
+            key = value //NOSONAR
+            value = true //NOSONAR
         }
         // console.debug(`${key}: ${value}`)
         const el = document.getElementById(key)
@@ -214,7 +208,7 @@ export function updateOptions(options) {
         }
         if (el.tagName !== 'INPUT') {
             el.textContent = value.toString()
-        } else if (['checkbox', 'radio'].includes(el.type)) {
+        } else if (typeof value === 'boolean') {
             el.checked = value
         } else {
             el.value = value
@@ -223,7 +217,8 @@ export function updateOptions(options) {
             hideShowElement(`#${el.dataset.related}`, value)
         }
         if (el.dataset.warning) {
-            addWarningClass(el.nextElementSibling, value, el.dataset.warning)
+            // addWarningClass(el.nextElementSibling, value, el.dataset.warning)
+            el.nextElementSibling.classList.toggle(el.dataset.warning, !!value)
         }
     }
 }
@@ -245,39 +240,40 @@ function hideShowElement(selector, show, speed = 'fast') {
     }
 }
 
-/**
- * Add Warning Class to Element
- * @function addWarningClass
- * @param {HTMLElement} element
- * @param {Boolean} value
- * @param {String} warning
- */
-function addWarningClass(element, value, warning) {
-    // console.debug('addWarningClass:', value, element)
-    if (value) {
-        element.classList.add(warning)
-    } else {
-        element.classList.remove(warning)
-    }
-}
+// /**
+//  * Add Warning Class to Element
+//  * @function addWarningClass
+//  * @param {HTMLElement} element
+//  * @param {Boolean} value
+//  * @param {String} warning
+//  */
+// function addWarningClass(element, value, warning) {
+//     // console.debug('addWarningClass:', value, element)
+//     if (value) {
+//         element.classList.add(warning)
+//     } else {
+//         element.classList.remove(warning)
+//     }
+// }
 
 /**
  * Link Click Callback
- * Firefox requires a call to window.close()
+ * Note: Firefox popup requires a call to window.close()
  * @function linkClick
  * @param {MouseEvent} event
  * @param {Boolean} [close]
  */
 export async function linkClick(event, close = false) {
-    // console.debug('linkClick:', event, close)
-    event.preventDefault()
-    const href = event.currentTarget.getAttribute('href').replace(/^\.+/g, '')
-    // console.debug('href:', href)
+    console.debug('linkClick:', close, event)
+    const target = event.currentTarget
+    const href = target.getAttribute('href').replace(/^\.+/, '')
+    console.debug('href:', href)
+    let url
     if (href.startsWith('#')) {
-        // console.debug('return on anchor link')
+        console.debug('return on anchor link')
         return
     }
-    let url
+    event.preventDefault()
     if (href.endsWith('html/options.html')) {
         await chrome.runtime.openOptionsPage()
         if (close) window.close()
@@ -304,20 +300,21 @@ export async function linkClick(event, close = false) {
  * @return {Promise<chrome.tabs.Tab>}
  */
 export async function activateOrOpen(url, open = true) {
-    console.debug('activateOrOpen:', url)
-    // Get Tab from Tabs (requires host permissions)
+    console.debug('activateOrOpen:', url, open)
+    // Note: To Get Tab from Tabs (requires host permissions or tabs)
     const tabs = await chrome.tabs.query({ currentWindow: true })
-    // console.debug('tabs:', tabs)
+    console.debug('tabs:', tabs)
     for (const tab of tabs) {
         if (tab.url === url) {
-            console.debug('found tab in tabs:', tab)
+            console.debug('%cTab found, activating:', 'color: Lime', tab)
             return await chrome.tabs.update(tab.id, { active: true })
         }
     }
-    console.debug('tab not found, open:', open)
     if (open) {
+        console.debug('%cTab not found, opening url:', 'color: Yellow', url)
         return await chrome.tabs.create({ active: true, url })
     }
+    console.warn('tab not found and open not set!')
 }
 
 /**
@@ -325,20 +322,73 @@ export async function activateOrOpen(url, open = true) {
  * @function updateManifest
  */
 export async function updateManifest() {
-    try {
-        const manifest = chrome.runtime.getManifest()
-        document.querySelectorAll('.version').forEach((el) => {
-            el.textContent = manifest.version
-        })
-        document.querySelectorAll('[href="version_url"]').forEach((el) => {
-            el.href = `${githubURL}/releases/tag/${manifest.version}`
-        })
-        document.querySelectorAll('[href="homepage_url"]').forEach((el) => {
-            el.href = manifest.homepage_url
-        })
-    } catch (e) {
-        console.log('Error updating manifest settings:', e)
+    const manifest = chrome.runtime.getManifest()
+    console.debug('updateManifest:', manifest)
+    document.querySelectorAll('.version').forEach((el) => {
+        el.textContent = manifest.version
+    })
+    document.querySelectorAll('[href="homepage_url"]').forEach((el) => {
+        el.href = manifest.homepage_url
+    })
+    document.querySelectorAll('[href="version_url"]').forEach((el) => {
+        el.href = `${githubURL}/releases/tag/${manifest.version}`
+    })
+}
+
+/**
+ * @function updateBrowser
+ * @return {Promise<void>}
+ */
+export async function updateBrowser() {
+    let selector = '.chrome'
+    // noinspection JSUnresolvedReference
+    if (typeof browser?.runtime?.getBrowserInfo === 'function') {
+        selector = '.firefox'
     }
+    console.debug('updateBrowser:', selector)
+    document.querySelectorAll(selector).forEach((el) => el.classList.remove('d-none'))
+}
+
+/**
+ * @function updatePlatform
+ * @return {Promise<chrome.runtime.PlatformInfo>}
+ */
+export async function updatePlatform() {
+    const platform = await chrome.runtime.getPlatformInfo()
+    console.debug('updatePlatform:', platform)
+    const splitCls = (cls) => cls.split(' ').filter(Boolean)
+    if (platform.os === 'android' && typeof document !== 'undefined') {
+        // document.querySelectorAll('[class*="mobile-"]').forEach((el) => {
+        document
+            .querySelectorAll(
+                '[data-mobile-add],[data-mobile-remove],[data-mobile-replace]',
+            )
+            .forEach((el) => {
+                if (el.dataset.mobileAdd) {
+                    for (const cls of splitCls(el.dataset.mobileAdd)) {
+                        // console.debug('mobileAdd:', cls)
+                        el.classList.add(cls)
+                    }
+                }
+                if (el.dataset.mobileRemove) {
+                    for (const cls of splitCls(el.dataset.mobileRemove)) {
+                        // console.debug('mobileAdd:', cls)
+                        el.classList.remove(cls)
+                    }
+                }
+                if (el.dataset.mobileReplace) {
+                    const split = splitCls(el.dataset.mobileReplace)
+                    // console.debug('mobileReplace:', split)
+                    for (let i = 0; i < split.length; i += 2) {
+                        const one = split[i]
+                        const two = split[i + 1]
+                        // console.debug(`replace: ${one} >> ${two}`)
+                        el.classList.replace(one, two)
+                    }
+                }
+            })
+    }
+    return platform
 }
 
 /**
@@ -395,8 +445,7 @@ export async function requestPerms() {
 
 /**
  * Revoke Permissions Click Callback
- * NOTE: For many reasons Chrome will determine host_perms are required and
- *       will ask for them at install time and not allow them to be revoked
+ * Note: This method does not work on Chrome if permissions are required.
  * @function revokePerms
  * @param {MouseEvent} event
  */
@@ -410,7 +459,7 @@ export async function revokePerms(event) {
         })
         await checkPerms()
     } catch (e) {
-        console.log(`%cError: ${e.message}`, 'color: Red', e)
+        console.log(e)
         showToast(e.toString(), 'danger')
     }
 }
@@ -434,18 +483,64 @@ export async function onRemoved(permissions) {
 }
 
 /**
- * @function updateBrowser
- * @return {Promise<void>}
+ * Open Popup Click Callback
+ * @function openPopup
+ * @param {Event} [event]
  */
-export async function updateBrowser() {
-    let selector = '.chrome'
-    // noinspection JSUnresolvedReference
-    if (typeof browser !== 'undefined') {
-        selector = '.firefox'
+export async function openPopup(event) {
+    console.debug('openPopup:', event)
+    event?.preventDefault()
+    // Note: This fails if popup is already open (ex. double clicks)
+    try {
+        await chrome.action.openPopup()
+    } catch (e) {
+        console.debug(e)
     }
-    document
-        .querySelectorAll(selector)
-        .forEach((el) => el.classList.remove('d-none'))
+}
+
+/**
+ * Open Extension Panel
+ * @function openExtPanel
+ * @param {String} [url]
+ * @param {Number} [width]
+ * @param {Number} [height]
+ * @param {String} [type]
+ * @return {Promise<chrome.windows.Window|undefined>}
+ */
+export async function showPanel(
+    url = '/html/panel.html',
+    width = 720,
+    height = 480,
+    type = 'panel',
+) {
+    console.debug(`openExtPanel: ${url}`, width, height)
+    if (!chrome.windows) {
+        console.log('Browser does not support: chrome.windows')
+        showToast('Browser does not support windows', 'danger')
+        return
+    }
+    const { lastPanelID } = await chrome.storage.local.get(['lastPanelID'])
+    console.debug('lastPanelID:', lastPanelID)
+
+    try {
+        const window = await chrome.windows.get(lastPanelID)
+        if (window) {
+            console.debug(`%c Window found: ${window.id}`, 'color: Lime')
+            return await chrome.windows.update(lastPanelID, {
+                focused: true,
+            })
+        }
+    } catch (e) {
+        console.log(e)
+    }
+
+    // noinspection JSCheckFunctionSignatures
+    const window = await chrome.windows.create({ type, url, width, height })
+    // NOTE: Code after windows.create is not executed on the first pop-out...
+    console.debug(`%c Created new window: ${window.id}`, 'color: Yellow')
+    // noinspection ES6MissingAwait
+    // chrome.storage.local.set({ lastPanelID: window.id })
+    return window
 }
 
 /**
@@ -462,7 +557,7 @@ export function showToast(message, type = 'primary') {
         return console.warn('Missing clone or container:', clone, container)
     }
     const element = clone.cloneNode(true)
-    element.querySelector('.toast-body').innerHTML = message
+    element.querySelector('.toast-body').textContent = message
     element.classList.add(`text-bg-${type}`)
     container.appendChild(element)
     const toast = new bootstrap.Toast(element)

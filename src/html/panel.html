@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="vh-100">
+<html lang="en" class="h-100">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,26 +12,35 @@
 </head>
 <body class="d-flex flex-column h-100">
 
-<main class="flex-grow-1">
-<div class="container-fluid p-3">
-    <div class="row">
-        <div class="col-12">
+<header class="flex-shrink-0">
+    <div class="container-fluid">
+        <div class="d-flex flex-row align-items-center">
+            <img alt="logo" class="me-2" src="/images/logo32.png" height="32" width="32">
             <h1>Auto Auth Panel</h1>
-            <p class="lead">The extension panel has not yet been implemented...</p>
         </div>
     </div>
-</div>
+</header>
+
+<main class="flex-grow-1">
+    <div class="container-fluid p-3">
+        <div class="row">
+            <div class="col-12">
+                <p>The extension panel has not yet been implemented...</p>
+            </div>
+        </div>
+    </div>
 </main>
 
 <footer class="flex-shrink-0">
-<div class="container-fluid p-3">
-    <div class="row">
-        <div class="col-12">
-            <a class="btn btn-primary float-end mt-auto" role="button" id="close">
-                <i class="fa-solid fa-x me-2"></i> Close Window</a>
+    <div class="container-fluid p-3">
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-outline-warning hvr-grow-sm float-end mt-auto close-panel">
+                    Close Window <i class="fa-regular fa-circle-xmark ms-1"></i>
+                </button>
+            </div>
         </div>
     </div>
-</div>
 </footer>
 
 <script type="text/javascript" src="../dist/jquery/jquery.min.js"></script>

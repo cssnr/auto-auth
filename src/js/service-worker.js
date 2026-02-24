@@ -1,6 +1,6 @@
 // JS Background Service Worker
 
-import { Hosts, checkPerms, showPanel, githubURL } from './export.js'
+import { Hosts, checkPerms, showPanel, githubURL, openPopup } from './export.js'
 
 chrome.runtime.onInstalled.addListener(onInstalled)
 chrome.runtime.onStartup.addListener(onStartup)
@@ -11,11 +11,9 @@ chrome.storage.onChanged.addListener(onChanged)
 chrome.permissions.onAdded.addListener(onAdded)
 chrome.permissions.onRemoved.addListener(onRemoved)
 
-chrome.webRequest.onAuthRequired.addListener(
-    onAuthRequired,
-    { urls: ['<all_urls>'] },
-    ['asyncBlocking']
-)
+chrome.webRequest.onAuthRequired.addListener(onAuthRequired, { urls: ['<all_urls>'] }, [
+    'asyncBlocking',
+])
 chrome.webRequest.onCompleted.addListener(webRequestFinished, {
     urls: ['<all_urls>'],
 })
@@ -51,7 +49,7 @@ async function onAuthRequired(details, callback) {
         }
         console.log(
             `Cancel Request and Hijack w/ failed: %c${failed}`,
-            `color: ${failed ? 'Yellow' : 'Lime'}`
+            `color: ${failed ? 'Yellow' : 'Lime'}`,
         )
         const auth = new URL(chrome.runtime.getURL('/html/auth.html'))
         auth.searchParams.append('url', details.url)
@@ -68,7 +66,7 @@ async function onAuthRequired(details, callback) {
     if (pendingRequests.includes(details.requestId)) {
         console.log(
             `%cAlready Processed Request ID: ${details.requestId}`,
-            'color: Orange'
+            'color: Orange',
         )
         hijackRequest(true)
     }
@@ -83,14 +81,11 @@ async function onAuthRequired(details, callback) {
             console.log(
                 `%cHost is Set to Ignored: %c${url.host}`,
                 'color: Yellow',
-                'color: Violet'
+                'color: Violet',
             )
             return callback()
         }
-        console.log(
-            `%cSending Saved Creds for: ${details.requestId}`,
-            'color: LimeGreen'
-        )
+        console.log(`%cSending Saved Creds for: ${details.requestId}`, 'color: LimeGreen')
         const [username, password] = creds.split(':')
         const authCredentials = {
             username,
@@ -105,7 +100,7 @@ async function onAuthRequired(details, callback) {
     if (url.host in session) {
         console.log(
             `%cSending Session Creds for: ${details.requestId}`,
-            'color: SpringGreen'
+            'color: SpringGreen',
         )
         const [username, password] = session[url.host].split(':')
         const authCredentials = {
@@ -119,7 +114,7 @@ async function onAuthRequired(details, callback) {
     // New Request Without Credentials
     console.log(
         `%cNo Credentials for Request ID: ${details.requestId}`,
-        'color: DeepSkyBlue'
+        'color: DeepSkyBlue',
     )
     hijackRequest()
 }
@@ -130,7 +125,7 @@ function webRequestFinished(requestDetails) {
     if (index > -1) {
         console.debug(
             `%cRemoving pendingRequests: ${requestDetails.requestId}`,
-            'color: Khaki'
+            'color: Khaki',
         )
         pendingRequests.splice(index, 1)
     }
@@ -194,7 +189,7 @@ async function onStartup() {
     // console.debug('options:', options)
     await updateIcon(options)
     // noinspection JSUnresolvedReference
-    if (typeof browser !== 'undefined') {
+    if (typeof browser?.runtime?.getBrowserInfo === 'function') {
         console.log('Firefox CTX Menu Workaround')
         if (options.contextMenu) {
             createContextMenus()
@@ -221,7 +216,9 @@ function setUninstallURL() {
  */
 async function onClicked(ctx, tab) {
     console.debug('onClicked:', ctx, tab)
-    if (ctx.menuItemId === 'openOptions') {
+    if (ctx.menuItemId === 'openPopup') {
+        await openPopup()
+    } else if (ctx.menuItemId === 'openOptions') {
         await chrome.runtime.openOptionsPage()
     } else if (ctx.menuItemId === 'showPanel') {
         await showPanel()
@@ -386,10 +383,11 @@ function createContextMenus() {
     }
     console.debug('createContextMenus')
     chrome.contextMenus.removeAll()
-    /** @type {Array[String[], String, String, String]} */
+    /** @type {Array[chrome.contextMenus.ContextType[], String, String]} */
     const contexts = [
         // [['all'], 'showPanel', 'Open Panel'],
         // [['all'], 'separator'],
+        [['all'], 'openPopup', 'Open Popup'],
         [['all'], 'openOptions', 'Auto Auth Options'],
     ]
     contexts.forEach(addContext)
@@ -398,20 +396,22 @@ function createContextMenus() {
 /**
  * Add Context from Array
  * @function addContext
- * @param {[[ContextType],String,String,String]} context
+ * @param {[chrome.contextMenus.ContextType[],String,String,chrome.contextMenus.ContextType?]} context
  */
 function addContext(context) {
+    console.debug('addContext:', context)
     try {
-        console.debug('addContext:', context)
         if (context[1] === 'separator') {
             context[1] = Math.random().toString().substring(2, 7)
             context.push('separator', 'separator')
         }
+        // console.debug('menus.create:', context)
+        // noinspection JSCheckFunctionSignatures
         chrome.contextMenus.create({
             contexts: context[0],
             id: context[1],
             title: context[2],
-            type: context[3],
+            type: context[3] || 'normal',
         })
     } catch (e) {
         console.log(`%cError Adding Context: ${e.message}`, 'color: Red', e)

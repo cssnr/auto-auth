@@ -2,42 +2,50 @@
 [![Mozilla Add-on Users](https://img.shields.io/amo/users/auto-auth?logo=mozilla&label=users)](https://addons.mozilla.org/addon/auto-auth)
 [![Chrome Web Store Rating](https://img.shields.io/chrome-web-store/rating/gpoiggobidhogpmmlakahiaaegibnogm?logo=google&logoColor=white)](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
 [![Mozilla Add-on Rating](https://img.shields.io/amo/rating/auto-auth?logo=mozilla&logoColor=white)](https://addons.mozilla.org/addon/auto-auth)
-[![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/auto-auth?style=flat&logo=github&logoColor=white)](https://github.com/cssnr/auto-auth/stargazers)
 [![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/gpoiggobidhogpmmlakahiaaegibnogm?label=chrome&logo=googlechrome)](https://chromewebstore.google.com/detail/auto-auth/gpoiggobidhogpmmlakahiaaegibnogm)
 [![Mozilla Add-on Version](https://img.shields.io/amo/v/auto-auth?label=firefox&logo=firefox)](https://addons.mozilla.org/addon/auto-auth)
-[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/auto-auth?logo=github&logoColor=white)](https://github.com/cssnr/auto-auth/releases/latest)
-[![Build](https://img.shields.io/github/actions/workflow/status/cssnr/auto-auth/build.yaml?logo=github&logoColor=white&label=build)](https://github.com/cssnr/auto-auth/actions/workflows/build.yaml)
-[![Test](https://img.shields.io/github/actions/workflow/status/cssnr/auto-auth/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/auto-auth/actions/workflows/test.yaml)
+[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/auto-auth?logo=github)](https://github.com/cssnr/auto-auth/releases/latest)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_auto-auth&metric=alert_status&label=quality)](https://sonarcloud.io/summary/overall?id=cssnr_auto-auth)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/auto-auth?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/auto-auth/graphs/commit-activity)
-[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/auto-auth?logo=htmx&logoColor=white)](https://github.com/cssnr/auto-auth)
-[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/auto-auth?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/auto-auth)
-[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white&label=org%20stars)](https://cssnr.github.io/)
+[![Workflow Build](https://img.shields.io/github/actions/workflow/status/cssnr/auto-auth/build.yaml?logo=norton&logoColor=white&label=build)](https://github.com/cssnr/auto-auth/actions/workflows/build.yaml)
+[![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/auto-auth/test.yaml?logo=norton&logoColor=white&label=test)](https://github.com/cssnr/auto-auth/actions/workflows/test.yaml)
+[![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/auto-auth/lint.yaml?logo=norton&logoColor=white&label=lint)](https://github.com/cssnr/auto-auth/actions/workflows/lint.yaml)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/auto-auth?logo=listenhub&label=updated)](https://github.com/cssnr/auto-auth/pulse)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/auto-auth?logo=buffer&label=repo%20size)](https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme)
+[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/auto-auth?logo=devbox)](https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme)
+[![GitHub Contributors](https://img.shields.io/github/contributors-anon/cssnr/auto-auth?logo=southwestairlines)](https://github.com/cssnr/auto-auth/graphs/contributors)
+[![GitHub Issues](https://img.shields.io/github/issues/cssnr/auto-auth?logo=codeforces&logoColor=white)](https://github.com/cssnr/auto-auth/issues)
+[![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/auto-auth?logo=theconversation)](https://github.com/cssnr/auto-auth/discussions)
+[![GitHub Forks](https://img.shields.io/github/forks/cssnr/auto-auth?style=flat&logo=forgejo&logoColor=white)](https://github.com/cssnr/auto-auth/forks)
+[![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/auto-auth?style=flat&logo=gleam&logoColor=white)](https://github.com/cssnr/auto-auth/stargazers)
+[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=apachespark&logoColor=white&label=org%20stars)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-72a5f2?logo=kofi&label=support)](https://ko-fi.com/cssnr)
 
 # Auto Auth
 
+<a title="Install Release" href="https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme" target="_blank">
+<img alt="Install Release" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/auto-auth/refs/heads/master/.github/assets/logo-green.png"></a>
+
+- [Install](#Install)
+- [Features](#Features)
+  - [Upcoming Features](#Upcoming-Features)
+  - [Known Issues](#Known-Issues)
+- [Configuration](#Configuration)
+- [Migration](#Migration)
+  - [AutoAuth](#AutoAuth)
+  - [Basic Authentication](#Basic-Authentication)
+  - [Other or Manual](#Other-or-Manual)
+- [Security](#Security)
+- [Support](#Support)
+- [Development](#Development)
+  - [Building](#Building)
+- [Contributing](#Contributing)
+
 Modern Chrome Web Extension and Firefox Browser Addon for Automatic Basic HTTP Authentication with many Options and
 Features.
 
 To take it for a test drive, [install](#Install) the addon and head over to: https://authenticationtest.com/HTTPAuth/  
-then enter the username `user` and password `pass`
-
-- [Install](#Install)
-- [Features](#Features)
-    - [Upcoming Features](#Upcoming-Features)
-    - [Known Issues](#Known-Issues)
-- [Configuration](#Configuration)
-- [Migration](#Migration)
-    - [AutoAuth](#AutoAuth)
-    - [Basic Authentication](#Basic-Authentication)
-    - [Other or Manual](#Other-or-Manual)
-- [Security](#Security)
-- [Support](#Support)
-- [Development](#Development)
-    - [Building](#Building)
-- [Contributing](#Contributing)
+then enter the username `user` and password `pass`.
 
 ## Install
 
@@ -90,12 +98,12 @@ Long-term Goals for Improved Security:
 - Only allows saving 1 set of credentials per host.
 - Most browsers will offer to save passwords on login and edit.
 - Incognito and Private Browsing will not allow logging into new sites.
-    - You must save the credentials first or add them manually.
+  - You must save the credentials first or add them manually.
 - A 401 response from a Service Worker is not properly intercepted:
-    - Firefox: Shows a generic 401 page, use `Ctrl+F5`
-        - Once credentials are saved, requests will work as normal.
-    - Chrome: Shows a default credentials prompt, Cancel and press `Ctrl+F5`
-        - This behavior may continue after saving credentials.
+  - Firefox: Shows a generic 401 page, use `Ctrl+F5`
+    - Once credentials are saved, requests will work as normal.
+  - Chrome: Shows a default credentials prompt, Cancel and press `Ctrl+F5`
+    - This behavior may continue after saving credentials.
 
 > [!TIP]
 > **Don't see your issue here?**
@@ -151,8 +159,8 @@ You can do this yourself, or get ChatGPT to convert the data for you. Convert th
 
 ```json
 {
-    "example.com": "username:password",
-    "ignored.example.com": "ignored"
+  "example.com": "username:password",
+  "ignored.example.com": "ignored"
 }
 ```
 
@@ -297,3 +305,11 @@ Other Web Extensions I have created and published:
 - [Text Formatter](https://github.com/cssnr/text-formatter?tab=readme-ov-file#readme)
 
 For a full list of current projects visit: [https://cssnr.github.io/](https://cssnr.github.io/)
+
+<a href="https://github.com/cssnr/auto-auth/stargazers">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=cssnr/auto-auth&type=date&legend=bottom-right&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=cssnr/auto-auth&type=date&legend=bottom-right" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=cssnr/auto-auth&type=date&legend=bottom-right" />
+ </picture>
+</a>

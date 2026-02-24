@@ -27,6 +27,10 @@ document
 const userInput = document.getElementById('username')
 const passInput = document.getElementById('password')
 
+document
+    .getElementById('usernameSwitch')
+    .addEventListener('change', (e) => (userInput.required = !e.currentTarget.checked))
+
 const saveCreds = document.getElementById('saveCreds')
 saveCreds.addEventListener('change', saveChange)
 
@@ -55,7 +59,7 @@ async function domContentLoaded() {
 
     const tempSave = sessionStorage.getItem(url.host)
     if (tempSave) {
-        saveCreds.checked = !!parseInt(tempSave)
+        saveCreds.checked = !!Number.parseInt(tempSave)
     } else {
         saveCreds.checked = options.defaultSave
     }
@@ -112,24 +116,21 @@ async function submitAuth(event) {
     const pass = event.target.elements.password.value
     // console.debug('host, user, pass:', host, user, pass)
 
-    if (event.target.elements.saveCreds.checked) {
+    // noinspection JSUnresolvedReference
+    if (event.target.elements.saveCreds?.checked) {
         // const { sites } = await chrome.storage.sync.get(['sites'])
         // sites[host] = `${user}:${pass}`
         // await chrome.storage.sync.set({ sites })
         await Hosts.set(url.host, `${user}:${pass}`)
-        console.log(
-            '%cCredentials Saved.',
-            `Loading: ${url.href}`,
-            'color: LimeGreen'
-        )
+        console.log('%cCredentials Saved.', 'color: LimeGreen', `Loading: ${url.href}`)
     } else {
         const { session } = await chrome.storage.session.get(['session'])
         session[host] = `${user}:${pass}`
         await chrome.storage.session.set({ session })
         console.log(
             '%cCredentials Saved for Session Only.',
+            'color: SpringGreen',
             `Loading: ${url.href}`,
-            'color: SpringGreen'
         )
     }
     const tab = await chrome.tabs.getCurrent()

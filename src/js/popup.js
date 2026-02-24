@@ -49,9 +49,7 @@ async function initPopup() {
     checkPerms().then((hasPerms) => {
         if (!hasPerms) console.log('%cMissing Host Permissions', 'color: Red')
     })
-    chrome.storage.sync
-        .get(['options'])
-        .then((items) => updateOptions(items.options))
+    chrome.storage.sync.get(['options']).then((items) => updateOptions(items.options))
 
     if (chrome.runtime.lastError) {
         showToast(chrome.runtime.lastError.message, 'warning')
@@ -66,12 +64,10 @@ async function initPopup() {
         if (creds) {
             if (creds === 'ignored') {
                 hostnameEl.classList.add('border-warning')
-                deleteSaved.querySelector('span').textContent =
-                    'Remove Host from Ignore'
+                deleteSaved.querySelector('span').textContent = 'Remove Host from Ignore'
             } else {
                 hostnameEl.classList.add('border-success')
-                usernameEl.querySelector('span').textContent =
-                    creds.split(':')[0]
+                usernameEl.querySelector('span').textContent = creds.split(':')[0]
                 usernameEl.classList.remove('d-none')
             }
             hostnameEl.textContent = url.host

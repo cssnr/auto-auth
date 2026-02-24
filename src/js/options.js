@@ -16,6 +16,7 @@ import {
     updateManifest,
     updateBrowser,
     updateOptions,
+    updatePlatform,
 } from './export.js'
 
 chrome.storage.onChanged.addListener(onChanged)
@@ -79,6 +80,10 @@ const editHostname = document.getElementById('hostname')
 const editUsername = document.getElementById('username')
 const editPassword = document.getElementById('password')
 
+document
+    .getElementById('usernameSwitch')
+    .addEventListener('change', (e) => (editUsername.required = !e.currentTarget.checked))
+
 const confirmDelete = document.getElementById('confirm-delete')
 const confirmDeleteHost = document.getElementById('delete-host')
 const deleteModal = new bootstrap.Modal('#delete-modal')
@@ -129,17 +134,20 @@ async function initOptions() {
     // noinspection ES6MissingAwait
     updateBrowser()
     // noinspection ES6MissingAwait
-    setShortcuts('#keyboard-shortcuts', true)
+    updatePlatform()
+    // noinspection ES6MissingAwait
+    setShortcuts()
+
     checkPerms().then((hasPerms) => {
         if (!hasPerms) console.log('%cMissing Host Permissions', 'color: Red')
     })
+
     chrome.storage.sync.get(['options']).then((items) => {
         updateOptions(items.options)
         backgroundChange(items.options.radioBackground)
     })
 
     const hosts = await Hosts.all()
-    // console.debug('hosts:', hosts)
     updateTable(hosts)
 }
 
@@ -149,6 +157,7 @@ async function initOptions() {
  * @param {Object} data
  */
 function updateTable(data) {
+    // console.debug('updateTable:', hosts)
     const hostsBody = document.querySelector('#hosts-table > tbody')
     hostsBody.innerHTML = ''
     const ignoredBody = document.querySelector('#ignored-table > tbody')
@@ -309,7 +318,7 @@ async function editSubmit(event) {
         await Hosts.edit(
             editHostname.dataset.original,
             hostname,
-            `${username}:${password}`
+            `${username}:${password}`,
         )
         editModal.hide()
         showToast(`Updated Host: ${hostname}`, 'success')
@@ -359,19 +368,18 @@ async function addHost(event) {
     /** @type {HTMLInputElement} */
     const usernameEl = event.target.elements['username']
     console.log('username:', usernameEl.value)
-    if (!usernameEl.value) {
-        document.getElementById('usernameValidation').textContent =
-            'Username Required!'
-        usernameEl.focus()
-        usernameEl.classList.add('is-invalid')
-        return console.debug('No username')
-    }
+    // if (!usernameEl.value) {
+    //     document.getElementById('usernameValidation').textContent =
+    //         'Username Required!'
+    //     usernameEl.focus()
+    //     usernameEl.classList.add('is-invalid')
+    //     return console.debug('No username')
+    // }
     /** @type {HTMLInputElement} */
     const passwordEl = event.target.elements['password']
     console.log('password:', passwordEl.value)
     if (!passwordEl.value) {
-        document.getElementById('passwordValidation').textContent =
-            'Password Required!'
+        document.getElementById('passwordValidation').textContent = 'Password Required!'
         passwordEl.focus()
         passwordEl.classList.add('is-invalid')
         return console.debug('No password')
@@ -599,9 +607,8 @@ async function onChanged(changes, namespace) {
  * Set Keyboard Shortcuts
  * @function setShortcuts
  * @param {String} [selector]
- * @param {Boolean} [action]
  */
-async function setShortcuts(selector = '#keyboard-shortcuts', action = false) {
+async function setShortcuts(selector = '#keyboard-shortcuts') {
     if (!chrome.commands) {
         return console.debug('Skipping: chrome.commands')
     }
@@ -620,7 +627,7 @@ async function setShortcuts(selector = '#keyboard-shortcuts', action = false) {
             let description = command.description
             // Note: Chrome does not parse the description for _execute_action in manifest.json
             if (!description && command.name === '_execute_action') {
-                description = 'Show Popup Action'
+                description = 'Show Popup Action' // NOTE: Also defined in: manifest.json
             }
             row.querySelector('.description').textContent = description
             row.querySelector('kbd').textContent = command.shortcut || 'Not Set'
@@ -629,20 +636,16 @@ async function setShortcuts(selector = '#keyboard-shortcuts', action = false) {
             console.warn('Error adding command:', command, e)
         }
     }
-    if (action) {
-        try {
-            const userSettings = await chrome.action.getUserSettings()
-            const row = source.cloneNode(true)
-            row.querySelector('i').className = 'fa-solid fa-puzzle-piece me-1'
-            row.querySelector('.description').textContent =
-                'Toolbar Icon Pinned'
-            row.querySelector('kbd').textContent = userSettings.isOnToolbar
-                ? 'Yes'
-                : 'No'
-            tbody.appendChild(row)
-        } catch (e) {
-            console.log('Error adding pinned setting:', e)
-        }
+    // Toolbar Pinned Indication
+    try {
+        const userSettings = await chrome.action.getUserSettings()
+        const row = source.cloneNode(true)
+        row.querySelector('i').className = 'fa-solid fa-puzzle-piece me-1'
+        row.querySelector('.description').textContent = 'Toolbar Icon Pinned'
+        row.querySelector('kbd').textContent = userSettings.isOnToolbar ? 'Yes' : 'No'
+        tbody.appendChild(row)
+    } catch (e) {
+        console.log('Error adding pinned setting:', e)
     }
 }
 
