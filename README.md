@@ -183,20 +183,20 @@ If there is enough popularity/requests for these features, there are a couple op
 
 ## Support
 
-For help using the web extension, see:
-
-- Documentation: https://auto-auth.cssnr.com/docs/
-- Q&A Discussion: https://github.com/cssnr/auto-auth/discussions/categories/q-a
-- Request a Feature: https://github.com/cssnr/auto-auth/discussions/categories/feature-requests
-
-If you are experiencing an issue/bug or getting unexpected results, you can:
-
-- Report an Issue: https://github.com/cssnr/auto-auth/issues
-- Chat with us on Discord: https://discord.gg/wXy6m2X8wY
-- Provide General Feedback: https://cssnr.github.io/feedback
-
 Logs can be found inspecting the page (Ctrl+Shift+I), clicking on the Console, and;
 Firefox: toggling Debug logs, Chrome: toggling Verbose from levels dropdown.
+
+If you run into any issues or need help getting started, please do one of the following:
+
+- Report an Issue: <https://github.com/cssnr/auto-auth/issues>
+- Q&A Discussion: <https://github.com/cssnr/auto-auth/discussions/categories/q-a>
+- Request a Feature: <https://github.com/cssnr/auto-auth/issues/new?template=1-feature.yaml>
+- Chat with us on Discord: <https://discord.gg/wXy6m2X8wY>
+
+[![Features](https://img.shields.io/badge/features-brightgreen?style=for-the-badge&logo=rocket&logoColor=white)](https://github.com/cssnr/auto-auth/issues/new?template=1-feature.yaml)
+[![Issues](https://img.shields.io/badge/issues-red?style=for-the-badge&logo=southwestairlines&logoColor=white)](https://github.com/cssnr/auto-auth/issues)
+[![Discussions](https://img.shields.io/badge/discussions-blue?style=for-the-badge&logo=livechat&logoColor=white)](https://github.com/cssnr/auto-auth/discussions)
+[![Discord](https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/wXy6m2X8wY)
 
 To support this project, see the [Contributing](#Contributing) section at the bottom.
 

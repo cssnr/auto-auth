@@ -484,6 +484,7 @@ export async function onRemoved(permissions) {
 
 /**
  * Open Popup Click Callback
+ * NOTE: Requires Chrome>=127
  * @function openPopup
  * @param {Event} [event]
  */
