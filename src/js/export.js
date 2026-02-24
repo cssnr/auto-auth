@@ -342,11 +342,53 @@ export async function updateManifest() {
 export async function updateBrowser() {
     let selector = '.chrome'
     // noinspection JSUnresolvedReference
-    if (typeof browser !== 'undefined') {
+    if (typeof browser?.runtime?.getBrowserInfo === 'function') {
         selector = '.firefox'
     }
     console.debug('updateBrowser:', selector)
     document.querySelectorAll(selector).forEach((el) => el.classList.remove('d-none'))
+}
+
+/**
+ * @function updatePlatform
+ * @return {Promise<chrome.runtime.PlatformInfo>}
+ */
+export async function updatePlatform() {
+    const platform = await chrome.runtime.getPlatformInfo()
+    console.debug('updatePlatform:', platform)
+    const splitCls = (cls) => cls.split(' ').filter(Boolean)
+    if (platform.os === 'android' && typeof document !== 'undefined') {
+        // document.querySelectorAll('[class*="mobile-"]').forEach((el) => {
+        document
+            .querySelectorAll(
+                '[data-mobile-add],[data-mobile-remove],[data-mobile-replace]',
+            )
+            .forEach((el) => {
+                if (el.dataset.mobileAdd) {
+                    for (const cls of splitCls(el.dataset.mobileAdd)) {
+                        // console.debug('mobileAdd:', cls)
+                        el.classList.add(cls)
+                    }
+                }
+                if (el.dataset.mobileRemove) {
+                    for (const cls of splitCls(el.dataset.mobileRemove)) {
+                        // console.debug('mobileAdd:', cls)
+                        el.classList.remove(cls)
+                    }
+                }
+                if (el.dataset.mobileReplace) {
+                    const split = splitCls(el.dataset.mobileReplace)
+                    // console.debug('mobileReplace:', split)
+                    for (let i = 0; i < split.length; i += 2) {
+                        const one = split[i]
+                        const two = split[i + 1]
+                        // console.debug(`replace: ${one} >> ${two}`)
+                        el.classList.replace(one, two)
+                    }
+                }
+            })
+    }
+    return platform
 }
 
 /**

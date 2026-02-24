@@ -16,6 +16,7 @@ import {
     updateManifest,
     updateBrowser,
     updateOptions,
+    updatePlatform,
 } from './export.js'
 
 chrome.storage.onChanged.addListener(onChanged)
@@ -133,17 +134,20 @@ async function initOptions() {
     // noinspection ES6MissingAwait
     updateBrowser()
     // noinspection ES6MissingAwait
-    setShortcuts('#keyboard-shortcuts', true)
+    updatePlatform()
+    // noinspection ES6MissingAwait
+    setShortcuts()
+
     checkPerms().then((hasPerms) => {
         if (!hasPerms) console.log('%cMissing Host Permissions', 'color: Red')
     })
+
     chrome.storage.sync.get(['options']).then((items) => {
         updateOptions(items.options)
         backgroundChange(items.options.radioBackground)
     })
 
     const hosts = await Hosts.all()
-    // console.debug('hosts:', hosts)
     updateTable(hosts)
 }
 
@@ -153,6 +157,7 @@ async function initOptions() {
  * @param {Object} data
  */
 function updateTable(data) {
+    // console.debug('updateTable:', hosts)
     const hostsBody = document.querySelector('#hosts-table > tbody')
     hostsBody.innerHTML = ''
     const ignoredBody = document.querySelector('#ignored-table > tbody')
@@ -602,9 +607,8 @@ async function onChanged(changes, namespace) {
  * Set Keyboard Shortcuts
  * @function setShortcuts
  * @param {String} [selector]
- * @param {Boolean} [action]
  */
-async function setShortcuts(selector = '#keyboard-shortcuts', action = false) {
+async function setShortcuts(selector = '#keyboard-shortcuts') {
     if (!chrome.commands) {
         return console.debug('Skipping: chrome.commands')
     }
@@ -623,7 +627,7 @@ async function setShortcuts(selector = '#keyboard-shortcuts', action = false) {
             let description = command.description
             // Note: Chrome does not parse the description for _execute_action in manifest.json
             if (!description && command.name === '_execute_action') {
-                description = 'Show Popup Action'
+                description = 'Show Popup Action' // NOTE: Also defined in: manifest.json
             }
             row.querySelector('.description').textContent = description
             row.querySelector('kbd').textContent = command.shortcut || 'Not Set'
@@ -632,17 +636,16 @@ async function setShortcuts(selector = '#keyboard-shortcuts', action = false) {
             console.warn('Error adding command:', command, e)
         }
     }
-    if (action) {
-        try {
-            const userSettings = await chrome.action.getUserSettings()
-            const row = source.cloneNode(true)
-            row.querySelector('i').className = 'fa-solid fa-puzzle-piece me-1'
-            row.querySelector('.description').textContent = 'Toolbar Icon Pinned'
-            row.querySelector('kbd').textContent = userSettings.isOnToolbar ? 'Yes' : 'No'
-            tbody.appendChild(row)
-        } catch (e) {
-            console.log('Error adding pinned setting:', e)
-        }
+    // Toolbar Pinned Indication
+    try {
+        const userSettings = await chrome.action.getUserSettings()
+        const row = source.cloneNode(true)
+        row.querySelector('i').className = 'fa-solid fa-puzzle-piece me-1'
+        row.querySelector('.description').textContent = 'Toolbar Icon Pinned'
+        row.querySelector('kbd').textContent = userSettings.isOnToolbar ? 'Yes' : 'No'
+        tbody.appendChild(row)
+    } catch (e) {
+        console.log('Error adding pinned setting:', e)
     }
 }
 
