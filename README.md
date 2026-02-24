@@ -23,8 +23,8 @@
 
 # Auto Auth
 
-<a title="Install Release" href="https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme" target="_blank">
-<img alt="Install Release" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/auto-auth/refs/heads/master/.github/assets/logo-green.png"></a>
+<a title="Auto Auth" href="https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme" target="_blank">
+<img alt="Auto Auth" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/auto-auth/refs/heads/master/.github/assets/logo-green.png"></a>
 
 - [Install](#Install)
 - [Features](#Features)
