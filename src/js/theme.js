@@ -18,9 +18,9 @@
     const setTheme = (theme) => {
         // console.debug(`setTheme: ${theme}`)
         if (theme === 'auto') {
-            document.documentElement.setAttribute('data-bs-theme', getMediaMatch())
+            document.documentElement.dataset.bsTheme = getMediaMatch()
         } else {
-            document.documentElement.setAttribute('data-bs-theme', theme)
+            document.documentElement.dataset.bsTheme = theme
         }
     }
 
