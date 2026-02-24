@@ -342,7 +342,10 @@ export async function updateManifest() {
 export async function updateBrowser() {
     let selector = '.chrome'
     // noinspection JSUnresolvedReference
-    if (typeof browser?.runtime?.getBrowserInfo === 'function') {
+    if (
+        typeof browser !== 'undefined' &&
+        typeof browser?.runtime?.getBrowserInfo === 'function'
+    ) {
         selector = '.firefox'
     }
     console.debug('updateBrowser:', selector)
