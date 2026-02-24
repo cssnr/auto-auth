@@ -189,7 +189,7 @@ async function onStartup() {
     // console.debug('options:', options)
     await updateIcon(options)
     // noinspection JSUnresolvedReference
-    if (typeof browser !== 'undefined') {
+    if (typeof browser?.runtime?.getBrowserInfo === 'function') {
         console.log('Firefox CTX Menu Workaround')
         if (options.contextMenu) {
             createContextMenus()
