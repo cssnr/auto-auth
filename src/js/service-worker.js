@@ -390,8 +390,8 @@ function createContextMenus() {
     const contexts = [
         // [['all'], 'showPanel', 'Open Panel'],
         // [['all'], 'separator'],
-        [['all'], 'openPopup', 'Open Popup'],
-        [['all'], 'openOptions', 'Auto Auth Options'],
+        [['all'], 'openPopup', 'Activate Popup'],
+        [['all'], 'openOptions', 'Open Options'],
     ]
     contexts.forEach(addContext)
 }
