@@ -99,7 +99,7 @@ export function textFileDownload(filename, text) {
     element.classList.add('d-none')
     document.body.appendChild(element)
     element.click()
-    document.body.removeChild(element)
+    element.remove()
 }
 
 export function showHidePassword(event) {
@@ -175,12 +175,12 @@ export async function saveOptions(event) {
     } else {
         value = event.target.value
     }
-    if (value !== undefined) {
+    if (value === undefined) {
+        console.warn(`No Value for key: ${key}`)
+    } else {
         options[key] = value
         console.log(`Set %c${key}:`, 'color: Khaki', value)
         await chrome.storage.sync.set({ options })
-    } else {
-        console.warn(`No Value for key: ${key}`)
     }
 }
 
@@ -217,7 +217,8 @@ export function updateOptions(options) {
             hideShowElement(`#${el.dataset.related}`, value)
         }
         if (el.dataset.warning) {
-            addWarningClass(el.nextElementSibling, value, el.dataset.warning)
+            // addWarningClass(el.nextElementSibling, value, el.dataset.warning)
+            el.nextElementSibling.classList.toggle(el.dataset.warning, !!value)
         }
     }
 }
@@ -239,21 +240,21 @@ function hideShowElement(selector, show, speed = 'fast') {
     }
 }
 
-/**
- * Add Warning Class to Element
- * @function addWarningClass
- * @param {HTMLElement} element
- * @param {Boolean} value
- * @param {String} warning
- */
-function addWarningClass(element, value, warning) {
-    // console.debug('addWarningClass:', value, element)
-    if (value) {
-        element.classList.add(warning)
-    } else {
-        element.classList.remove(warning)
-    }
-}
+// /**
+//  * Add Warning Class to Element
+//  * @function addWarningClass
+//  * @param {HTMLElement} element
+//  * @param {Boolean} value
+//  * @param {String} warning
+//  */
+// function addWarningClass(element, value, warning) {
+//     // console.debug('addWarningClass:', value, element)
+//     if (value) {
+//         element.classList.add(warning)
+//     } else {
+//         element.classList.remove(warning)
+//     }
+// }
 
 /**
  * Link Click Callback
@@ -265,7 +266,7 @@ function addWarningClass(element, value, warning) {
 export async function linkClick(event, close = false) {
     console.debug('linkClick:', close, event)
     const target = event.currentTarget
-    const href = target.getAttribute('href').replace(/^\.+/g, '')
+    const href = target.getAttribute('href').replace(/^\.+/, '')
     console.debug('href:', href)
     let url
     if (href.startsWith('#')) {

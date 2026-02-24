@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer')
-const path = require('path')
-const fs = require('fs')
+const path = require('node:path')
+const fs = require('node:fs')
 
 const sourceDir = 'src'
 const ssDir = 'tests/screenshots'
@@ -52,7 +52,7 @@ async function getPage(browser, name, size) {
     const page = await target.asPage()
     await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'dark' }])
     if (size) {
-        const [width, height] = size.split('x').map((x) => parseInt(x))
+        const [width, height] = size.split('x').map((x) => Number.parseInt(x))
         await page.setViewport({ width, height })
     }
     console.debug(`Adding Logger: ${name}`)
