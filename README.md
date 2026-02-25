@@ -90,8 +90,7 @@ Long-term Goals for Improved Security:
 
 > [!TIP]
 > **Don't see your feature here?**
-> Request one on
-> the [Feature Request Discussion](https://github.com/cssnr/auto-auth/discussions/categories/feature-requests).
+> Submit a [Feature Request](https://github.com/cssnr/auto-auth/issues/new?template=1-feature.yaml).
 
 ### Known Issues
 
@@ -107,7 +106,7 @@ Long-term Goals for Improved Security:
 
 > [!TIP]
 > **Don't see your issue here?**
-> Open one on the [Issues](https://github.com/cssnr/auto-auth/issues).
+> Open a [New Issues](https://github.com/cssnr/auto-auth/issues).
 
 ## Configuration
 
@@ -166,7 +165,7 @@ You can do this yourself, or get ChatGPT to convert the data for you. Convert th
 
 To import the data, visit the extension's Options Page, click `Import Text` and paste the JSON text.
 
-You can also [request a migration](https://github.com/cssnr/auto-auth/discussions/categories/feature-requests) be added
+You can also [request a migration](https://github.com/cssnr/auto-auth/issues/new?template=1-feature.yaml) be added
 for your extension. If it is popular enough, it might get added.
 
 ## Security
