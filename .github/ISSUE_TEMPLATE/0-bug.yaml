@@ -35,7 +35,6 @@ body:
     attributes:
       label: Support Information
       description: Open the extension options, scroll to the bottom, click Copy Support Information and paste below.
-      placeholder: Output is automatically wrapped in a code block.
       render: shell
 
   - type: markdown
