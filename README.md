@@ -88,7 +88,7 @@ Long-term Goals for Improved Security:
 - Add Optional Password Encryption Feature
 - Add a Sync Service for Cross-Browser Synchronization
 
-> [!TIP]
+> [!TIP]  
 > **Don't see your feature here?**
 > Submit a [Feature Request](https://github.com/cssnr/auto-auth/issues/new?template=1-feature.yaml).
 
@@ -104,7 +104,7 @@ Long-term Goals for Improved Security:
   - Chrome: Shows a default credentials prompt, Cancel and press `Ctrl+F5`
     - This behavior may continue after saving credentials.
 
-> [!TIP]
+> [!TIP]  
 > **Don't see your issue here?**
 > Open a [New Issues](https://github.com/cssnr/auto-auth/issues).
 
