@@ -24,7 +24,7 @@
 # Auto Auth
 
 <a title="Auto Auth" href="https://github.com/cssnr/auto-auth#readme-ov-file" target="_blank">
-<img alt="Auto Auth" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/auto-auth/refs/heads/master/.github/assets/logo-green.png"></a>
+<img alt="Auto Auth" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/auto-auth/refs/heads/master/src/images/logo128.png"></a>
 
 - [Install](#install)
 - [Features](#features)
