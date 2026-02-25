@@ -399,7 +399,7 @@ function createContextMenus() {
 /**
  * Add Context from Array
  * @function addContext
- * @param {[chrome.contextMenus.ContextType[],String,String,chrome.contextMenus.ContextType?]} context
+ * @param {[chrome.contextMenus.ContextType[],String,String?,chrome.contextMenus.ContextType?]} context
  */
 function addContext(context) {
     console.debug('addContext:', context)

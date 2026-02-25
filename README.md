@@ -26,20 +26,20 @@
 <a title="Auto Auth" href="https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme" target="_blank">
 <img alt="Auto Auth" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/auto-auth/refs/heads/master/.github/assets/logo-green.png"></a>
 
-- [Install](#Install)
-- [Features](#Features)
-  - [Upcoming Features](#Upcoming-Features)
-  - [Known Issues](#Known-Issues)
-- [Configuration](#Configuration)
-- [Migration](#Migration)
-  - [AutoAuth](#AutoAuth)
-  - [Basic Authentication](#Basic-Authentication)
-  - [Other or Manual](#Other-or-Manual)
-- [Security](#Security)
-- [Support](#Support)
-- [Development](#Development)
-  - [Building](#Building)
-- [Contributing](#Contributing)
+- [Install](#install)
+- [Features](#features)
+  - [Upcoming Features](#upcoming-features)
+  - [Known Issues](#known-Issues)
+- [Configuration](#configuration)
+- [Migration](#migration)
+  - [AutoAuth](#autoauth)
+  - [Basic Authentication](#basic-authentication)
+  - [Other or Manual](#other-or-manual)
+- [Security](#security)
+- [Support](#support)
+- [Development](#development)
+  - [Building](#building)
+- [Contributing](#contributing)
 
 Modern Chrome Web Extension and Firefox Browser Addon for Automatic Basic HTTP Authentication with many Options and
 Features.
