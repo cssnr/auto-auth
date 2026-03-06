@@ -79,10 +79,12 @@ const bgVideoInput = document.getElementById('bgVideoInput')
 const editHostname = document.getElementById('hostname')
 const editUsername = document.getElementById('username')
 const editPassword = document.getElementById('password')
+const usernameSwitch = document.getElementById('usernameSwitch')
 
-document
-    .getElementById('usernameSwitch')
-    .addEventListener('change', (e) => (editUsername.required = !e.currentTarget.checked))
+usernameSwitch.addEventListener(
+    'change',
+    (e) => (editUsername.required = !e.currentTarget.checked),
+)
 
 const confirmDelete = document.getElementById('confirm-delete')
 const confirmDeleteHost = document.getElementById('delete-host')
@@ -247,11 +249,12 @@ async function deleteHost(event) {
  * @param {MouseEvent} event
  */
 async function editClick(event) {
-    console.debug('editClick:', event)
     const target = event.currentTarget
+    console.debug('editClick:', target)
     const inputs = editModalEl.querySelectorAll('input')
     if (target.dataset.action === 'add') {
         // Process Add
+        usernameSwitch.checked = false
         console.debug('%c Add Host editClick', 'color: Lime')
         document.getElementById('edit-modal-label').textContent = 'Add Host'
         editForm.dataset.action = 'add'
@@ -277,6 +280,7 @@ async function editClick(event) {
     editPassword.value = password
     editPassword.dataset.original = password
     editPassword.type = 'password'
+    usernameSwitch.checked = username === ''
     editModal.show()
 }
 
