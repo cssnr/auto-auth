@@ -32,7 +32,7 @@
     "gulp": "^5.0.1",
     "json-merger": "^3.0.0",
     "prettier": "^3.8.1",
-    "puppeteer": "^24.37.5",
-    "web-ext": "^9.3.0"
+    "puppeteer": "^24.38.0",
+    "web-ext": "^9.4.0"
   }
 }

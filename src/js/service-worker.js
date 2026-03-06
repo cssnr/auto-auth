@@ -1,6 +1,13 @@
 // JS Background Service Worker
 
-import { Hosts, checkPerms, showPanel, githubURL, openPopup } from './export.js'
+import {
+    Hosts,
+    checkPerms,
+    openPopup,
+    showPanel,
+    githubURL,
+    isFirefox,
+} from './export.js'
 
 chrome.runtime.onInstalled.addListener(onInstalled)
 chrome.runtime.onStartup.addListener(onStartup)
@@ -188,11 +195,7 @@ async function onStartup() {
     const { options } = await chrome.storage.sync.get(['options'])
     // console.debug('options:', options)
     await updateIcon(options)
-    // noinspection JSUnresolvedReference
-    if (
-        typeof browser !== 'undefined' &&
-        typeof browser?.runtime?.getBrowserInfo === 'function'
-    ) {
+    if (isFirefox) {
         console.log('Firefox CTX Menu Workaround')
         if (options.contextMenu) {
             createContextMenus()
