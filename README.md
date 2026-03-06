@@ -23,23 +23,23 @@
 
 # Auto Auth
 
-<a title="Install Release" href="https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme" target="_blank">
-<img alt="Install Release" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/auto-auth/refs/heads/master/.github/assets/logo-green.png"></a>
+<a title="Auto Auth" href="https://github.com/cssnr/auto-auth?tab=readme-ov-file#readme" target="_blank">
+<img alt="Auto Auth" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/auto-auth/refs/heads/master/src/images/logo128.png"></a>
 
-- [Install](#Install)
-- [Features](#Features)
-  - [Upcoming Features](#Upcoming-Features)
-  - [Known Issues](#Known-Issues)
-- [Configuration](#Configuration)
-- [Migration](#Migration)
-  - [AutoAuth](#AutoAuth)
-  - [Basic Authentication](#Basic-Authentication)
-  - [Other or Manual](#Other-or-Manual)
-- [Security](#Security)
-- [Support](#Support)
-- [Development](#Development)
-  - [Building](#Building)
-- [Contributing](#Contributing)
+- [Install](#install)
+- [Features](#features)
+  - [Upcoming Features](#upcoming-features)
+  - [Known Issues](#known-Issues)
+- [Configuration](#configuration)
+- [Migration](#migration)
+  - [AutoAuth](#autoauth)
+  - [Basic Authentication](#basic-authentication)
+  - [Other or Manual](#other-or-manual)
+- [Security](#security)
+- [Support](#support)
+- [Development](#development)
+  - [Building](#building)
+- [Contributing](#contributing)
 
 Modern Chrome Web Extension and Firefox Browser Addon for Automatic Basic HTTP Authentication with many Options and
 Features.
@@ -88,10 +88,9 @@ Long-term Goals for Improved Security:
 - Add Optional Password Encryption Feature
 - Add a Sync Service for Cross-Browser Synchronization
 
-> [!TIP]
+> [!TIP]  
 > **Don't see your feature here?**
-> Request one on
-> the [Feature Request Discussion](https://github.com/cssnr/auto-auth/discussions/categories/feature-requests).
+> Submit a [Feature Request](https://github.com/cssnr/auto-auth/issues/new?template=1-feature.yaml).
 
 ### Known Issues
 
@@ -105,9 +104,9 @@ Long-term Goals for Improved Security:
   - Chrome: Shows a default credentials prompt, Cancel and press `Ctrl+F5`
     - This behavior may continue after saving credentials.
 
-> [!TIP]
+> [!TIP]  
 > **Don't see your issue here?**
-> Open one on the [Issues](https://github.com/cssnr/auto-auth/issues).
+> Open a [New Issues](https://github.com/cssnr/auto-auth/issues).
 
 ## Configuration
 
@@ -166,7 +165,7 @@ You can do this yourself, or get ChatGPT to convert the data for you. Convert th
 
 To import the data, visit the extension's Options Page, click `Import Text` and paste the JSON text.
 
-You can also [request a migration](https://github.com/cssnr/auto-auth/discussions/categories/feature-requests) be added
+You can also [request a migration](https://github.com/cssnr/auto-auth/issues/new?template=1-feature.yaml) be added
 for your extension. If it is popular enough, it might get added.
 
 ## Security
@@ -183,20 +182,20 @@ If there is enough popularity/requests for these features, there are a couple op
 
 ## Support
 
-For help using the web extension, see:
-
-- Documentation: https://auto-auth.cssnr.com/docs/
-- Q&A Discussion: https://github.com/cssnr/auto-auth/discussions/categories/q-a
-- Request a Feature: https://github.com/cssnr/auto-auth/discussions/categories/feature-requests
-
-If you are experiencing an issue/bug or getting unexpected results, you can:
-
-- Report an Issue: https://github.com/cssnr/auto-auth/issues
-- Chat with us on Discord: https://discord.gg/wXy6m2X8wY
-- Provide General Feedback: https://cssnr.github.io/feedback
-
 Logs can be found inspecting the page (Ctrl+Shift+I), clicking on the Console, and;
 Firefox: toggling Debug logs, Chrome: toggling Verbose from levels dropdown.
+
+If you run into any issues or need help getting started, please do one of the following:
+
+- Report an Issue: <https://github.com/cssnr/auto-auth/issues>
+- Q&A Discussion: <https://github.com/cssnr/auto-auth/discussions/categories/q-a>
+- Request a Feature: <https://github.com/cssnr/auto-auth/issues/new?template=1-feature.yaml>
+- Chat with us on Discord: <https://discord.gg/wXy6m2X8wY>
+
+[![Features](https://img.shields.io/badge/features-brightgreen?style=for-the-badge&logo=rocket&logoColor=white)](https://github.com/cssnr/auto-auth/issues/new?template=1-feature.yaml)
+[![Issues](https://img.shields.io/badge/issues-red?style=for-the-badge&logo=southwestairlines&logoColor=white)](https://github.com/cssnr/auto-auth/issues)
+[![Discussions](https://img.shields.io/badge/discussions-blue?style=for-the-badge&logo=livechat&logoColor=white)](https://github.com/cssnr/auto-auth/discussions)
+[![Discord](https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/wXy6m2X8wY)
 
 To support this project, see the [Contributing](#Contributing) section at the bottom.
 

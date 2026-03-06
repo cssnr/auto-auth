@@ -2,6 +2,11 @@
 
 export const githubURL = 'https://github.com/cssnr/auto-auth'
 
+// noinspection JSUnresolvedReference
+export const isFirefox =
+    typeof browser !== 'undefined' &&
+    typeof browser?.runtime?.getBrowserInfo === 'function'
+
 export class Hosts {
     /** @type {[String]} */
     static keys = [...'abcdefghijklmnopqrstuvwxyz0123456789']
@@ -340,11 +345,7 @@ export async function updateManifest() {
  * @return {Promise<void>}
  */
 export async function updateBrowser() {
-    let selector = '.chrome'
-    // noinspection JSUnresolvedReference
-    if (typeof browser?.runtime?.getBrowserInfo === 'function') {
-        selector = '.firefox'
-    }
+    const selector = isFirefox ? '.firefox' : '.chrome'
     console.debug('updateBrowser:', selector)
     document.querySelectorAll(selector).forEach((el) => el.classList.remove('d-none'))
 }
@@ -484,6 +485,7 @@ export async function onRemoved(permissions) {
 
 /**
  * Open Popup Click Callback
+ * NOTE: Requires Chrome>=127
  * @function openPopup
  * @param {Event} [event]
  */

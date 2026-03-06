@@ -74,7 +74,6 @@
 
         document.querySelectorAll('[data-bs-theme-value]').forEach((el) => {
             el.addEventListener('click', () => {
-                // const value = el.getAttribute('data-bs-theme-value')
                 const value = el.dataset.bsThemeValue
                 setStoredTheme(value)
                 setTheme(value)
