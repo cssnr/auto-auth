@@ -131,14 +131,10 @@ $('.form-control').on('change input', function () {
  */
 async function initOptions() {
     console.debug('initOptions')
-    // noinspection ES6MissingAwait
-    updateManifest()
-    // noinspection ES6MissingAwait
-    updateBrowser()
-    // noinspection ES6MissingAwait
-    updatePlatform()
-    // noinspection ES6MissingAwait
-    setShortcuts()
+    updateManifest().catch((e) => console.log(e))
+    updateBrowser().catch((e) => console.log(e))
+    updatePlatform().catch((e) => console.log(e))
+    setShortcuts().catch((e) => console.log(e))
 
     checkPerms().then((hasPerms) => {
         if (!hasPerms) console.log('%cMissing Host Permissions', 'color: Red')
@@ -223,10 +219,11 @@ function updateTable(data) {
  */
 async function deleteHost(event) {
     console.debug('deleteHost:', event)
+    const target = event.currentTarget
     try {
-        const host = event.currentTarget?.dataset?.value
+        const host = target?.dataset?.value
         console.debug('host:', host)
-        const confirm = event.currentTarget?.id !== 'confirm-delete'
+        const confirm = target?.id !== 'confirm-delete'
         const { options } = await chrome.storage.sync.get(['options'])
         if (options.confirmDelete && !!confirm) {
             console.debug('Show Delete Modal')
@@ -249,12 +246,13 @@ async function deleteHost(event) {
  * @param {MouseEvent} event
  */
 async function editClick(event) {
+    console.debug('editClick:', event)
     const target = event.currentTarget
-    console.debug('editClick:', target)
     const inputs = editModalEl.querySelectorAll('input')
     if (target.dataset.action === 'add') {
         // Process Add
         usernameSwitch.checked = false
+        editUsername.required = true
         console.debug('%c Add Host editClick', 'color: Lime')
         document.getElementById('edit-modal-label').textContent = 'Add Host'
         editForm.dataset.action = 'add'
@@ -281,6 +279,7 @@ async function editClick(event) {
     editPassword.dataset.original = password
     editPassword.type = 'password'
     usernameSwitch.checked = username === ''
+    editUsername.required = username !== ''
     editModal.show()
 }
 
@@ -594,17 +593,6 @@ async function onChanged(changes, namespace) {
             updateTable(hosts)
         }
     }
-    // for (const [key, { newValue }] of Object.entries(changes)) {
-    //     if (namespace === 'sync') {
-    //         if (key === 'options') {
-    //             updateOptions(newValue)
-    //         } else {
-    //             const hosts = await Hosts.all()
-    //             console.debug('hosts:', hosts)
-    //             updateTable(hosts)
-    //         }
-    //     }
-    // }
 }
 
 /**
