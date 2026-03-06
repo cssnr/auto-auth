@@ -130,7 +130,6 @@ export function showHidePassword(event) {
 export async function copyInput(event) {
     console.debug('copyInput:', event)
     const el = event.currentTarget || event.target.closest('button')
-    console.debug('el.dataset.copyInput:', el.dataset.copyInput)
     const input = document.querySelector(el.dataset.copyInput)
     console.debug('input:', input)
     if (!input.value) {
@@ -180,8 +179,11 @@ export async function saveOptions(event) {
     } else {
         value = event.target.value
     }
+
     if (value === undefined) {
-        console.warn(`No Value for key: ${key}`)
+        console.warn(`No value for key: ${key}`)
+    } else if (value === options[key]) {
+        console.log(`No value change for key: ${key}:`, value)
     } else {
         options[key] = value
         console.log(`Set %c${key}:`, 'color: Khaki', value)
@@ -222,7 +224,6 @@ export function updateOptions(options) {
             hideShowElement(`#${el.dataset.related}`, value)
         }
         if (el.dataset.warning) {
-            // addWarningClass(el.nextElementSibling, value, el.dataset.warning)
             el.nextElementSibling.classList.toggle(el.dataset.warning, !!value)
         }
     }
@@ -245,27 +246,11 @@ function hideShowElement(selector, show, speed = 'fast') {
     }
 }
 
-// /**
-//  * Add Warning Class to Element
-//  * @function addWarningClass
-//  * @param {HTMLElement} element
-//  * @param {Boolean} value
-//  * @param {String} warning
-//  */
-// function addWarningClass(element, value, warning) {
-//     // console.debug('addWarningClass:', value, element)
-//     if (value) {
-//         element.classList.add(warning)
-//     } else {
-//         element.classList.remove(warning)
-//     }
-// }
-
 /**
  * Link Click Callback
  * Note: Firefox popup requires a call to window.close()
  * @function linkClick
- * @param {MouseEvent} event
+ * @param {Event|MouseEvent} event
  * @param {Boolean} [close]
  */
 export async function linkClick(event, close = false) {
@@ -402,10 +387,10 @@ export async function checkPerms() {
         origins: ['*://*/*'],
     })
     console.debug('checkPerms:', hasPerms)
+
     // Firefox still uses DOM Based Background Scripts
-    if (typeof document === 'undefined') {
-        return hasPerms
-    }
+    if (typeof document === 'undefined') return hasPerms
+
     const hasPermsEl = document.querySelectorAll('.has-perms')
     const grantPermsEl = document.querySelectorAll('.grant-perms')
     if (hasPerms) {
@@ -421,16 +406,14 @@ export async function checkPerms() {
 /**
  * Grant Permissions Click Callback
  * @function grantPerms
- * @param {MouseEvent} event
+ * @param {Event} event
  * @param {Boolean} [close]
  */
 export async function grantPerms(event, close = false) {
     console.debug('grantPerms:', event)
     // noinspection ES6MissingAwait
     requestPerms()
-    if (close) {
-        window.close()
-    }
+    if (close) window.close()
 }
 
 /**

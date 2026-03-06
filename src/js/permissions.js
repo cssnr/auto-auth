@@ -19,8 +19,7 @@ document
  */
 async function domContentLoaded() {
     console.debug('domContentLoaded')
-    // noinspection ES6MissingAwait
-    updateManifest()
+    updateManifest().catch((e) => console.log(e))
     checkPerms().then((hasPerms) => {
         if (!hasPerms) console.log('%cMissing Host Permissions', 'color: Red')
     })

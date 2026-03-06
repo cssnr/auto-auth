@@ -16,7 +16,6 @@
     "build": "npm run build:chrome && npm run build:firefox",
     "prettier:check": "npx prettier --check .",
     "prettier:write": "npx prettier --write .",
-    "actionlint": "actionlint",
     "yamllint": "yamllint -c .github/yamllint.yaml ."
   },
   "dependencies": {
