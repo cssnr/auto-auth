@@ -44,12 +44,21 @@
 
 Modern Chrome Web Extension and Firefox Browser Addon for Automatic Basic HTTP Authentication with many Options and Features.
 
+This extension replaces the native browser auth authentication popup with a customizable login page allowing you to optionally save your credentials when logging in.
+You can also import/export credentials, manually add credentials or import directly from [other extensions](#migration).
+
 To take it for a test drive, [install](#Install) the addon and head over to: https://authenticationtest.com/HTTPAuth/  
 Then enter the username `user` and password `pass`.
 
 > [!TIP]  
 > This is the new TypeScript+Vue branch.  
-> For the **deprecated** JavaScript version, see the [legacy](https://github.com/cssnr/cache-cleaner/tree/legacy) branch.
+> For the **deprecated** JavaScript version, see the [legacy](https://github.com/cssnr/auto-auth/tree/legacy) branch.
+>
+> **New Feature Highlights**
+>
+> - The Credentials Table supports inline editing by clicking on any cell.
+> - The username and password columns and their values can be shown or hidden.
+> - A new Side Panel and Extension Panel UI plus a new migration from MultiPass.
 
 ## Install
 

@@ -56,10 +56,25 @@ Instructions are on the GitHub README.
 - Permissions: `contextMenus`, `storage`, `webRequest`, `webRequestAuthProvider`
 - Host permissions: `*://*/*`
 
-## Changes/New Features in v1.0.0
+## Updates in v1.0.0
 
-- The Credentials Table and Options are now available in the Side Panel and Extension Panel UI.
-- The Credentials Table supports inline editing by clicking on a cell (can be disabled in Options).
-- The Credentials Table allows showing/hiding the password and username columns and their values.
-- The Credentials Table row size can be set to Large.
-- New migration added from MultiPass.
+The previous version is `0.0.6` and everything is 100% backwards compatible including upgrades/downgrades and credentials import/exports.
+
+## New Features
+
+- New Side Panel and Extension Panel UI with Credentials Table and Extension Options.
+- Credentials Table supports inline editing by clicking on any cell's value.
+- Credentials Table allows showing/hiding the password/username columns and values.
+- Credentials Table row size can be set to Large.
+- Options Page can be set to full width.
+- Current tab credentials can be edited in the Popup.
+- Auth Page has a quick Options overlay button.
+- New migration added from the MultiPass Extension.
+- Now [localized](https://github.com/cssnr/auto-auth#languages) in 10 different languages.
+
+## Fixes and Improvements
+
+- Password now allow the `:` character (still not allowed in usernames).
+- Usernames can be hidden on the options page.
+- Allows importing hosts with empty usernames.
+- The Content Script properly updates the status on all tabs.
