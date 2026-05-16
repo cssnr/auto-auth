@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  PACKAGE_NAME: auto-auth # can be a wild card unless the to-do's are completed
+  PACKAGE_NAME: auto-auth # can be a wild card after webstore-publish updates to use glob
   CHROME_ID: gpoiggobidhogpmmlakahiaaegibnogm # can be defined in elsewhere and parsed
   PUBLISHER_ID: 428868da-c02f-433a-b34c-208b3d01fbc3 # can be defined in elsewhere and parsed
   MOZILLA_SLUG: auto-auth # can be defined in elsewhere and parsed
@@ -86,7 +86,7 @@ jobs:
         uses: cssnr/webstore-publish-action@v1
         with:
           extension_id: ${{ env.CHROME_ID }}
-          publisher_id: ${{env.PUBLISHER_ID}}
+          publisher_id: ${{ env.PUBLISHER_ID }}
           json_data: ${{ secrets.WEBSTORE_JSON }}
           zip_file: "${{ env.PACKAGE_NAME }}-${{ github.event.release.tag_name }}-chrome.zip"
           submit: false
@@ -115,6 +115,7 @@ jobs:
           name: artifacts
 
       - name: "Generate Release Notes"
+        # https://github.com/mozilla/addons-server/blob/master/src/olympia/core/languages.py
         env:
           RELEASE_NOTES: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.event.release.tag_name }}
         run: |
@@ -123,10 +124,11 @@ jobs:
             "de":    "Vollständige Versionshinweise: $RELEASE_NOTES",
             "en-US": "Full Release Notes: $RELEASE_NOTES",
             "es-MX": "Notas de versión completas: $RELEASE_NOTES",
-            "fr":    "\n\nNotes de version complètes : $RELEASE_NOTES",
+            "fr":    "Notes de version complètes : $RELEASE_NOTES",
             "ja":    "完全なリリースノート: $RELEASE_NOTES",
             "ko":    "전체 릴리스 노트: $RELEASE_NOTES",
             "pt-BR": "Notas de versão completas: $RELEASE_NOTES",
+            "pt-PT": "Notas de lançamento completas: $RELEASE_NOTES",
             "ru":    "Полные примечания к выпуску: $RELEASE_NOTES",
             "zh-CN": "完整发行说明：$RELEASE_NOTES"
           }}}
@@ -171,7 +173,7 @@ jobs:
   check:
     name: "Check"
     if: ${{ always() }}
-    runs-on: Ubuntu-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: [build, release, publish-chrome, publish-mozilla]
 
