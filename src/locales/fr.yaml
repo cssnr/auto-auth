@@ -1,0 +1,235 @@
+name: Auto Auth
+short_name: Auto Auth
+description: Extension de navigateur pour l'authentification HTTP de base automatique avec synchronisation du navigateur, fonctionnalité d'import/export et plus d'options
+
+ui:
+  action:
+    add: Ajouter
+    cancel: Annuler
+    clear: Effacer
+    close: Fermer
+    delete: Supprimer
+    edit: Modifier
+    go: Aller
+    options: Options
+    save: Enregistrer
+
+    addEdit: Ajouté/Modifié
+    importUpdate: Importé/Mis à jour
+    addCredentials: Ajouter des identifiants
+    openPopup: Ouvrir le popup
+    sidePanel: Panneau latéral
+    extensionPanel: Panneau de l'extension
+    extensionPage: Page de l'extension
+
+    hostnameCopied: Nom d'hôte copié dans le presse-papiers
+    usernameCopied: Nom d'utilisateur copié dans le presse-papiers
+    passwordCopied: Mot de passe copié dans le presse-papiers
+    urlCopied: URL copiée dans le presse-papiers
+
+  text:
+    host: Hôte
+    hosts: Hôtes
+    ignored: Ignoré
+    invalid: Invalide
+    or: ou
+    removed: Supprimé
+    required: Requis
+
+    hostname: Nom d'hôte
+    username: Nom d'utilisateur
+    password: Mot de passe
+
+    copyHostname: Copier le nom d'hôte
+    copyUsername: Copier le nom d'utilisateur
+    copyPassword: Copier le mot de passe
+
+    homePage: Page d'accueil
+    openIssue: Signaler un problème
+    releaseNotes: Notes de version
+    requestFeature: Demander une fonctionnalité
+
+    addEditError: Erreur d'ajout/modification
+    importError: Erreur d'importation
+    noChanges: Aucune modification
+
+    deleteHostError: Erreur de suppression de l'hôte
+    errorReadingFile: Erreur de lecture du fichier
+    errorLoadingPage: Erreur de chargement de la page
+    noCredentialsExport: Aucun identifiant à exporter
+    noCredentialsImport: Aucun identifiant à importer
+    noSavedCreds: Aucun identifiant enregistré
+    showHidePassword: Afficher/Masquer le mot de passe
+    extensionDisabled: Extension temporairement désactivée
+    unsavedChanges: Modifications non enregistrées détectées.
+    unknownFormat: Format d'identifiants inconnu
+
+    hostUrlInvalid: Nom d'hôte ou URL invalide
+    hostnameExists: Le nom d'hôte existe déjà. Veuillez d'abord modifier ou supprimer
+
+form:
+  host:
+    columns: Colonnes
+    editable: Modifiable
+    large: Grand
+    visible: Visible
+    hostnamePlaceholder: nom d'hôte
+    usernamePlaceholder: nom d'utilisateur
+    passwordPlaceholder: mot de passe
+    hostnameHelp: Nom d'hôte pour l'authentification de base.
+    usernameHelp: Nom d'utilisateur pour l'authentification de base.
+    passwordHelp: Mot de passe pour l'authentification de base.
+
+auth:
+  # auth/App.vue
+  title: Connexion à # ...hostname
+  login: Connexion
+  ignoreHost: Ignorer l'hôte
+  getSupport: Obtenir de l'aide
+  authFailed: Échec de l'authentification
+  tryAgain: Veuillez réessayer
+  noUsername: Aucun nom d'utilisateur
+  saveLogin: Enregistrer la connexion
+  credsNotSaved: Les identifiants ne seront pas enregistrés !
+
+  credsAlreadySaved: Les identifiants sont déjà enregistrés, cette option ne fonctionnera pas !
+  untilFixed: Pour continuer, vous devez # ...deleteSaved
+  deleteSaved: Supprimer les identifiants enregistrés #... or saveLogin
+
+  useThe: Utiliser # ...nativeLogin
+  nativeLogin: La connexion native #... or enableExtension
+  enableExtension: Activer l'extension
+
+  ignore:
+    confirmIgnore: Confirmer l'exclusion
+    optionsPage: Page des options
+    ignoreHost: Ignorer l'hôte et supprimer tous les identifiants enregistrés ?
+    ignoreRemoved: Les hôtes ignorés peuvent être supprimés depuis la
+
+popup:
+  # popup/App.vue
+  deleteCreds: Supprimer les identifiants
+  editCreds: Modifier les identifiants
+  hostIgnored: Hôte ignoré
+  moreOptions: Plus d'options
+  noAccess: Pas d'accès à l'onglet actuel.
+  noSaved: Aucun identifiant enregistré trouvé.
+
+permissions:
+  # permissions/App.vue
+  title: Autorisations
+  reason: Pour intercepter les demandes d'authentification, des autorisations d'hôte sont requises.
+
+options:
+  # options/App.vue
+  title: Options
+  extension: Options de l'extension
+  copySupport: Copier les informations de support
+  copySupportTip: Pour les rapports de problèmes.
+  copySupportMsg: Informations de support copiées.
+  savedCredentials: Identifiants enregistrés
+  # components/OptionsForm.vue
+  authPageBackground: Arrière-plan authentification/options
+
+content:
+  # content/index.ts
+  badge:
+    # Browser Extension Badge Text. Max Visible Characters: 3-4
+    on: On
+    off: Off
+
+ctx:
+  # background/menus.ts
+  openPopup: Ouvrir le popup
+  openSidePanel: Ouvrir le panneau latéral
+  openExtPanel: Ouvrir le panneau de l'extension
+  openOptions: Ouvrir les options
+
+cmd:
+  # wxt.config.ts
+  executeAction: Ouvrir le popup
+  openSidePanel: Ouvrir le panneau latéral
+  openExtPanel: Ouvrir le panneau de l'extension
+  openOptions: Ouvrir les options
+
+import:
+  # components/ImportExport.vue
+  exportAll: Tout exporter
+  importFile: Importer un fichier
+  # components/ImportText.vue
+  errorJson: Erreur d'analyse JSON
+  errorUnknown: Erreur inconnue
+  import: Importer
+  importText: Importer du texte
+  importCredentials: Importer des identifiants
+  jsonImport: Import JSON
+  placeholder: Collez le texte à importer ici...
+  formatSee: Pour le format des données, consultez le # ...migrationGuide
+  migrationGuide: Guide de migration # ...onGithub
+  onGithub: sur GitHub
+
+background:
+  # components/BackgroundForm.vue
+  none: Aucun
+  picture: Image
+  pictureTip: URL d'une image web.
+  pictureLabel: URL de l'image de fond
+  video: Vidéo
+  videoTip: URL d'une vidéo web
+  videoLabel: URL de la vidéo de fond
+
+keyboard:
+  # components/KeyboardShortcuts.vue
+  description: Description
+  manage: Gérer les raccourcis clavier
+  notSet: Non défini
+  shortcut: Raccourci
+  shortcuts: Raccourcis clavier
+  unknown: Inconnu
+
+perms:
+  # components/PermsCheck.vue
+  granted: Autorisations accordées.
+  grant:
+    text: Accorder les autorisations d'hôte
+    tip: Cette extension nécessite des autorisations d'hôte pour fonctionner
+  remove:
+    text: Supprimer les autorisations d'hôte
+    tip: Vous ne pourrez plus analyser de nouvelles images
+  info: Plus d'informations sur les autorisations
+  moreInfo: Pour plus d'informations, consultez la
+  mdn: Documentation MDN
+  chrome: Documentation Chrome
+
+theme:
+  # components/ThemeSwitch.vue
+  title: Sélecteur de thème
+  dark: Sombre
+  light: Clair
+  auto: Automatique
+
+option:
+  # components/FormSwitch.vue
+  toggle:
+    #label: Max Length 38
+    contextMenu:
+      label: Afficher le menu contextuel au clic droit
+      tip: Afficher le menu contextuel lors du clic droit.
+    showUpdate:
+      label: Afficher les notes de version lors des mises à jour
+      tip: Afficher les notes de version lors des mises à jour.
+    tempDisabled:
+      label: Désactiver temporairement l'extension
+      tip: Désactiver temporairement l'extension pour le débogage.
+    ignoreProxy:
+      label: Ignorer l'authentification proxy
+      tip: Ignorer les réponses HTTP 407 Proxy Auth Required.
+    defaultSave:
+      label: Enregistrer l'authentification par défaut
+      tip: Activer le bouton Enregistrer la connexion par défaut.
+    confirmDelete:
+      label: Afficher une confirmation lors de la suppression
+      tip: Afficher une boîte de dialogue de confirmation lors de la suppression.
+    fullWidthOptions:
+      label: Page d'options en pleine largeur
+      tip: Afficher la page d'options en pleine largeur.

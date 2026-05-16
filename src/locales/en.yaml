@@ -1,0 +1,235 @@
+name: Auto Auth
+short_name: Auto Auth
+description: Automatic Basic HTTP Authentication Web Extension with Browser Synchronization, Import/Export Capability and More Options
+
+ui:
+  action:
+    add: Add
+    cancel: Cancel
+    clear: Clear
+    close: Close
+    delete: Delete
+    edit: Edit
+    go: Go
+    options: Options
+    save: Save
+
+    addEdit: Added/Edited
+    importUpdate: Imported/Updated
+    addCredentials: Add Credentials
+    openPopup: Open Popup
+    sidePanel: Side Panel
+    extensionPanel: Extension Panel
+    extensionPage: Extension Page
+
+    hostnameCopied: Hostname Copied to Clipboard
+    usernameCopied: Username Copied to Clipboard
+    passwordCopied: Password Copied to Clipboard
+    urlCopied: URL Copied to Clipboard
+
+  text:
+    host: Host
+    hosts: Hosts
+    ignored: Ignored
+    invalid: Invalid
+    or: or
+    removed: Removed
+    required: Required
+
+    hostname: Hostname
+    username: Username
+    password: Password
+
+    copyHostname: Copy Hostname
+    copyUsername: Copy Username
+    copyPassword: Copy Password
+
+    homePage: Home Page
+    openIssue: Open Issue
+    releaseNotes: Release Notes
+    requestFeature: Request Feature
+
+    addEditError: Add/Edit Error
+    importError: Import Error
+    noChanges: No Changes
+
+    deleteHostError: Delete Host Error
+    errorReadingFile: Error Reading File
+    errorLoadingPage: Error Loading Page
+    noCredentialsExport: No Credentials to Export
+    noCredentialsImport: No Credentials to Import
+    noSavedCreds: No Saved Credentials
+    showHidePassword: Show/Hide Password
+    extensionDisabled: Extension Temporarily Disabled
+    unsavedChanges: Unsaved Changes Detected.
+    unknownFormat: Unknown Credentials Format
+
+    hostUrlInvalid: Invalid Hostname or URL
+    hostnameExists: Hostname Already Exists. Edit or Delete First
+
+form:
+  host:
+    columns: Columns
+    editable: Editable
+    large: Large
+    visible: Visible
+    hostnamePlaceholder: hostname
+    usernamePlaceholder: username
+    passwordPlaceholder: password
+    hostnameHelp: Basic Authentication Hostname.
+    usernameHelp: Basic Authentication Username.
+    passwordHelp: Basic Authentication Password.
+
+auth:
+  # auth/App.vue
+  title: Login for # ...hostname
+  login: Login
+  ignoreHost: Ignore Host
+  getSupport: Get Support
+  authFailed: Authentication Failed
+  tryAgain: Please Try Again
+  noUsername: No Username
+  saveLogin: Save Login
+  credsNotSaved: Credentials will not be saved!
+
+  credsAlreadySaved: Credentials are already saved and this option will not work!
+  untilFixed: To proceed you must # ...deleteSaved
+  deleteSaved: Delete Saved Credentials #... or saveLogin
+
+  useThe: Use the # ...nativeLogin
+  nativeLogin: Native Login #... or enableExtension
+  enableExtension: Enable the Extension
+
+  ignore:
+    confirmIgnore: Confirm Ignore
+    optionsPage: Options Page
+    ignoreHost: Ignore host and remove any saved credentials?
+    ignoreRemoved: Ignored hosts can be removed from the
+
+popup:
+  # popup/App.vue
+  deleteCreds: Delete Credentials
+  editCreds: Edit Credentials
+  hostIgnored: Host Ignored
+  moreOptions: More Options
+  noAccess: No Access to the Current Tab.
+  noSaved: No Saved Credentials Found.
+
+permissions:
+  # permissions/App.vue
+  title: Permissions
+  reason: To intercept authentication requests, hosts permissions are required.
+
+options:
+  # options/App.vue
+  title: Options
+  extension: Extension Options
+  copySupport: Copy Support Information
+  copySupportTip: For issue reporting.
+  copySupportMsg: Support Information Copied.
+  savedCredentials: Saved Credentials
+  # components/OptionsForm.vue
+  authPageBackground: Auth/Options Background
+
+content:
+  # content/index.ts
+  badge:
+    # Browser Extension Badge Text. Max Visible Characters: 3-4
+    on: On
+    off: Off
+
+ctx:
+  # background/menus.ts
+  openPopup: Open Popup
+  openSidePanel: Open Side Panel
+  openExtPanel: Open Extension Panel
+  openOptions: Open Options
+
+cmd:
+  # wxt.config.ts
+  executeAction: Open Popup
+  openSidePanel: Open Side Panel
+  openExtPanel: Open Extension Panel
+  openOptions: Open Options
+
+import:
+  # components/ImportExport.vue
+  exportAll: Export All
+  importFile: Import File
+  # components/ImportText.vue
+  errorJson: JSON Parse Error
+  errorUnknown: Unknown Error
+  import: Import
+  importText: Import Text
+  importCredentials: Import Credentials
+  jsonImport: JSON Import
+  placeholder: Paste text to import here...
+  formatSee: For data format, see the # ...migrationGuide
+  migrationGuide: Migration Guide # ...onGithub
+  onGithub: on GitHub
+
+background:
+  # components/BackgroundForm.vue
+  none: None
+  picture: Picture
+  pictureTip: URL to a Web Image.
+  pictureLabel: Background Picture URL
+  video: Video
+  videoTip: URL to a Web Video
+  videoLabel: Background Video URL
+
+keyboard:
+  # components/KeyboardShortcuts.vue
+  description: Description
+  manage: Manage Keyboard Shortcuts
+  notSet: Not Set
+  shortcut: Shortcut
+  shortcuts: Keyboard Shortcuts
+  unknown: Unknown
+
+perms:
+  # components/PermsCheck.vue
+  granted: Permissions Granted.
+  grant:
+    text: Grant Host Permissions
+    tip: This Extension Requires Host Permissions to Function
+  remove:
+    text: Remove Host Permissions
+    tip: You will no longer be able to analyze new images
+  info: More Information on Permissions
+  moreInfo: For more information see the
+  mdn: MDN Documentation
+  chrome: Chrome Documentation
+
+theme:
+  # components/ThemeSwitch.vue
+  title: Theme Switcher
+  dark: Dark
+  light: Light
+  auto: Auto
+
+option:
+  # components/FormSwitch.vue
+  toggle:
+    #label: Max Length 38
+    contextMenu:
+      label: Show Right-Click Context Menu
+      tip: Show context menu on right click menu.
+    showUpdate:
+      label: Show Release Notes on Update
+      tip: Show the release notes on version updates.
+    tempDisabled:
+      label: Temporarily Disable Extension
+      tip: Temporarily disable the extension for debugging.
+    ignoreProxy:
+      label: Ignore Proxy Authentication
+      tip: Ignore HTTP 407 Proxy Auth Required responses.
+    defaultSave:
+      label: Save Authentication by Default
+      tip: Enable the Save Login switch by default.
+    confirmDelete:
+      label: Show Confirmation on Delete
+      tip: Show confirmation dialog when deleting items.
+    fullWidthOptions:
+      label: Full Width Options Page
+      tip: Show Options Page in Full Width.

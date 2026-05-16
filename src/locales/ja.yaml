@@ -1,0 +1,235 @@
+name: Auto Auth
+short_name: Auto Auth
+description: ブラウザ同期、インポート/エクスポート機能など多彩なオプションを備えた自動基本HTTP認証ウェブ拡張機能
+
+ui:
+  action:
+    add: 追加
+    cancel: キャンセル
+    clear: クリア
+    close: 閉じる
+    delete: 削除
+    edit: 編集
+    go: 移動
+    options: オプション
+    save: 保存
+
+    addEdit: 追加済み/編集済み
+    importUpdate: インポート済み/更新済み
+    addCredentials: 認証情報を追加
+    openPopup: ポップアップを開く
+    sidePanel: サイドパネル
+    extensionPanel: 拡張パネル
+    extensionPage: 拡張ページ
+
+    hostnameCopied: ホスト名をクリップボードにコピーしました
+    usernameCopied: ユーザー名をクリップボードにコピーしました
+    passwordCopied: パスワードをクリップボードにコピーしました
+    urlCopied: URLをクリップボードにコピーしました
+
+  text:
+    host: ホスト
+    hosts: ホスト一覧
+    ignored: 無視済み
+    invalid: 無効
+    or: または
+    removed: 削除済み
+    required: 必須
+
+    hostname: ホスト名
+    username: ユーザー名
+    password: パスワード
+
+    copyHostname: ホスト名をコピー
+    copyUsername: ユーザー名をコピー
+    copyPassword: パスワードをコピー
+
+    homePage: ホームページ
+    openIssue: 問題を報告
+    releaseNotes: リリースノート
+    requestFeature: 機能をリクエスト
+
+    addEditError: 追加/編集エラー
+    importError: インポートエラー
+    noChanges: 変更なし
+
+    deleteHostError: ホスト削除エラー
+    errorReadingFile: ファイル読み込みエラー
+    errorLoadingPage: ページ読み込みエラー
+    noCredentialsExport: エクスポートする認証情報がありません
+    noCredentialsImport: インポートする認証情報がありません
+    noSavedCreds: 保存された認証情報はありません
+    showHidePassword: パスワードの表示/非表示
+    extensionDisabled: 拡張機能が一時的に無効化されています
+    unsavedChanges: 未保存の変更が検出されました。
+    unknownFormat: 不明な認証情報の形式
+
+    hostUrlInvalid: 無効なホスト名またはURL
+    hostnameExists: ホスト名はすでに存在します。先に編集または削除してください
+
+form:
+  host:
+    columns: 列
+    editable: 編集可能
+    large: 大きく
+    visible: 表示
+    hostnamePlaceholder: ホスト名
+    usernamePlaceholder: ユーザー名
+    passwordPlaceholder: パスワード
+    hostnameHelp: 基本認証のホスト名。
+    usernameHelp: 基本認証のユーザー名。
+    passwordHelp: 基本認証のパスワード。
+
+auth:
+  # auth/App.vue
+  title: ログイン # ...hostname
+  login: ログイン
+  ignoreHost: ホストを無視
+  getSupport: サポートを受ける
+  authFailed: 認証に失敗しました
+  tryAgain: もう一度お試しください
+  noUsername: ユーザー名なし
+  saveLogin: ログインを保存
+  credsNotSaved: 認証情報は保存されません！
+
+  credsAlreadySaved: 認証情報はすでに保存されているため、このオプションは機能しません！
+  untilFixed: 続行するには # ...deleteSaved
+  deleteSaved: 保存済み認証情報を削除 #... or saveLogin
+
+  useThe: 使用してください # ...nativeLogin
+  nativeLogin: ネイティブログイン #... or enableExtension
+  enableExtension: 拡張機能を有効にする
+
+  ignore:
+    confirmIgnore: 無視を確認
+    optionsPage: オプションページ
+    ignoreHost: ホストを無視して保存済み認証情報を削除しますか？
+    ignoreRemoved: 無視したホストは以下から削除できます
+
+popup:
+  # popup/App.vue
+  deleteCreds: 認証情報を削除
+  editCreds: 認証情報を編集
+  hostIgnored: ホストが無視されました
+  moreOptions: 詳細オプション
+  noAccess: 現在のタブにアクセスできません。
+  noSaved: 保存された認証情報が見つかりません。
+
+permissions:
+  # permissions/App.vue
+  title: 権限
+  reason: 認証リクエストを傍受するには、ホスト権限が必要です。
+
+options:
+  # options/App.vue
+  title: オプション
+  extension: 拡張機能オプション
+  copySupport: サポート情報をコピー
+  copySupportTip: 問題報告用。
+  copySupportMsg: サポート情報をコピーしました。
+  savedCredentials: 保存済み認証情報
+  # components/OptionsForm.vue
+  authPageBackground: 認証/オプション背景
+
+content:
+  # content/index.ts
+  badge:
+    # Browser Extension Badge Text. Max Visible Characters: 3-4
+    on: オン
+    off: オフ
+
+ctx:
+  # background/menus.ts
+  openPopup: ポップアップを開く
+  openSidePanel: サイドパネルを開く
+  openExtPanel: 拡張パネルを開く
+  openOptions: オプションを開く
+
+cmd:
+  # wxt.config.ts
+  executeAction: ポップアップを開く
+  openSidePanel: サイドパネルを開く
+  openExtPanel: 拡張パネルを開く
+  openOptions: オプションを開く
+
+import:
+  # components/ImportExport.vue
+  exportAll: すべてエクスポート
+  importFile: ファイルをインポート
+  # components/ImportText.vue
+  errorJson: JSONパースエラー
+  errorUnknown: 不明なエラー
+  import: インポート
+  importText: テキストをインポート
+  importCredentials: 認証情報をインポート
+  jsonImport: JSONインポート
+  placeholder: インポートするテキストをここに貼り付けてください...
+  formatSee: データ形式については # ...migrationGuide
+  migrationGuide: 移行ガイド # ...onGithub
+  onGithub: (GitHub)を参照してください
+
+background:
+  # components/BackgroundForm.vue
+  none: なし
+  picture: 画像
+  pictureTip: ウェブ画像のURL。
+  pictureLabel: 背景画像URL
+  video: 動画
+  videoTip: ウェブ動画のURL
+  videoLabel: 背景動画URL
+
+keyboard:
+  # components/KeyboardShortcuts.vue
+  description: 説明
+  manage: キーボードショートカットを管理
+  notSet: 未設定
+  shortcut: ショートカット
+  shortcuts: キーボードショートカット
+  unknown: 不明
+
+perms:
+  # components/PermsCheck.vue
+  granted: 権限が付与されました。
+  grant:
+    text: ホスト権限を付与
+    tip: この拡張機能を動作させるにはホスト権限が必要です
+  remove:
+    text: ホスト権限を削除
+    tip: 新しい画像を分析できなくなります
+  info: 権限に関する詳細情報
+  moreInfo: 詳細については、
+  mdn: MDNドキュメント
+  chrome: Chromeドキュメント
+
+theme:
+  # components/ThemeSwitch.vue
+  title: テーマ切替
+  dark: ダーク
+  light: ライト
+  auto: 自動
+
+option:
+  # components/FormSwitch.vue
+  toggle:
+    #label: Max Length 38
+    contextMenu:
+      label: 右クリックメニューを表示
+      tip: 右クリックメニューにコンテキストメニューを表示します。
+    showUpdate:
+      label: 更新時にリリースノートを表示
+      tip: バージョン更新時にリリースノートを表示します。
+    tempDisabled:
+      label: 拡張機能を一時的に無効化
+      tip: デバッグのために拡張機能を一時的に無効化します。
+    ignoreProxy:
+      label: プロキシ認証を無視
+      tip: HTTP 407 プロキシ認証要求レスポンスを無視します。
+    defaultSave:
+      label: デフォルトで認証を保存
+      tip: デフォルトでログイン保存スイッチを有効にします。
+    confirmDelete:
+      label: 削除時に確認を表示
+      tip: 項目削除時に確認ダイアログを表示します。
+    fullWidthOptions:
+      label: 全幅オプションページ
+      tip: オプションページを全幅で表示します。

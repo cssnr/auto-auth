@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "semi": false,
+  "singleQuote": true,
+  "printWidth": 90,
+  "overrides": [
+    {
+      "files": ["**/*.vue"],
+      "options": {
+        "printWidth": 120
+      }
+    },
+    {
+      "files": ["**/*.html", "**/*.yaml", "**/*.yml"],
+      "options": {
+        "singleQuote": false,
+        "printWidth": 120
+      }
+    }
+  ]
+}

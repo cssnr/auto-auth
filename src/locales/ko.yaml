@@ -1,0 +1,235 @@
+name: Auto Auth
+short_name: Auto Auth
+description: 브라우저 동기화, 가져오기/내보내기 기능 등 다양한 옵션을 갖춘 자동 기본 HTTP 인증 웹 확장 프로그램
+
+ui:
+  action:
+    add: 추가
+    cancel: 취소
+    clear: 초기화
+    close: 닫기
+    delete: 삭제
+    edit: 편집
+    go: 이동
+    options: 옵션
+    save: 저장
+
+    addEdit: 추가됨/편집됨
+    importUpdate: 가져옴/업데이트됨
+    addCredentials: 자격 증명 추가
+    openPopup: 팝업 열기
+    sidePanel: 사이드 패널
+    extensionPanel: 확장 패널
+    extensionPage: 확장 페이지
+
+    hostnameCopied: 호스트명이 클립보드에 복사됨
+    usernameCopied: 사용자명이 클립보드에 복사됨
+    passwordCopied: 비밀번호가 클립보드에 복사됨
+    urlCopied: URL이 클립보드에 복사됨
+
+  text:
+    host: 호스트
+    hosts: 호스트 목록
+    ignored: 무시됨
+    invalid: 유효하지 않음
+    or: 또는
+    removed: 제거됨
+    required: 필수
+
+    hostname: 호스트명
+    username: 사용자명
+    password: 비밀번호
+
+    copyHostname: 호스트명 복사
+    copyUsername: 사용자명 복사
+    copyPassword: 비밀번호 복사
+
+    homePage: 홈 페이지
+    openIssue: 문제 제출
+    releaseNotes: 릴리즈 노트
+    requestFeature: 기능 요청
+
+    addEditError: 추가/편집 오류
+    importError: 가져오기 오류
+    noChanges: 변경 사항 없음
+
+    deleteHostError: 호스트 삭제 오류
+    errorReadingFile: 파일 읽기 오류
+    errorLoadingPage: 페이지 로딩 오류
+    noCredentialsExport: 내보낼 자격 증명이 없음
+    noCredentialsImport: 가져올 자격 증명이 없음
+    noSavedCreds: 저장된 자격 증명 없음
+    showHidePassword: 비밀번호 표시/숨기기
+    extensionDisabled: 확장 프로그램이 일시적으로 비활성화됨
+    unsavedChanges: 저장되지 않은 변경 사항이 감지됨.
+    unknownFormat: 알 수 없는 자격 증명 형식
+
+    hostUrlInvalid: 유효하지 않은 호스트명 또는 URL
+    hostnameExists: 호스트명이 이미 존재합니다. 먼저 편집하거나 삭제하세요
+
+form:
+  host:
+    columns: 열
+    editable: 편집 가능
+    large: 크게
+    visible: 표시
+    hostnamePlaceholder: 호스트명
+    usernamePlaceholder: 사용자명
+    passwordPlaceholder: 비밀번호
+    hostnameHelp: 기본 인증 호스트명.
+    usernameHelp: 기본 인증 사용자명.
+    passwordHelp: 기본 인증 비밀번호.
+
+auth:
+  # auth/App.vue
+  title: 로그인 # ...hostname
+  login: 로그인
+  ignoreHost: 호스트 무시
+  getSupport: 지원 받기
+  authFailed: 인증 실패
+  tryAgain: 다시 시도해 주세요
+  noUsername: 사용자명 없음
+  saveLogin: 로그인 저장
+  credsNotSaved: 자격 증명이 저장되지 않습니다!
+
+  credsAlreadySaved: 자격 증명이 이미 저장되어 있어 이 옵션은 작동하지 않습니다!
+  untilFixed: 계속하려면 # ...deleteSaved
+  deleteSaved: 저장된 자격 증명 삭제 #... or saveLogin
+
+  useThe: 사용하세요 # ...nativeLogin
+  nativeLogin: 기본 로그인 #... or enableExtension
+  enableExtension: 확장 프로그램 활성화
+
+  ignore:
+    confirmIgnore: 무시 확인
+    optionsPage: 옵션 페이지
+    ignoreHost: 호스트를 무시하고 저장된 자격 증명을 삭제하시겠습니까?
+    ignoreRemoved: 무시된 호스트는 다음에서 제거할 수 있습니다
+
+popup:
+  # popup/App.vue
+  deleteCreds: 자격 증명 삭제
+  editCreds: 자격 증명 편집
+  hostIgnored: 호스트 무시됨
+  moreOptions: 더 많은 옵션
+  noAccess: 현재 탭에 접근할 수 없습니다.
+  noSaved: 저장된 자격 증명을 찾을 수 없습니다.
+
+permissions:
+  # permissions/App.vue
+  title: 권한
+  reason: 인증 요청을 가로채려면 호스트 권한이 필요합니다.
+
+options:
+  # options/App.vue
+  title: 옵션
+  extension: 확장 프로그램 옵션
+  copySupport: 지원 정보 복사
+  copySupportTip: 문제 보고용.
+  copySupportMsg: 지원 정보가 복사됨.
+  savedCredentials: 저장된 자격 증명
+  # components/OptionsForm.vue
+  authPageBackground: 인증/옵션 배경
+
+content:
+  # content/index.ts
+  badge:
+    # Browser Extension Badge Text. Max Visible Characters: 3-4
+    on: 켜짐
+    off: 꺼짐
+
+ctx:
+  # background/menus.ts
+  openPopup: 팝업 열기
+  openSidePanel: 사이드 패널 열기
+  openExtPanel: 확장 패널 열기
+  openOptions: 옵션 열기
+
+cmd:
+  # wxt.config.ts
+  executeAction: 팝업 열기
+  openSidePanel: 사이드 패널 열기
+  openExtPanel: 확장 패널 열기
+  openOptions: 옵션 열기
+
+import:
+  # components/ImportExport.vue
+  exportAll: 전체 내보내기
+  importFile: 파일 가져오기
+  # components/ImportText.vue
+  errorJson: JSON 파싱 오류
+  errorUnknown: 알 수 없는 오류
+  import: 가져오기
+  importText: 텍스트 가져오기
+  importCredentials: 자격 증명 가져오기
+  jsonImport: JSON 가져오기
+  placeholder: 여기에 가져올 텍스트를 붙여넣으세요...
+  formatSee: 데이터 형식은 # ...migrationGuide
+  migrationGuide: 마이그레이션 가이드 # ...onGithub
+  onGithub: (GitHub)를 참조하세요
+
+background:
+  # components/BackgroundForm.vue
+  none: 없음
+  picture: 사진
+  pictureTip: 웹 이미지의 URL.
+  pictureLabel: 배경 사진 URL
+  video: 동영상
+  videoTip: 웹 동영상의 URL
+  videoLabel: 배경 동영상 URL
+
+keyboard:
+  # components/KeyboardShortcuts.vue
+  description: 설명
+  manage: 키보드 단축키 관리
+  notSet: 설정되지 않음
+  shortcut: 단축키
+  shortcuts: 키보드 단축키
+  unknown: 알 수 없음
+
+perms:
+  # components/PermsCheck.vue
+  granted: 권한이 부여됨.
+  grant:
+    text: 호스트 권한 부여
+    tip: 이 확장 프로그램은 작동하려면 호스트 권한이 필요합니다
+  remove:
+    text: 호스트 권한 제거
+    tip: 더 이상 새 이미지를 분석할 수 없습니다
+  info: 권한에 대한 추가 정보
+  moreInfo: 자세한 내용은 다음을 참조하세요.
+  mdn: MDN 문서
+  chrome: Chrome 문서
+
+theme:
+  # components/ThemeSwitch.vue
+  title: 테마 전환기
+  dark: 다크
+  light: 라이트
+  auto: 자동
+
+option:
+  # components/FormSwitch.vue
+  toggle:
+    #label: Max Length 38
+    contextMenu:
+      label: 우클릭 컨텍스트 메뉴 표시
+      tip: 우클릭 메뉴에 컨텍스트 메뉴를 표시합니다.
+    showUpdate:
+      label: 업데이트 시 릴리즈 노트 표시
+      tip: 버전 업데이트 시 릴리즈 노트를 표시합니다.
+    tempDisabled:
+      label: 확장 프로그램 일시적으로 비활성화
+      tip: 디버깅을 위해 확장 프로그램을 일시적으로 비활성화합니다.
+    ignoreProxy:
+      label: 프록시 인증 무시
+      tip: HTTP 407 프록시 인증 필요 응답을 무시합니다.
+    defaultSave:
+      label: 기본적으로 인증 저장
+      tip: 기본적으로 로그인 저장 스위치를 활성화합니다.
+    confirmDelete:
+      label: 삭제 시 확인 표시
+      tip: 항목 삭제 시 확인 대화 상자를 표시합니다.
+    fullWidthOptions:
+      label: 전체 너비 옵션 페이지
+      tip: 옵션 페이지를 전체 너비로 표시합니다.

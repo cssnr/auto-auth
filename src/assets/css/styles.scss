@@ -1,0 +1,76 @@
+// https://bootswatch.com/help/
+//@import 'bootswatch/dist/zephyr/variables';
+
+// https://getbootstrap.com/docs/5.3/layout/breakpoints/
+// NOTE: All breakpoints reduced by 1 level
+$grid-breakpoints: (
+  xs: 0,
+  sm: 380px,
+  md: 576px,
+  lg: 768px,
+  xl: 992px,
+  xxl: 1200px,
+);
+
+@import 'bootstrap/scss/bootstrap';
+//@import 'bootswatch/dist/zephyr/bootswatch';
+
+:root,
+[data-bs-theme='light'] {
+  --bs-emphasis-bg: var(--bs-white);
+  --bs-emphasis-bg-rgb: var(--bs-white-rgb);
+}
+
+[data-bs-theme='dark'] {
+  --bs-emphasis-bg: var(--bs-black);
+  --bs-emphasis-bg-rgb: var(--bs-black-rgb);
+}
+
+.form-control {
+  background-color: rgba(var(--bs-emphasis-bg-rgb), 50%);
+}
+
+.glass-outline {
+  backdrop-filter: blur(6px);
+  background-color: rgba(var(--bs-emphasis-bg-rgb), 50%);
+  border: 1px solid var(--bs-border-color-translucent);
+  filter: drop-shadow(15px 12px 12px var(--bs-emphasis-bg));
+}
+
+.transparent-table {
+  --bs-table-bg: rgba(var(--bs-emphasis-bg-rgb), 0.3);
+  --bs-table-striped-bg: rgba(var(--bs-emphasis-bg-rgb), 0.5);
+  --bs-table-hover-bg: rgba(var(--bs-emphasis-bg-rgb), 0.6);
+}
+
+.text-ellipsis {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+//.icon {
+//  width: 16px;
+//  height: 16px;
+//  display: inline-flex;
+//}
+//
+//.icon svg path {
+//  fill: currentColor;
+//}
+
+//.fade-enter-active,
+//.fade-leave-active {
+//    transition:
+//        max-height 0.3s ease,
+//        opacity 0.3s ease;
+//    overflow: hidden;
+//}
+//
+//.fade-enter-from,
+//.fade-leave-to {
+//    opacity: 0;
+//    max-height: 0;
+//}

@@ -1,0 +1,88 @@
+// JS Bootstrap Theme Switcher
+
+;(() => {
+  const getStoredTheme = () => localStorage.getItem('theme')
+  const setStoredTheme = (theme) => localStorage.setItem('theme', theme)
+  const getMediaMatch = () =>
+    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+
+  const getPreferredTheme = () => {
+    const storedTheme = getStoredTheme()
+    if (storedTheme) {
+      return storedTheme
+    } else {
+      return getMediaMatch()
+    }
+  }
+
+  const setTheme = (theme) => {
+    // console.debug(`setTheme: ${theme}`)
+    if (theme === 'auto') {
+      document.documentElement.dataset.bsTheme = getMediaMatch()
+    } else {
+      document.documentElement.dataset.bsTheme = theme
+    }
+  }
+
+  const stored = getStoredTheme()
+  if (!stored) {
+    setStoredTheme('auto')
+  }
+  setTheme(getPreferredTheme())
+
+  const showActiveTheme = (theme) => {
+    // console.debug(`showActiveTheme: ${theme}`)
+    const themeIcons = document.querySelectorAll('.theme-icon')
+    // console.debug('themeIcons:', themeIcons)
+    if (!themeIcons) {
+      // console.debug('No Theme Icon to Set.')
+      return
+    }
+    document.querySelectorAll('[data-bs-theme-value]').forEach((el) => {
+      // noinspection JSUnresolvedReference
+      if (el.dataset.bsThemeValue === theme) {
+        const i = el.querySelector('i')
+        // console.debug('i.className:', i.className)
+        themeIcons.forEach((icon) => (icon.className = i.className + ' fa-lg theme-icon'))
+        el.classList.add('active')
+        el.setAttribute('aria-pressed', 'true')
+      } else {
+        el.classList.remove('active')
+        el.setAttribute('aria-pressed', 'false')
+      }
+    })
+  }
+
+  window.addEventListener('storage', (event) => {
+    // console.debug('storage:', event)
+    if (event.key === 'theme') {
+      setTheme(event.newValue)
+      showActiveTheme(event.newValue)
+    }
+  })
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    const storedTheme = getStoredTheme()
+    // console.debug('prefers-color-scheme: change:', storedTheme)
+    if (storedTheme === 'auto') {
+      const preferred = getPreferredTheme()
+      setTheme(preferred)
+    }
+  })
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const preferred = getPreferredTheme()
+    // console.debug('DOMContentLoaded: preferred:', preferred)
+    showActiveTheme(preferred)
+
+    document.querySelectorAll('[data-bs-theme-value]').forEach((el) => {
+      el.addEventListener('click', () => {
+        // noinspection JSUnresolvedReference
+        const value = el.dataset.bsThemeValue
+        setStoredTheme(value)
+        setTheme(value)
+        showActiveTheme(value)
+      })
+    })
+  })
+})()

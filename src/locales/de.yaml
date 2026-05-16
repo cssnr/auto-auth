@@ -1,0 +1,235 @@
+name: Auto Auth
+short_name: Auto Auth
+description: Automatische HTTP-Basisauthentifizierungs-Browsererweiterung mit Browser-Synchronisierung, Import-/Exportfunktion und weiteren Optionen
+
+ui:
+  action:
+    add: Hinzufügen
+    cancel: Abbrechen
+    clear: Löschen
+    close: Schließen
+    delete: Entfernen
+    edit: Bearbeiten
+    go: Los
+    options: Optionen
+    save: Speichern
+
+    addEdit: Hinzugefügt/Bearbeitet
+    importUpdate: Importiert/Aktualisiert
+    addCredentials: Anmeldedaten hinzufügen
+    openPopup: Popup öffnen
+    sidePanel: Seitenleiste
+    extensionPanel: Erweiterungsbereich
+    extensionPage: Erweiterungsseite
+
+    hostnameCopied: Hostname in Zwischenablage kopiert
+    usernameCopied: Benutzername in Zwischenablage kopiert
+    passwordCopied: Passwort in Zwischenablage kopiert
+    urlCopied: URL in Zwischenablage kopiert
+
+  text:
+    host: Host
+    hosts: Hosts
+    ignored: Ignoriert
+    invalid: Ungültig
+    or: oder
+    removed: Entfernt
+    required: Erforderlich
+
+    hostname: Hostname
+    username: Benutzername
+    password: Passwort
+
+    copyHostname: Hostname kopieren
+    copyUsername: Benutzername kopieren
+    copyPassword: Passwort kopieren
+
+    homePage: Startseite
+    openIssue: Problem melden
+    releaseNotes: Versionshinweise
+    requestFeature: Funktion anfragen
+
+    addEditError: Fehler beim Hinzufügen/Bearbeiten
+    importError: Importfehler
+    noChanges: Keine Änderungen
+
+    deleteHostError: Fehler beim Löschen des Hosts
+    errorReadingFile: Fehler beim Lesen der Datei
+    errorLoadingPage: Fehler beim Laden der Seite
+    noCredentialsExport: Keine Anmeldedaten zum Exportieren
+    noCredentialsImport: Keine Anmeldedaten zum Importieren
+    noSavedCreds: Keine gespeicherten Anmeldedaten
+    showHidePassword: Passwort anzeigen/verbergen
+    extensionDisabled: Erweiterung vorübergehend deaktiviert
+    unsavedChanges: Nicht gespeicherte Änderungen erkannt.
+    unknownFormat: Unbekanntes Anmeldedaten-Format
+
+    hostUrlInvalid: Ungültiger Hostname oder URL
+    hostnameExists: Hostname bereits vorhanden. Bitte zuerst bearbeiten oder löschen
+
+form:
+  host:
+    columns: Spalten
+    editable: Bearbeitbar
+    large: Groß
+    visible: Sichtbar
+    hostnamePlaceholder: Hostname
+    usernamePlaceholder: Benutzername
+    passwordPlaceholder: Passwort
+    hostnameHelp: Hostname für die HTTP-Basisauthentifizierung.
+    usernameHelp: Benutzername für die HTTP-Basisauthentifizierung.
+    passwordHelp: Passwort für die HTTP-Basisauthentifizierung.
+
+auth:
+  # auth/App.vue
+  title: Anmelden bei # ...hostname
+  login: Anmelden
+  ignoreHost: Host ignorieren
+  getSupport: Support erhalten
+  authFailed: Authentifizierung fehlgeschlagen
+  tryAgain: Bitte erneut versuchen
+  noUsername: Kein Benutzername
+  saveLogin: Anmeldung speichern
+  credsNotSaved: Anmeldedaten werden nicht gespeichert!
+
+  credsAlreadySaved: Anmeldedaten sind bereits gespeichert, diese Option funktioniert nicht!
+  untilFixed: Um fortzufahren, müssen Sie # ...deleteSaved
+  deleteSaved: Gespeicherte Anmeldedaten löschen #... or saveLogin
+
+  useThe: Verwenden Sie # ...nativeLogin
+  nativeLogin: Native Anmeldung #... or enableExtension
+  enableExtension: Erweiterung aktivieren
+
+  ignore:
+    confirmIgnore: Ignorieren bestätigen
+    optionsPage: Optionsseite
+    ignoreHost: Host ignorieren und alle gespeicherten Anmeldedaten entfernen?
+    ignoreRemoved: Ignorierte Hosts können entfernt werden von der
+
+popup:
+  # popup/App.vue
+  deleteCreds: Anmeldedaten löschen
+  editCreds: Anmeldedaten bearbeiten
+  hostIgnored: Host ignoriert
+  moreOptions: Weitere Optionen
+  noAccess: Kein Zugriff auf den aktuellen Tab.
+  noSaved: Keine gespeicherten Anmeldedaten gefunden.
+
+permissions:
+  # permissions/App.vue
+  title: Berechtigungen
+  reason: Um Authentifizierungsanfragen abzufangen, sind Host-Berechtigungen erforderlich.
+
+options:
+  # options/App.vue
+  title: Optionen
+  extension: Erweiterungsoptionen
+  copySupport: Supportinformationen kopieren
+  copySupportTip: Für die Fehlermeldung.
+  copySupportMsg: Supportinformationen kopiert.
+  savedCredentials: Gespeicherte Anmeldedaten
+  # components/OptionsForm.vue
+  authPageBackground: Authentifizierungs-/Optionshintergrund
+
+content:
+  # content/index.ts
+  badge:
+    # Browser Extension Badge Text. Max Visible Characters: 3-4
+    on: Ein
+    off: Aus
+
+ctx:
+  # background/menus.ts
+  openPopup: Popup öffnen
+  openSidePanel: Seitenleiste öffnen
+  openExtPanel: Erweiterungsbereich öffnen
+  openOptions: Optionen öffnen
+
+cmd:
+  # wxt.config.ts
+  executeAction: Popup öffnen
+  openSidePanel: Seitenleiste öffnen
+  openExtPanel: Erweiterungsbereich öffnen
+  openOptions: Optionen öffnen
+
+import:
+  # components/ImportExport.vue
+  exportAll: Alles exportieren
+  importFile: Datei importieren
+  # components/ImportText.vue
+  errorJson: JSON-Analysefehler
+  errorUnknown: Unbekannter Fehler
+  import: Importieren
+  importText: Text importieren
+  importCredentials: Anmeldedaten importieren
+  jsonImport: JSON-Import
+  placeholder: Zu importierenden Text hier einfügen...
+  formatSee: Informationen zum Datenformat finden Sie in der # ...migrationGuide
+  migrationGuide: Migrationsanleitung # ...onGithub
+  onGithub: auf GitHub
+
+background:
+  # components/BackgroundForm.vue
+  none: Kein
+  picture: Bild
+  pictureTip: URL zu einem Webbild.
+  pictureLabel: Hintergrundbild-URL
+  video: Video
+  videoTip: URL zu einem Webvideo
+  videoLabel: Hintergrundvideo-URL
+
+keyboard:
+  # components/KeyboardShortcuts.vue
+  description: Beschreibung
+  manage: Tastaturkürzel verwalten
+  notSet: Nicht festgelegt
+  shortcut: Tastenkürzel
+  shortcuts: Tastaturkürzel
+  unknown: Unbekannt
+
+perms:
+  # components/PermsCheck.vue
+  granted: Berechtigungen erteilt.
+  grant:
+    text: Host-Berechtigungen erteilen
+    tip: Diese Erweiterung benötigt Host-Berechtigungen zur Funktion
+  remove:
+    text: Host-Berechtigungen entfernen
+    tip: Sie können keine neuen Bilder mehr analysieren
+  info: Weitere Informationen zu Berechtigungen
+  moreInfo: Weitere Informationen finden Sie in der
+  mdn: MDN-Dokumentation
+  chrome: Chrome-Dokumentation
+
+theme:
+  # components/ThemeSwitch.vue
+  title: Design-Umschalter
+  dark: Dunkel
+  light: Hell
+  auto: Automatisch
+
+option:
+  # components/FormSwitch.vue
+  toggle:
+    #label: Max Length 38
+    contextMenu:
+      label: Kontextmenü bei Rechtsklick anzeigen
+      tip: Kontextmenü im Rechtsklickmenü anzeigen.
+    showUpdate:
+      label: Versionshinweise bei Update anzeigen
+      tip: Versionshinweise bei Versionsaktualisierungen anzeigen.
+    tempDisabled:
+      label: Erweiterung vorübergehend deaktivieren
+      tip: Erweiterung zum Debuggen vorübergehend deaktivieren.
+    ignoreProxy:
+      label: Proxy-Authentifizierung ignorieren
+      tip: HTTP 407 Proxy-Authentifizierungsanfragen ignorieren.
+    defaultSave:
+      label: Authentifizierung standardmäßig speichern
+      tip: Anmeldung speichern standardmäßig aktivieren.
+    confirmDelete:
+      label: Bestätigung beim Löschen anzeigen
+      tip: Bestätigungsdialog beim Löschen von Einträgen anzeigen.
+    fullWidthOptions:
+      label: Optionsseite in voller Breite
+      tip: Optionsseite in voller Breite anzeigen.

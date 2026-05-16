@@ -1,0 +1,235 @@
+name: Auto Auth
+short_name: Auto Auth
+description: 自动基本 HTTP 身份验证浏览器扩展，支持浏览器同步、导入/导出功能及更多选项
+
+ui:
+  action:
+    add: 添加
+    cancel: 取消
+    clear: 清除
+    close: 关闭
+    delete: 删除
+    edit: 编辑
+    go: 前往
+    options: 选项
+    save: 保存
+
+    addEdit: 已添加/编辑
+    importUpdate: 已导入/更新
+    addCredentials: 添加凭据
+    openPopup: 打开弹出窗口
+    sidePanel: 侧边栏面板
+    extensionPanel: 扩展面板
+    extensionPage: 扩展页面
+
+    hostnameCopied: 主机名已复制到剪贴板
+    usernameCopied: 用户名已复制到剪贴板
+    passwordCopied: 密码已复制到剪贴板
+    urlCopied: URL 已复制到剪贴板
+
+  text:
+    host: 主机
+    hosts: 主机列表
+    ignored: 已忽略
+    invalid: 无效
+    or: 或
+    removed: 已移除
+    required: 必填
+
+    hostname: 主机名
+    username: 用户名
+    password: 密码
+
+    copyHostname: 复制主机名
+    copyUsername: 复制用户名
+    copyPassword: 复制密码
+
+    homePage: 主页
+    openIssue: 提交问题
+    releaseNotes: 发布说明
+    requestFeature: 请求功能
+
+    addEditError: 添加/编辑错误
+    importError: 导入错误
+    noChanges: 无更改
+
+    deleteHostError: 删除主机错误
+    errorReadingFile: 读取文件错误
+    errorLoadingPage: 加载页面错误
+    noCredentialsExport: 没有可导出的凭据
+    noCredentialsImport: 没有可导入的凭据
+    noSavedCreds: 没有已保存的凭据
+    showHidePassword: 显示/隐藏密码
+    extensionDisabled: 扩展已临时禁用
+    unsavedChanges: 检测到未保存的更改。
+    unknownFormat: 未知凭据格式
+
+    hostUrlInvalid: 无效的主机名或 URL
+    hostnameExists: 主机名已存在，请先编辑或删除
+
+form:
+  host:
+    columns: 列
+    editable: 可编辑
+    large: 大
+    visible: 可见
+    hostnamePlaceholder: 主机名
+    usernamePlaceholder: 用户名
+    passwordPlaceholder: 密码
+    hostnameHelp: 基本身份验证主机名。
+    usernameHelp: 基本身份验证用户名。
+    passwordHelp: 基本身份验证密码。
+
+auth:
+  # auth/App.vue
+  title: 登录到 # ...hostname
+  login: 登录
+  ignoreHost: 忽略主机
+  getSupport: 获取支持
+  authFailed: 身份验证失败
+  tryAgain: 请重试
+  noUsername: 无用户名
+  saveLogin: 保存登录
+  credsNotSaved: 凭据将不会被保存！
+
+  credsAlreadySaved: 凭据已保存，此选项将不起作用！
+  untilFixed: 要继续，您必须 # ...deleteSaved
+  deleteSaved: 删除已保存的凭据 #... or saveLogin
+
+  useThe: 使用 # ...nativeLogin
+  nativeLogin: 原生登录 #... or enableExtension
+  enableExtension: 启用扩展
+
+  ignore:
+    confirmIgnore: 确认忽略
+    optionsPage: 选项页面
+    ignoreHost: 忽略主机并删除所有已保存的凭据？
+    ignoreRemoved: 已忽略的主机可以从
+
+popup:
+  # popup/App.vue
+  deleteCreds: 删除凭据
+  editCreds: 编辑凭据
+  hostIgnored: 主机已忽略
+  moreOptions: 更多选项
+  noAccess: 无法访问当前标签页。
+  noSaved: 未找到已保存的凭据。
+
+permissions:
+  # permissions/App.vue
+  title: 权限
+  reason: 要拦截身份验证请求，需要主机权限。
+
+options:
+  # options/App.vue
+  title: 选项
+  extension: 扩展选项
+  copySupport: 复制支持信息
+  copySupportTip: 用于问题报告。
+  copySupportMsg: 支持信息已复制。
+  savedCredentials: 已保存的凭据
+  # components/OptionsForm.vue
+  authPageBackground: 身份验证/选项背景
+
+content:
+  # content/index.ts
+  badge:
+    # Browser Extension Badge Text. Max Visible Characters: 3-4
+    on: 开
+    off: 关
+
+ctx:
+  # background/menus.ts
+  openPopup: 打开弹出窗口
+  openSidePanel: 打开侧边栏面板
+  openExtPanel: 打开扩展面板
+  openOptions: 打开选项
+
+cmd:
+  # wxt.config.ts
+  executeAction: 打开弹出窗口
+  openSidePanel: 打开侧边栏面板
+  openExtPanel: 打开扩展面板
+  openOptions: 打开选项
+
+import:
+  # components/ImportExport.vue
+  exportAll: 全部导出
+  importFile: 导入文件
+  # components/ImportText.vue
+  errorJson: JSON 解析错误
+  errorUnknown: 未知错误
+  import: 导入
+  importText: 导入文本
+  importCredentials: 导入凭据
+  jsonImport: JSON 导入
+  placeholder: 在此粘贴要导入的文本...
+  formatSee: 关于数据格式，请参阅 # ...migrationGuide
+  migrationGuide: 迁移指南 # ...onGithub
+  onGithub: 在 GitHub 上
+
+background:
+  # components/BackgroundForm.vue
+  none: 无
+  picture: 图片
+  pictureTip: 网络图片的 URL。
+  pictureLabel: 背景图片 URL
+  video: 视频
+  videoTip: 网络视频的 URL
+  videoLabel: 背景视频 URL
+
+keyboard:
+  # components/KeyboardShortcuts.vue
+  description: 描述
+  manage: 管理键盘快捷键
+  notSet: 未设置
+  shortcut: 快捷键
+  shortcuts: 键盘快捷键
+  unknown: 未知
+
+perms:
+  # components/PermsCheck.vue
+  granted: 权限已授予。
+  grant:
+    text: 授予主机权限
+    tip: 此扩展需要主机权限才能正常运行
+  remove:
+    text: 移除主机权限
+    tip: 您将无法再分析新图片
+  info: 更多权限信息
+  moreInfo: 更多信息请参阅
+  mdn: MDN 文档
+  chrome: Chrome 文档
+
+theme:
+  # components/ThemeSwitch.vue
+  title: 主题切换器
+  dark: 深色
+  light: 浅色
+  auto: 自动
+
+option:
+  # components/FormSwitch.vue
+  toggle:
+    #label: Max Length 38
+    contextMenu:
+      label: 显示右键上下文菜单
+      tip: 在右键菜单中显示上下文菜单。
+    showUpdate:
+      label: 更新时显示发布说明
+      tip: 在版本更新时显示发布说明。
+    tempDisabled:
+      label: 临时禁用扩展
+      tip: 临时禁用扩展以进行调试。
+    ignoreProxy:
+      label: 忽略代理身份验证
+      tip: 忽略 HTTP 407 代理身份验证请求响应。
+    defaultSave:
+      label: 默认保存身份验证
+      tip: 默认启用保存登录开关。
+    confirmDelete:
+      label: 删除时显示确认提示
+      tip: 删除项目时显示确认对话框。
+    fullWidthOptions:
+      label: 全宽选项页面
+      tip: 以全宽显示选项页面。

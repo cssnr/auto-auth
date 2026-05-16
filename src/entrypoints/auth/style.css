@@ -1,0 +1,22 @@
+/*html,*/
+/*body,*/
+/*#app {*/
+/*    height: 100%;*/
+/*}*/
+
+/*#app {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+
+/*NOTE: Fix Bootstrap Modal background shift on show*/
+/* But causes scrolling inside the body on long modals...*/
+@supports (scrollbar-gutter: stable both-edges) {
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    padding-right: 0 !important;
+  }
+}

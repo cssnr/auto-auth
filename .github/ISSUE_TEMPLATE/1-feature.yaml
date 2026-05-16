@@ -1,0 +1,20 @@
+name: "🚀 Request a Feature"
+description: "Request new features or enhancements"
+labels: ["enhancement"]
+assignees:
+  - smashedr
+
+body:
+  - type: textarea
+    id: description
+    validations:
+      required: true
+    attributes:
+      label: Details
+      description: Describe the feature or change you are requesting.
+      placeholder: Please let us know exactly how this feature should work and what it should do...
+
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to make this report!

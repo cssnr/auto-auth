@@ -1,0 +1,28 @@
+{
+  "props": {
+    "data": "https://addons.mozilla.org/addon/auto-auth",
+    "image": "",
+    "width": 200,
+    "height": 200,
+    "margin": 0,
+    "dotsOptions": { "color": "#32fc7d", "type": "extra-rounded" },
+    "cornersSquareOptions": { "color": "#cdd6f4", "type": "dot" },
+    "cornersDotOptions": { "color": "#0abf55", "type": "dot" },
+    "imageOptions": { "margin": 0 },
+    "qrOptions": { "errorCorrectionLevel": "Q" }
+  },
+  "style": { "borderRadius": "20px", "background": "#000000" },
+  "frame": {
+    "text": "Firefox Android",
+    "position": "top",
+    "style": {
+      "textColor": "#cdd6f4",
+      "backgroundColor": "#181825",
+      "borderColor": "#cdd6f4",
+      "borderWidth": "1px",
+      "borderRadius": "8px",
+      "padding": "8px",
+      "fontFamily": "Verdana, sans-serif"
+    }
+  }
+}

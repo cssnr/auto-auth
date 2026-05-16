@@ -1,0 +1,51 @@
+{
+  "name": "auto-auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:ff": "wxt -b firefox --mv3",
+    "build": "wxt build",
+    "build:ff": "wxt build -b firefox --mv3",
+    "zip": "wxt zip",
+    "zip:ff": "wxt zip -b firefox --mv3",
+    "watch:ff": "nodemon --watch src -e js,ts,vue,css,html --exec \"npm run build:ff\"",
+    "android": "web-ext run -t firefox-android -s .output/firefox-mv3 --firefox-apk org.mozilla.firefox_beta --adb-device",
+    "clean": "rm -rf .output",
+    "tsc": "vue-tsc --noEmit",
+    "prettier:check": "npx prettier --check .",
+    "prettier:write": "npx prettier --write .",
+    "lint": "npx eslint src",
+    "lint:web-ext": "npm run build:ff && npm run web-ext",
+    "web-ext": "npx web-ext lint --source-dir .output/firefox-mv3",
+    "package": "npm run tsc && npm run zip && npm run zip:ff",
+    "postinstall": "wxt prepare"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.2.0",
+    "bootstrap": "^5.3.8",
+    "vue": "^3.5.34"
+  },
+  "devDependencies": {
+    "@eslint/config-helpers": "^0.6.0",
+    "@eslint/js": "^10.0.1",
+    "@types/bootstrap": "^5.2.10",
+    "@types/chrome": "^0.1.42",
+    "@types/firefox-webext-browser": "^143.0.0",
+    "@wxt-dev/auto-icons": "^1.1.1",
+    "@wxt-dev/i18n": "^0.2.5",
+    "@wxt-dev/module-vue": "^1.0.3",
+    "eslint": "^10.4.0",
+    "eslint-plugin-vue": "^10.9.1",
+    "globals": "^17.6.0",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.8.3",
+    "sass": "^1.99.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.59.3",
+    "vue-tsc": "^3.2.9",
+    "web-ext": "^10.1.0",
+    "wxt": "^0.20.26"
+  }
+}

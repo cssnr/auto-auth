@@ -1,0 +1,194 @@
+name: "Release"
+
+on:
+  release:
+    types: [published]
+
+env:
+  PACKAGE_NAME: auto-auth # can be a wild card unless the to-do's are completed
+  CHROME_ID: gpoiggobidhogpmmlakahiaaegibnogm # can be defined in elsewhere and parsed
+  PUBLISHER_ID: 428868da-c02f-433a-b34c-208b3d01fbc3 # can be defined in elsewhere and parsed
+  MOZILLA_SLUG: auto-auth # can be defined in elsewhere and parsed
+
+jobs:
+  build:
+    name: "Build"
+    uses: ./.github/workflows/build.yaml
+    secrets: inherit
+    with:
+      version: ${{ github.event.release.tag_name }} # github.ref_name can be empty
+    permissions:
+      contents: write
+
+  release:
+    name: "Release"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [build]
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: "Debug event.json"
+        continue-on-error: true
+        run: cat "${GITHUB_EVENT_PATH}"
+      - name: "Debug CTX github"
+        continue-on-error: true
+        env:
+          GITHUB_CTX: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CTX"
+      - name: "Debug Environment"
+        continue-on-error: true
+        run: env
+
+      - name: "Update Release Notes Action"
+        continue-on-error: true
+        uses: smashedr/update-release-notes-action@master
+        with:
+          type: generic
+
+      - name: "Package Changelog Action"
+        continue-on-error: true
+        uses: cssnr/package-changelog-action@v2
+
+  publish-chrome:
+    # https://developer.chrome.com/docs/webstore/using-api
+    name: "Publish Chrome"
+    if: ${{ !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [build]
+
+    environment:
+      name: chrome
+      url: "https://chromewebstore.google.com/detail/${{ env.CHROME_ID }}"
+
+    steps:
+      - name: "Download Artifacts"
+        uses: actions/download-artifact@v8
+        with:
+          name: artifacts
+
+      - name: "Validate"
+        run: |
+          ls -lAh .
+          stat "${{ env.PACKAGE_NAME }}-${{ github.event.release.tag_name }}-chrome.zip"
+          jq -e '.version == "${{ github.event.release.tag_name }}"' chrome-mv3/manifest.json
+          echo "::group::chrome-mv3"
+          ls -lAh chrome-mv3
+          echo "::endgroup::"
+          echo "::group::chrome-mv3/manifest.json"
+          jq . chrome-mv3/manifest.json
+          echo "::endgroup::"
+
+      - name: "Web Store Publish"
+        uses: cssnr/webstore-publish-action@v1
+        with:
+          extension_id: ${{ env.CHROME_ID }}
+          publisher_id: ${{env.PUBLISHER_ID}}
+          json_data: ${{ secrets.WEBSTORE_JSON }}
+          zip_file: "${{ env.PACKAGE_NAME }}-${{ github.event.release.tag_name }}-chrome.zip"
+          submit: false
+
+      # NOTE: This only submits for review! Need automation to upload signed release...
+
+  publish-mozilla:
+    # https://mozilla.github.io/addons-server/topics/api/index.html
+    name: "Publish Mozilla"
+    if: ${{ !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [build]
+
+    permissions:
+      contents: write
+
+    environment:
+      name: mozilla
+      url: "https://addons.mozilla.org/addon/${{ env.MOZILLA_SLUG }}"
+
+    steps:
+      - name: "Download Artifacts"
+        uses: actions/download-artifact@v8
+        with:
+          name: artifacts
+
+      - name: "Generate Release Notes"
+        env:
+          RELEASE_NOTES: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.event.release.tag_name }}
+        run: |
+          cat > amo-metadata.json << EOF
+          {"version": {"release_notes": {
+            "de":    "Vollständige Versionshinweise: $RELEASE_NOTES",
+            "en-US": "Full Release Notes: $RELEASE_NOTES",
+            "es-MX": "Notas de versión completas: $RELEASE_NOTES",
+            "fr":    "\n\nNotes de version complètes : $RELEASE_NOTES",
+            "ja":    "完全なリリースノート: $RELEASE_NOTES",
+            "ko":    "전체 릴리스 노트: $RELEASE_NOTES",
+            "pt-BR": "Notas de versão completas: $RELEASE_NOTES",
+            "ru":    "Полные примечания к выпуску: $RELEASE_NOTES",
+            "zh-CN": "完整发行说明：$RELEASE_NOTES"
+          }}}
+          EOF
+
+      - name: "Validate"
+        run: |
+          ls -lAh .
+          stat "${{ env.PACKAGE_NAME }}-${{ github.event.release.tag_name }}-sources.zip"
+          jq -e '.version == "${{ github.event.release.tag_name }}"' firefox-mv3/manifest.json
+          echo "::group::firefox-mv3"
+          ls -lAh firefox-mv3
+          echo "::endgroup::"
+          echo "::group::firefox-mv3/manifest.json"
+          jq . firefox-mv3/manifest.json
+          echo "::endgroup::"
+          echo "::group::amo-metadata.json"
+          jq . amo-metadata.json
+          echo "::endgroup::"
+
+      # NOTE: This installs web-ext using npx
+      # NOTE: The web-ext sign command uploads and submits for review
+
+      - name: "Mozilla AMO Publish"
+        # https://extensionworkshop.com/documentation/develop/web-ext-command-reference/#web-ext-sign
+        env:
+          FIREFOX_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
+          FIREFOX_API_SECRET: ${{ secrets.FIREFOX_API_SECRET }}
+        run: |
+          npx web-ext sign --no-input \
+            --api-key="${FIREFOX_API_KEY}" \
+            --api-secret="${FIREFOX_API_SECRET}" \
+            --channel=listed --approval-timeout=0 \
+            --source-dir="firefox-mv3" \
+            --amo-metadata="amo-metadata.json" \
+            --upload-source-code="${{ env.PACKAGE_NAME }}-${{ github.event.release.tag_name }}-sources.zip"
+
+      # NOTE: This only submits for review! Need automation to upload signed release...
+      # NOTE: Firefox allows signing listed addons with unlisted channel for beta...
+      #   https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/#signing-test-version-listed
+
+  check:
+    name: "Check"
+    if: ${{ always() }}
+    runs-on: Ubuntu-latest
+    timeout-minutes: 5
+    needs: [build, release, publish-chrome, publish-mozilla]
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: "Alls Green"
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
+          allowed-skips: publish-chrome,publish-mozilla
+          #allowed-failures: release
+
+      - name: "Send Notification"
+        if: ${{ !cancelled() }}
+        uses: sarisia/actions-status-discord@eb045afee445dc055c18d3d90bd0f244fd062708 # v1.16.0
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          description: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

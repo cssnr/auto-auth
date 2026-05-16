@@ -1,0 +1,235 @@
+name: Auto Auth
+short_name: Auto Auth
+description: Автоматическая веб-расширение для базовой HTTP-аутентификации с синхронизацией браузера, возможностью импорта/экспорта и дополнительными настройками
+
+ui:
+  action:
+    add: Добавить
+    cancel: Отмена
+    clear: Очистить
+    close: Закрыть
+    delete: Удалить
+    edit: Редактировать
+    go: Перейти
+    options: Настройки
+    save: Сохранить
+
+    addEdit: Добавлено/Изменено
+    importUpdate: Импортировано/Обновлено
+    addCredentials: Добавить учетные данные
+    openPopup: Открыть всплывающее окно
+    sidePanel: Боковая панель
+    extensionPanel: Панель расширения
+    extensionPage: Страница расширения
+
+    hostnameCopied: Имя хоста скопировано в буфер обмена
+    usernameCopied: Имя пользователя скопировано в буфер обмена
+    passwordCopied: Пароль скопирован в буфер обмена
+    urlCopied: URL скопирован в буфер обмена
+
+  text:
+    host: Хост
+    hosts: Хосты
+    ignored: Игнорируется
+    invalid: Недействительно
+    or: или
+    removed: Удалено
+    required: Обязательно
+
+    hostname: Имя хоста
+    username: Имя пользователя
+    password: Пароль
+
+    copyHostname: Копировать имя хоста
+    copyUsername: Копировать имя пользователя
+    copyPassword: Копировать пароль
+
+    homePage: Домашняя страница
+    openIssue: Открыть проблему
+    releaseNotes: Примечания к выпуску
+    requestFeature: Запросить функцию
+
+    addEditError: Ошибка добавления/редактирования
+    importError: Ошибка импорта
+    noChanges: Нет изменений
+
+    deleteHostError: Ошибка удаления хоста
+    errorReadingFile: Ошибка чтения файла
+    errorLoadingPage: Ошибка загрузки страницы
+    noCredentialsExport: Нет учетных данных для экспорта
+    noCredentialsImport: Нет учетных данных для импорта
+    noSavedCreds: Нет сохраненных учетных данных
+    showHidePassword: Показать/скрыть пароль
+    extensionDisabled: Расширение временно отключено
+    unsavedChanges: Обнаружены несохраненные изменения.
+    unknownFormat: Неизвестный формат учётных данных
+
+    hostUrlInvalid: Недействительное имя хоста или URL
+    hostnameExists: Имя хоста уже существует. Сначала отредактируйте или удалите
+
+form:
+  host:
+    columns: Столбцы
+    editable: Редактируемо
+    large: Большой
+    visible: Видимый
+    hostnamePlaceholder: имя хоста
+    usernamePlaceholder: имя пользователя
+    passwordPlaceholder: пароль
+    hostnameHelp: Имя хоста для базовой аутентификации.
+    usernameHelp: Имя пользователя для базовой аутентификации.
+    passwordHelp: Пароль для базовой аутентификации.
+
+auth:
+  # auth/App.vue
+  title: Вход для # ...hostname
+  login: Войти
+  ignoreHost: Игнорировать хост
+  getSupport: Получить поддержку
+  authFailed: Ошибка аутентификации
+  tryAgain: Пожалуйста, попробуйте снова
+  noUsername: Нет имени пользователя
+  saveLogin: Сохранить вход
+  credsNotSaved: Учетные данные не будут сохранены!
+
+  credsAlreadySaved: Учетные данные уже сохранены, и этот вариант не сработает!
+  untilFixed: Чтобы продолжить, необходимо # ...deleteSaved
+  deleteSaved: Удалить сохраненные учетные данные #... or saveLogin
+
+  useThe: Используйте # ...nativeLogin
+  nativeLogin: Нативный вход #... or enableExtension
+  enableExtension: Включить расширение
+
+  ignore:
+    confirmIgnore: Подтвердить игнорирование
+    optionsPage: Страница настроек
+    ignoreHost: Игнорировать хост и удалить все сохраненные учетные данные?
+    ignoreRemoved: Игнорируемые хосты можно удалить из
+
+popup:
+  # popup/App.vue
+  deleteCreds: Удалить учетные данные
+  editCreds: Редактировать учетные данные
+  hostIgnored: Хост игнорируется
+  moreOptions: Больше настроек
+  noAccess: Нет доступа к текущей вкладке.
+  noSaved: Сохраненные учетные данные не найдены.
+
+permissions:
+  # permissions/App.vue
+  title: Разрешения
+  reason: Для перехвата запросов аутентификации требуются разрешения для хостов.
+
+options:
+  # options/App.vue
+  title: Настройки
+  extension: Настройки расширения
+  copySupport: Копировать информацию поддержки
+  copySupportTip: Для сообщений о проблемах.
+  copySupportMsg: Информация поддержки скопирована.
+  savedCredentials: Сохраненные учетные данные
+  # components/OptionsForm.vue
+  authPageBackground: Фон страницы авторизации/настроек
+
+content:
+  # content/index.ts
+  badge:
+    # Browser Extension Badge Text. Max Visible Characters: 3-4
+    on: Вкл
+    off: Выкл
+
+ctx:
+  # background/menus.ts
+  openPopup: Открыть всплывающее окно
+  openSidePanel: Открыть боковую панель
+  openExtPanel: Открыть панель расширения
+  openOptions: Открыть настройки
+
+cmd:
+  # wxt.config.ts
+  executeAction: Открыть всплывающее окно
+  openSidePanel: Открыть боковую панель
+  openExtPanel: Открыть панель расширения
+  openOptions: Открыть настройки
+
+import:
+  # components/ImportExport.vue
+  exportAll: Экспортировать все
+  importFile: Импортировать файл
+  # components/ImportText.vue
+  errorJson: Ошибка разбора JSON
+  errorUnknown: Неизвестная ошибка
+  import: Импорт
+  importText: Импорт текста
+  importCredentials: Импорт учетных данных
+  jsonImport: Импорт JSON
+  placeholder: Вставьте текст для импорта здесь...
+  formatSee: Формат данных см. в # ...migrationGuide
+  migrationGuide: Руководство по миграции # ...onGithub
+  onGithub: на GitHub
+
+background:
+  # components/BackgroundForm.vue
+  none: Нет
+  picture: Изображение
+  pictureTip: URL веб-изображения.
+  pictureLabel: URL фонового изображения
+  video: Видео
+  videoTip: URL веб-видео
+  videoLabel: URL фонового видео
+
+keyboard:
+  # components/KeyboardShortcuts.vue
+  description: Описание
+  manage: Управление сочетаниями клавиш
+  notSet: Не задано
+  shortcut: Сочетание
+  shortcuts: Сочетания клавиш
+  unknown: Неизвестно
+
+perms:
+  # components/PermsCheck.vue
+  granted: Разрешения предоставлены.
+  grant:
+    text: Предоставить разрешения для хостов
+    tip: Это расширение требует разрешений для хостов для работы
+  remove:
+    text: Удалить разрешения для хостов
+    tip: Вы больше не сможете анализировать новые изображения
+  info: Дополнительная информация о разрешениях
+  moreInfo: Для получения дополнительной информации см.
+  mdn: Документация MDN
+  chrome: Документация Chrome
+
+theme:
+  # components/ThemeSwitch.vue
+  title: Переключатель темы
+  dark: Темная
+  light: Светлая
+  auto: Авто
+
+option:
+  # components/FormSwitch.vue
+  toggle:
+    #label: Max Length 38
+    contextMenu:
+      label: Показать контекстное меню по правому клику
+      tip: Показывать контекстное меню при правом клике.
+    showUpdate:
+      label: Показывать примечания к выпуску при обновлении
+      tip: Показывать примечания к версии при обновлениях.
+    tempDisabled:
+      label: Временно отключить расширение
+      tip: Временно отключить расширение для отладки.
+    ignoreProxy:
+      label: Игнорировать прокси-аутентификацию
+      tip: Игнорировать ответы HTTP 407 Требуется аутентификация прокси.
+    defaultSave:
+      label: Сохранять аутентификацию по умолчанию
+      tip: Включать переключатель сохранения входа по умолчанию.
+    confirmDelete:
+      label: Показывать подтверждение при удалении
+      tip: Показывать диалог подтверждения при удалении элементов.
+    fullWidthOptions:
+      label: Страница параметров полной ширины
+      tip: Показывать страницу параметров в полную ширину.

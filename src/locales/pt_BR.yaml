@@ -1,0 +1,235 @@
+name: Auto Auth
+short_name: Auto Auth
+description: Extensão web de autenticação HTTP básica automática com sincronização entre navegadores, capacidade de importação/exportação e mais opções
+
+ui:
+  action:
+    add: Adicionar
+    cancel: Cancelar
+    clear: Limpar
+    close: Fechar
+    delete: Excluir
+    edit: Editar
+    go: Ir
+    options: Opções
+    save: Salvar
+
+    addEdit: Adicionado/Editado
+    importUpdate: Importado/Atualizado
+    addCredentials: Adicionar Credenciais
+    openPopup: Abrir Pop-up
+    sidePanel: Painel Lateral
+    extensionPanel: Painel da Extensão
+    extensionPage: Página da Extensão
+
+    hostnameCopied: Nome do Host Copiado para a Área de Transferência
+    usernameCopied: Nome de Usuário Copiado para a Área de Transferência
+    passwordCopied: Senha Copiada para a Área de Transferência
+    urlCopied: URL Copiada para a Área de Transferência
+
+  text:
+    host: Host
+    hosts: Hosts
+    ignored: Ignorado
+    invalid: Inválido
+    or: ou
+    removed: Removido
+    required: Obrigatório
+
+    hostname: Nome do Host
+    username: Nome de Usuário
+    password: Senha
+
+    copyHostname: Copiar Nome do Host
+    copyUsername: Copiar Nome de Usuário
+    copyPassword: Copiar Senha
+
+    homePage: Página Inicial
+    openIssue: Abrir Problema
+    releaseNotes: Notas de Versão
+    requestFeature: Solicitar Funcionalidade
+
+    addEditError: Erro ao Adicionar/Editar
+    importError: Erro de Importação
+    noChanges: Sem alterações
+
+    deleteHostError: Erro ao Excluir Host
+    errorReadingFile: Erro ao Ler Arquivo
+    errorLoadingPage: Erro ao Carregar Página
+    noCredentialsExport: Sem Credenciais para Exportar
+    noCredentialsImport: No Credentials to Import
+    noSavedCreds: Nenhuma Credencial Salva
+    showHidePassword: Mostrar/Ocultar Senha
+    extensionDisabled: Extensão Temporariamente Desativada
+    unsavedChanges: Alterações Não Salvas Detectadas.
+    unknownFormat: Formato de credenciais desconhecido
+
+    hostUrlInvalid: Invalid Hostname or URL
+    hostnameExists: O hostname já existe. Edite ou exclua primeiro.
+
+form:
+  host:
+    columns: Colunas
+    editable: Editável
+    large: Large
+    visible: Visível
+    hostnamePlaceholder: hostname
+    usernamePlaceholder: nome de usuário
+    passwordPlaceholder: senha
+    hostnameHelp: Nome do host de autenticação básica.
+    usernameHelp: Nome de usuário de autenticação básica.
+    passwordHelp: Senha de autenticação básica.
+
+auth:
+  # auth/App.vue
+  title: Entrar em # ...hostname
+  login: Entrar
+  ignoreHost: Ignorar Host
+  getSupport: Obter Suporte
+  authFailed: Falha na Autenticação
+  tryAgain: Por Favor, Tente Novamente
+  noUsername: Sem Nome de Usuário
+  saveLogin: Salvar Login
+  credsNotSaved: As credenciais não serão salvas!
+
+  credsAlreadySaved: As credenciais já estão salvas para este host e as credenciais temporárias não terão efeito!
+  untilFixed: Até que isso seja corrigido, você pode ativar o # ...deleteSaved
+  deleteSaved: excluir as credenciais salvas #... or saveLogin
+
+  useThe: Use o # ...Native Login
+  nativeLogin: Login Nativo #... or enableExtension
+  enableExtension: Ativar a Extensão
+
+  ignore:
+    confirmIgnore: Confirmar Exclusão
+    optionsPage: Página de Opções
+    ignoreHost: Ignorar o host e remover as credenciais salvas?
+    ignoreRemoved: Os hosts ignorados podem ser removidos em
+
+popup:
+  # popup/App.vue
+  deleteCreds: Excluir Credenciais
+  editCreds: Editar Credenciais
+  hostIgnored: Host ignorado
+  moreOptions: Mais Opções
+  noAccess: Sem Acesso à Aba Atual.
+  noSaved: Nenhuma Credencial Salva Encontrada.
+
+permissions:
+  # permissions/App.vue
+  title: Permissões
+  reason: Para demonstrar a verificação de permissões, são necessárias permissões de host.
+
+options:
+  # options/App.vue
+  title: Opções
+  extension: Opções da Extensão
+  copySupport: Copiar Informações de Suporte
+  copySupportTip: Para relato de problemas.
+  copySupportMsg: Informações de Suporte Copiadas.
+  savedCredentials: Credenciais Salvas
+  # components/OptionsForm.vue
+  authPageBackground: Plano de Fundo da Página de Autenticação/Opções
+
+content:
+  # content/index.ts
+  badge:
+    # Browser Extension Badge Text. Max Visible Characters: 3-4
+    on: Lig
+    off: Desl
+
+ctx:
+  # background/menus.ts
+  openPopup: Abrir Pop-up
+  openSidePanel: Abrir Painel Lateral
+  openExtPanel: Abrir Painel da Extensão
+  openOptions: Abrir Opções
+
+cmd:
+  # wxt.config.ts
+  executeAction: Abrir Pop-up
+  openSidePanel: Abrir Painel Lateral
+  openExtPanel: Abrir Painel da Extensão
+  openOptions: Abrir Opções
+
+import:
+  # components/ImportExport.vue
+  exportAll: Exportar Tudo
+  importFile: Importar Arquivo
+  # components/ImportText.vue
+  errorJson: Erro ao Analisar JSON
+  errorUnknown: Erro Desconhecido
+  import: Importar
+  importText: Importar Texto
+  importCredentials: Importar Credenciais
+  jsonImport: Importação JSON
+  placeholder: Cole o texto a importar aqui...
+  formatSee: Para o formato dos dados, consulte o # ...Migration Guide
+  migrationGuide: Guia de Migração # ...on GitHub
+  onGithub: no GitHub
+
+background:
+  # components/BackgroundForm.vue
+  none: Nenhum
+  picture: Imagem
+  pictureTip: URL de uma imagem da web.
+  pictureLabel: URL da Imagem de Fundo
+  video: Vídeo
+  videoTip: URL de um vídeo da web
+  videoLabel: URL do Vídeo de Fundo
+
+keyboard:
+  # components/KeyboardShortcuts.vue
+  description: Descrição
+  manage: Gerenciar Atalhos de Teclado
+  notSet: Não Definido
+  shortcut: Atalho
+  shortcuts: Atalhos de Teclado
+  unknown: Desconhecido
+
+perms:
+  # components/PermsCheck.vue
+  granted: Permissões Concedidas.
+  grant:
+    text: Conceder Permissões de Host
+    tip: Esta Extensão Requer Permissões de Host para Funcionar
+  remove:
+    text: Remover Permissões de Host
+    tip: Você não poderá mais analisar novas imagens
+  info: Mais Informações sobre Permissões
+  moreInfo: Para mais informações, consulte a
+  mdn: Documentação MDN
+  chrome: Documentação do Chrome
+
+theme:
+  # components/ThemeSwitch.vue
+  title: Seletor de Tema
+  dark: Escuro
+  light: Claro
+  auto: Automático
+
+option:
+  # components/FormSwitch.vue
+  toggle:
+    #label: Max Length 38
+    contextMenu:
+      label: Menu de Contexto ao Clicar Direito
+      tip: Mostrar menu de contexto ao clicar com o botão direito.
+    showUpdate:
+      label: Mostrar Notas de Versão na Atualização
+      tip: Mostrar notificações de atualização.
+    tempDisabled:
+      label: Desativar Extensão Temporariamente
+      tip: Desativar temporariamente a extensão para depuração.
+    ignoreProxy:
+      label: Ignorar Autenticação de Proxy
+      tip: Ignorar respostas HTTP 407 de autenticação de proxy necessária.
+    defaultSave:
+      label: Salvar Autenticação por Padrão
+      tip: Login salvo ativado por padrão.
+    confirmDelete:
+      label: Mostrar Confirmação ao Excluir
+      tip: Mostrar diálogo de confirmação ao excluir.
+    fullWidthOptions:
+      label: Página de Opções em Largura Total
+      tip: Mostrar página de opções em largura total.

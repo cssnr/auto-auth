@@ -1,0 +1,81 @@
+name: "Build"
+
+on:
+  workflow_call:
+    inputs: &inputs
+      version:
+        description: "Build Version"
+        type: string
+        default: "0.0.0"
+  workflow_dispatch:
+    inputs: *inputs
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v6
+
+      - name: "Setup Node 24"
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: "Install"
+        run: npm ci
+
+      - name: "Update Version"
+        if: ${{ github.event_name == 'release' }}
+        uses: cssnr/update-json-value-action@v2
+        with:
+          values: ${{ inputs.version }}
+          file: package.json
+
+      - name: "Verify Version"
+        if: ${{ github.event_name == 'release' }}
+        run: |
+          jq -e '.version == "${{ inputs.version }}"' package.json
+          cat -n package.json
+
+      - name: "Build"
+        run: npm run package
+
+      - name: "Validate"
+        if: ${{ github.event_name == 'release' }}
+        working-directory: .output
+        run: |
+          ls -lAh .
+          jq -e '.version == "${{ github.event.release.tag_name }}"' firefox-mv3/manifest.json
+          echo "::group::chrome-mv3"
+          ls -lAh chrome-mv3
+          echo "::endgroup::"
+          echo "::group::chrome-mv3/manifest.json"
+          jq . chrome-mv3/manifest.json
+          echo "::endgroup::"
+          jq -e '.version == "${{ github.event.release.tag_name }}"' firefox-mv3/manifest.json
+          echo "::group::firefox-mv3"
+          ls -lAh firefox-mv3
+          echo "::endgroup::"
+          echo "::group::firefox-mv3/manifest.json"
+          jq . firefox-mv3/manifest.json
+          echo "::endgroup::"
+
+      - name: "Upload to Actions"
+        uses: actions/upload-artifact@v7
+        with:
+          name: artifacts
+          path: .output
+          include-hidden-files: true
+
+      - name: "Upload to Release"
+        if: ${{ github.event_name == 'release' }}
+        uses: cssnr/upload-release-action@v1
+        with:
+          globs: .output/*.zip

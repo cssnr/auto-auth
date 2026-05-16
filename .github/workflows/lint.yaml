@@ -1,0 +1,81 @@
+name: "Lint"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths-ignore: &paths
+      - "docs/**"
+  pull_request:
+    branches: [master]
+    paths-ignore: *paths
+
+jobs:
+  lint:
+    name: "Lint"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: ${{ !contains(github.event.head_commit.message, '#nolint') }}
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v6
+
+      - name: "Setup Node 24"
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: "Install"
+        run: npm ci
+
+      - name: "Build"
+        if: ${{ !cancelled() }}
+        run: npm run package
+
+      - name: "Validate"
+        working-directory: .output
+        run: |
+          ls -lAh .
+
+          echo "::group::chrome-mv3"
+          ls -lAh chrome-mv3
+          echo "::endgroup::"
+          echo "::group::firefox-mv3"
+          ls -lAh firefox-mv3
+          echo "::endgroup::"
+
+          echo "::group::chrome-mv3/manifest.json"
+          jq . chrome-mv3/manifest.json
+          echo "::endgroup::"
+          echo "::group::firefox-mv3/manifest.json"
+          jq . firefox-mv3/manifest.json
+          echo "::endgroup::"
+
+      - name: "web-ext"
+        if: ${{ !cancelled() }}
+        run: npm run web-ext
+
+      - name: "eslint"
+        if: ${{ !cancelled() }}
+        run: npm run lint
+
+      - name: "prettier"
+        if: ${{ !cancelled() }}
+        run: npm run prettier:check
+
+      - name: "yamllint"
+        if: ${{ !cancelled() }}
+        env:
+          CONFIG: .github/yamllint.yaml
+        run: |
+          echo "::group::List Files"
+          yamllint -c "${{ env.CONFIG }}" --list-files .
+          echo "::endgroup::"
+          yamllint -c "${{ env.CONFIG }}" .
+
+      - name: "actionlint"
+        if: ${{ !cancelled() }}
+        uses: cssnr/actionlint-action@v1
+        with:
+          shellcheck_opts: -e SC2129
