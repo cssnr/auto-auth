@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  PACKAGE_NAME: auto-auth # can be a wild card unless the to-do's are completed
+  PACKAGE_NAME: auto-auth # can be a wild card after webstore-publish updates to use glob
   CHROME_ID: gpoiggobidhogpmmlakahiaaegibnogm # can be defined in elsewhere and parsed
   PUBLISHER_ID: 428868da-c02f-433a-b34c-208b3d01fbc3 # can be defined in elsewhere and parsed
   MOZILLA_SLUG: auto-auth # can be defined in elsewhere and parsed
@@ -86,7 +86,7 @@ jobs:
         uses: cssnr/webstore-publish-action@v1
         with:
           extension_id: ${{ env.CHROME_ID }}
-          publisher_id: ${{env.PUBLISHER_ID}}
+          publisher_id: ${{ env.PUBLISHER_ID }}
           json_data: ${{ secrets.WEBSTORE_JSON }}
           zip_file: "${{ env.PACKAGE_NAME }}-${{ github.event.release.tag_name }}-chrome.zip"
           submit: false
@@ -173,7 +173,7 @@ jobs:
   check:
     name: "Check"
     if: ${{ always() }}
-    runs-on: Ubuntu-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: [build, release, publish-chrome, publish-mozilla]
 
