@@ -115,6 +115,7 @@ jobs:
           name: artifacts
 
       - name: "Generate Release Notes"
+        # https://github.com/mozilla/addons-server/blob/master/src/olympia/core/languages.py
         env:
           RELEASE_NOTES: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.event.release.tag_name }}
         run: |
@@ -123,10 +124,11 @@ jobs:
             "de":    "Vollständige Versionshinweise: $RELEASE_NOTES",
             "en-US": "Full Release Notes: $RELEASE_NOTES",
             "es-MX": "Notas de versión completas: $RELEASE_NOTES",
-            "fr":    "\n\nNotes de version complètes : $RELEASE_NOTES",
+            "fr":    "Notes de version complètes : $RELEASE_NOTES",
             "ja":    "完全なリリースノート: $RELEASE_NOTES",
             "ko":    "전체 릴리스 노트: $RELEASE_NOTES",
             "pt-BR": "Notas de versão completas: $RELEASE_NOTES",
+            "pt-PT": "Notas de lançamento completas: $RELEASE_NOTES",
             "ru":    "Полные примечания к выпуску: $RELEASE_NOTES",
             "zh-CN": "完整发行说明：$RELEASE_NOTES"
           }}}

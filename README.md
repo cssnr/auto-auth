@@ -59,6 +59,8 @@ Then enter the username `user` and password `pass`.
 > - The Credentials Table supports inline editing by clicking on any cell.
 > - The username and password columns and their values can be shown or hidden.
 > - A new Side Panel and Extension Panel UI plus a new migration from MultiPass.
+>
+> See the [release notes](https://github.com/cssnr/auto-auth/releases) for a complete list of improvements and fixes.
 
 ## Install
 
