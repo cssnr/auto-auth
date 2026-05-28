@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  PACKAGE_NAME: auto-auth # can be a wild card after webstore-publish updates to use glob
+  PACKAGE_NAME: auto-auth # can be a wild card pattern instead of env variable
   CHROME_ID: gpoiggobidhogpmmlakahiaaegibnogm # can be defined in elsewhere and parsed
   PUBLISHER_ID: 428868da-c02f-433a-b34c-208b3d01fbc3 # can be defined in elsewhere and parsed
   MOZILLA_SLUG: auto-auth # can be defined in elsewhere and parsed
