@@ -89,7 +89,6 @@ jobs:
           publisher_id: ${{ env.PUBLISHER_ID }}
           json_data: ${{ secrets.WEBSTORE_JSON }}
           zip_file: "${{ env.PACKAGE_NAME }}-${{ github.event.release.tag_name }}-chrome.zip"
-          submit: false
 
       # NOTE: This only submits for review! Need automation to upload signed release...
 

@@ -1,5 +1,6 @@
 name: "⚠️ Report an Issue"
 description: "Please let us know if something is not right..."
+type: bug
 labels: ["bug"]
 assignees:
   - smashedr
