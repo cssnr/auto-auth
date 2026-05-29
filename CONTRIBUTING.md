@@ -3,6 +3,7 @@
 - [Developing](#developing)
 - [Building](#building)
 - [WXT](#wxt)
+- [Locales](#locales)
 
 For workflow instructions, see the main [CSSNR CONTRIBUTING.md](https://github.com/cssnr/.github/blob/master/.github/CONTRIBUTING.md).
 
@@ -143,3 +144,15 @@ Additional notes on loading temporary/unpacked extensions.
 - [Mozilla Firefox](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/)
 - [Google Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 - [Microsoft Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions/getting-started/extension-sideloading#locally-installing-and-running-an-extension)
+
+# Locales
+
+To add a new locale:
+
+1. The source language is English, copy [en.yaml](src/locales/en.yaml)
+2. Copy the exact format, including comments.
+3. Verify the correct file name: https://developer.chrome.com/docs/extensions/reference/api/i18n
+4. Verify the correct Mozilla name in `PROD_LANGUAGES`: https://github.com/mozilla/addons-server/blob/master/src/olympia/core/languages.py
+5. Add the Release Notes translation here [release.yaml](.github/workflows/release.yaml)
+
+Note: The process for adding and validating names for `Mozilla` was clearly designed by a foolish child.
