@@ -1,31 +1,25 @@
 export type HostsRecord = Record<string, string>
 
+function parseHostPort(value: string): [string, string | undefined] {
+  const colon = value.indexOf(':')
+  return colon === -1 ? [value, undefined] : [value.slice(0, colon), value.slice(colon + 1)]
+}
+
 export function matchesWildcard(host: string, pattern: string): boolean {
-  const hostColon = host.indexOf(':')
-  const hostName = hostColon === -1 ? host : host.slice(0, hostColon)
-  const hostPort = hostColon === -1 ? undefined : host.slice(hostColon + 1)
+  const [hostName, hostPort] = parseHostPort(host)
+  const [patternName, patternPort] = parseHostPort(pattern)
 
-  const patternColon = pattern.indexOf(':')
-  const patternName = patternColon === -1 ? pattern : pattern.slice(0, patternColon)
-  const patternPort = patternColon === -1 ? undefined : pattern.slice(patternColon + 1)
-
-  if (patternPort !== undefined && patternPort !== '*') {
-    if (patternPort !== hostPort) return false
+  if (patternPort !== undefined && patternPort !== '*' && patternPort !== hostPort) {
+    return false
   }
 
   const hostParts = hostName.split('.')
   const patternParts = patternName.split('.')
   if (patternParts.length !== hostParts.length) return false
 
-  for (let i = 0; i < patternParts.length; i++) {
-    if (patternParts[i] === '*') {
-      if (!hostParts[i] || hostParts[i].length === 0) return false
-    } else if (patternParts[i] !== hostParts[i]) {
-      return false
-    }
-  }
-
-  return true
+  return patternParts.every(
+    (part, i) => part === '*' ? (hostParts[i]?.length ?? 0) > 0 : part === hostParts[i],
+  )
 }
 
 export function countWildcards(pattern: string): number {
@@ -138,9 +132,7 @@ export function validateHostname(hostname: string): string | undefined {
   const value = hostname.toLowerCase().trim()
 
   if (value.includes('*')) {
-    const colonIndex = value.indexOf(':')
-    const hostPart = colonIndex === -1 ? value : value.slice(0, colonIndex)
-    const portPart = colonIndex === -1 ? undefined : value.slice(colonIndex + 1)
+    const [hostPart, portPart] = parseHostPort(value)
 
     if (portPart !== undefined && portPart !== '*' && !/^\d+$/.test(portPart))
       return undefined
