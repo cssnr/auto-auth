@@ -72,6 +72,8 @@ onMounted(async () => {
   const creds = await Hosts.get(url.host)
   debug('creds:', creds)
   if (!creds) return debug('No Saved Creds for Host.')
+  const key = await Hosts.matchKey(url.host)
+  if (key) hostnameRef.value = key
   savedCreds.value = creds
   usernameRef.value = parseCreds(creds)[0]
 })

@@ -8,7 +8,7 @@ import { openOptions } from '@/utils/extension.ts'
 import { getSession, saveKeyValue } from '@/utils/options.ts'
 import { useOptions } from '@/composables/useOptions.ts'
 import { showToast } from '@/composables/useToast.ts'
-import { Hosts } from '@/utils/hosts.ts'
+import { Hosts, matchesWildcard, countWildcards } from '@/utils/hosts.ts'
 import ToastAlerts from '@/components/ToastAlerts.vue'
 import BackToTop from '@/components/BackToTop.vue'
 import OptionsOffscreen from '@/components/OptionsOffscreen.vue'
@@ -135,6 +135,27 @@ onMounted(async () => {
     await nextTick()
     usernameEl.value?.select()
     passRef.value = password
+  } else {
+    let bestMatch: string | undefined
+    let bestSpecificity = Infinity
+    for (const [pattern, creds] of Object.entries(session)) {
+      if (!pattern.includes('*')) continue
+      if (matchesWildcard(hostRef.value, pattern)) {
+        const specificity = countWildcards(pattern)
+        if (specificity < bestSpecificity) {
+          bestSpecificity = specificity
+          bestMatch = creds
+        }
+      }
+    }
+    if (bestMatch) {
+      debug('session wildcard match:', bestMatch)
+      const [username, password] = parseCreds(bestMatch)
+      userRef.value = username
+      await nextTick()
+      usernameEl.value?.select()
+      passRef.value = password
+    }
   }
 
   const link = document.querySelector<HTMLLinkElement>('link[rel*="icon"]')

@@ -1,6 +1,6 @@
 import { i18n } from '#imports'
 import { defineContentScript } from 'wxt/utils/define-content-script'
-import { Hosts } from '@/utils/hosts.ts'
+import { Hosts, matchesWildcard, countWildcards } from '@/utils/hosts.ts'
 
 // TODO: Logging
 
@@ -27,11 +27,44 @@ export default defineContentScript({
 
 async function onChanged(changes: Record<string, any>) {
   // console.debug('content/index.ts - onChanged:', changes)
-  const items = changes[url.host[0]] // NOTE: Lazy Typing... in changes
-  if (!items) return
-  const oldCreds = items.oldValue?.[url.host]
-  const newCreds = items.newValue?.[url.host]
-  if (oldCreds !== newCreds) await processCreds(newCreds)
+  const exactItems = changes[url.host[0]] // NOTE: Lazy Typing... in changes
+  const wildcardItems = changes['*']
+
+  if (!exactItems && !wildcardItems) return
+
+  if (exactItems) {
+    const oldCreds = exactItems.oldValue?.[url.host]
+    const newCreds = exactItems.newValue?.[url.host]
+    if (oldCreds !== newCreds) return await processCreds(newCreds)
+  }
+
+  if (wildcardItems) {
+    const oldWildcard = findBestWildcardMatch(url.host, wildcardItems.oldValue)
+    const newWildcard = findBestWildcardMatch(url.host, wildcardItems.newValue)
+    if (oldWildcard !== newWildcard) await processCreds(newWildcard)
+  }
+}
+
+function findBestWildcardMatch(
+  host: string,
+  patterns: Record<string, string> | undefined,
+): string | undefined {
+  if (!patterns) return undefined
+  let bestMatch: string | undefined
+  let bestSpecificity = Infinity
+
+  for (const [pattern, creds] of Object.entries(patterns)) {
+    if (!pattern.includes('*')) continue
+    if (matchesWildcard(host, pattern)) {
+      const specificity = countWildcards(pattern)
+      if (specificity < bestSpecificity) {
+        bestSpecificity = specificity
+        bestMatch = creds
+      }
+    }
+  }
+
+  return bestMatch
 }
 
 async function processCreds(creds: any) {
