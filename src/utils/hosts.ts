@@ -136,8 +136,9 @@ export function validateHostname(hostname: string): string | undefined {
   if (value.includes('*')) {
     const [hostPart, portPart] = parseHostPort(value)
 
-    if (portPart !== undefined && portPart !== '*' && !/^\d+$/.test(portPart))
+    if (portPart !== undefined && portPart !== '*' && !/^\d+$/.test(portPart)) {
       return undefined
+    }
 
     const segments = hostPart.split('.')
     if (segments.length === 0 || segments.includes('')) return undefined
@@ -155,6 +156,6 @@ export function validateHostname(hostname: string): string | undefined {
     const url = new URL(urlValue)
     return url.hostname
   } catch {
-    // invalid hostname
+    return undefined
   }
 }
