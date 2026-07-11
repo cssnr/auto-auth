@@ -2,7 +2,9 @@ export type HostsRecord = Record<string, string>
 
 function parseHostPort(value: string): [string, string | undefined] {
   const colon = value.indexOf(':')
-  return colon === -1 ? [value, undefined] : [value.slice(0, colon), value.slice(colon + 1)]
+  return colon === -1
+    ? [value, undefined]
+    : [value.slice(0, colon), value.slice(colon + 1)]
 }
 
 export function matchesWildcard(host: string, pattern: string): boolean {
@@ -17,8 +19,8 @@ export function matchesWildcard(host: string, pattern: string): boolean {
   const patternParts = patternName.split('.')
   if (patternParts.length !== hostParts.length) return false
 
-  return patternParts.every(
-    (part, i) => part === '*' ? (hostParts[i]?.length ?? 0) > 0 : part === hostParts[i],
+  return patternParts.every((part, i) =>
+    part === '*' ? (hostParts[i]?.length ?? 0) > 0 : part === hostParts[i],
   )
 }
 
@@ -138,7 +140,7 @@ export function validateHostname(hostname: string): string | undefined {
       return undefined
 
     const segments = hostPart.split('.')
-    if (segments.length === 0 || segments.some((s) => s === '')) return undefined
+    if (segments.length === 0 || segments.includes('')) return undefined
     for (const segment of segments) {
       if (segment === '*') continue
       if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(segment)) return undefined
