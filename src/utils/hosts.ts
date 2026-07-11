@@ -32,6 +32,26 @@ export function countWildcards(pattern: string): number {
   return (pattern.match(/\*/g) || []).length
 }
 
+export function findBestWildcardMatch(
+  host: string,
+  patterns: Record<string, string> | undefined,
+): string | undefined {
+  if (!patterns) return undefined
+  let bestMatch: string | undefined
+  let bestSpecificity = Infinity
+  for (const [pattern, creds] of Object.entries(patterns)) {
+    if (!pattern.includes('*')) continue
+    if (matchesWildcard(host, pattern)) {
+      const specificity = countWildcards(pattern)
+      if (specificity < bestSpecificity) {
+        bestSpecificity = specificity
+        bestMatch = creds
+      }
+    }
+  }
+  return bestMatch
+}
+
 export class Hosts {
   static readonly keys: string[] = [...'*abcdefghijklmnopqrstuvwxyz0123456789']
 

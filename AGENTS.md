@@ -30,7 +30,7 @@ IMPORTANT: Both `useOptions()` and `getOptions()` ALWAYS have DEFAULT values set
 
 ## Commands
 
-ALWAYS use the `npm run *` command
+ALWAYS use the `npm run *` command NEVER pipe output into arbitrary truncation commands.
 
 | Command            | What it does                      |
 | ------------------ | --------------------------------- |

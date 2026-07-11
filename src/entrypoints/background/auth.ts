@@ -1,6 +1,6 @@
 import { parseCreds } from '@/utils/creds.ts'
 import { getOptions, getSession } from '@/utils/options.ts'
-import { Hosts, matchesWildcard, countWildcards } from '@/utils/hosts.ts'
+import { Hosts, findBestWildcardMatch } from '@/utils/hosts.ts'
 
 // TODO: Logging
 
@@ -89,30 +89,13 @@ async function processRequest(
   const session = await getSession()
   // console.log('session:', session)
 
-  if (url.host in session) {
+  // Find session creds (exact or wildcard match)
+  const sessionCreds = session[url.host] ?? findBestWildcardMatch(url.host, session)
+  if (sessionCreds) {
     console.log('%cSending Session Creds for:', 'color: SpringGreen', details.requestId)
-    const [username, password] = parseCreds(session[url.host])
+    const [username, password] = parseCreds(sessionCreds)
     const authCredentials: chrome.webRequest.AuthCredentials = { username, password }
     // console.log('authCredentials:', authCredentials)
-    return asyncCallback({ authCredentials })
-  }
-
-  let bestSessionMatch: string | undefined
-  let bestSessionSpecificity = Infinity
-  for (const [pattern, creds] of Object.entries(session)) {
-    if (!pattern.includes('*')) continue
-    if (matchesWildcard(url.host, pattern)) {
-      const specificity = countWildcards(pattern)
-      if (specificity < bestSessionSpecificity) {
-        bestSessionSpecificity = specificity
-        bestSessionMatch = creds
-      }
-    }
-  }
-  if (bestSessionMatch) {
-    console.log('%cSending Session Creds for:', 'color: SpringGreen', details.requestId)
-    const [username, password] = parseCreds(bestSessionMatch)
-    const authCredentials: chrome.webRequest.AuthCredentials = { username, password }
     return asyncCallback({ authCredentials })
   }
 
