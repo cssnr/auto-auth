@@ -70,14 +70,12 @@ onMounted(async () => {
   const url = new URL(tab.url)
   debug('url:', url)
   hostnameRef.value = url.host
-  const creds = await Hosts.get(url.host)
-  debug('creds:', creds)
-  if (!creds) return debug('No Saved Creds for Host.')
-  // TODO: Duplicated Lookup from Hosts.get
-  const key = await Hosts.matchKey(url.host)
-  if (key) hostnameRef.value = key
-  savedCreds.value = creds
-  usernameRef.value = parseCreds(creds)[0]
+  const match = await Hosts.find(url.host)
+  debug('match:', match)
+  if (!match) return debug('No Saved Creds for Host.')
+  hostnameRef.value = match.key
+  savedCreds.value = match.creds
+  usernameRef.value = parseCreds(match.creds)[0]
 })
 </script>
 

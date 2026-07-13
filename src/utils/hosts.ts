@@ -1,62 +1,5 @@
 export type HostsRecord = Record<string, string>
 
-function parseHostPort(value: string): [string, string | undefined] {
-  const colon = value.indexOf(':')
-  return colon === -1
-    ? [value, undefined]
-    : [value.slice(0, colon), value.slice(colon + 1)]
-}
-
-export function matchesWildcard(host: string, pattern: string): boolean {
-  const [hostName, hostPort] = parseHostPort(host)
-  const [patternName, patternPort] = parseHostPort(pattern)
-
-  if (patternPort !== undefined && patternPort !== '*' && patternPort !== hostPort) {
-    return false
-  }
-
-  const hostParts = hostName.split('.')
-  const patternParts = patternName.split('.')
-  if (patternParts.length !== hostParts.length) return false
-
-  return patternParts.every((part, i) =>
-    part === '*' ? (hostParts[i]?.length ?? 0) > 0 : part === hostParts[i],
-  )
-}
-
-export function countWildcards(pattern: string): number {
-  return (pattern.match(/\*/g) || []).length
-}
-
-export function findBestWildcardMatch(
-  host: string,
-  patterns: Record<string, string> | undefined,
-): string | undefined {
-  return findBestWildcard(host, patterns)?.creds
-}
-
-function findBestWildcard(
-  host: string,
-  patterns: Record<string, string> | undefined,
-): { key: string; creds: string } | undefined {
-  if (!patterns) return undefined
-  let bestKey: string | undefined
-  let bestCreds: string | undefined
-  let bestSpecificity = Infinity
-  for (const [pattern, creds] of Object.entries(patterns)) {
-    if (!pattern.includes('*')) continue
-    if (matchesWildcard(host, pattern)) {
-      const specificity = countWildcards(pattern)
-      if (specificity < bestSpecificity) {
-        bestSpecificity = specificity
-        bestKey = pattern
-        bestCreds = creds
-      }
-    }
-  }
-  return bestKey ? { key: bestKey, creds: bestCreds! } : undefined
-}
-
 export class Hosts {
   static readonly keys: string[] = [...'*abcdefghijklmnopqrstuvwxyz0123456789']
 
@@ -71,18 +14,11 @@ export class Hosts {
   }
 
   static async get(host: string): Promise<string | undefined> {
-    const result = await Hosts.#lookup(host)
+    const result = await Hosts.find(host)
     return result?.creds
   }
 
-  static async matchKey(host: string): Promise<string | undefined> {
-    const result = await Hosts.#lookup(host)
-    return result?.key
-  }
-
-  static async #lookup(
-    host: string,
-  ): Promise<{ key: string; creds: string } | undefined> {
+  static async find(host: string): Promise<{ key: string; creds: string } | undefined> {
     const sync = await Hosts.#getSync(host)
     const exact = sync[host]
     if (exact) return { key: host, creds: exact }
@@ -144,4 +80,61 @@ export function validateHostname(hostname: string): string | undefined {
   }
 
   return portPart !== undefined ? `${hostPart}:${portPart}` : hostPart
+}
+
+export function matchesWildcard(host: string, pattern: string): boolean {
+  const [hostName, hostPort] = parseHostPort(host)
+  const [patternName, patternPort] = parseHostPort(pattern)
+
+  if (patternPort !== undefined && patternPort !== '*' && patternPort !== hostPort) {
+    return false
+  }
+
+  const hostParts = hostName.split('.')
+  const patternParts = patternName.split('.')
+  if (patternParts.length !== hostParts.length) return false
+
+  return patternParts.every((part, i) =>
+    part === '*' ? (hostParts[i]?.length ?? 0) > 0 : part === hostParts[i],
+  )
+}
+
+export function findBestWildcardMatch(
+  host: string,
+  patterns: Record<string, string> | undefined,
+): string | undefined {
+  return findBestWildcard(host, patterns)?.creds
+}
+
+function findBestWildcard(
+  host: string,
+  patterns: Record<string, string> | undefined,
+): { key: string; creds: string } | undefined {
+  if (!patterns) return undefined
+  let bestKey: string | undefined
+  let bestCreds: string | undefined
+  let bestSpecificity = Infinity
+  for (const [pattern, creds] of Object.entries(patterns)) {
+    if (!pattern.includes('*')) continue
+    if (matchesWildcard(host, pattern)) {
+      const specificity = countWildcards(pattern)
+      if (specificity < bestSpecificity) {
+        bestSpecificity = specificity
+        bestKey = pattern
+        bestCreds = creds
+      }
+    }
+  }
+  return bestKey ? { key: bestKey, creds: bestCreds! } : undefined
+}
+
+function parseHostPort(value: string): [string, string | undefined] {
+  const colon = value.indexOf(':')
+  return colon === -1
+    ? [value, undefined]
+    : [value.slice(0, colon), value.slice(colon + 1)]
+}
+
+function countWildcards(pattern: string): number {
+  return (pattern.match(/\*/g) || []).length
 }
