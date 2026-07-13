@@ -10,7 +10,11 @@ export function onAuthRequired(
   details: chrome.webRequest.OnAuthRequiredDetails,
   asyncCallback?: (response: chrome.webRequest.BlockingResponse) => void,
 ): chrome.webRequest.BlockingResponse | undefined {
-  processRequest(details, asyncCallback).catch(console.warn)
+  // TODO: if (!asyncCallback) throw - should be called here...
+  processRequest(details, asyncCallback).catch((e) => {
+    console.warn(e)
+    if (asyncCallback) asyncCallback({})
+  })
   return undefined // returned so asyncCallback can be called
 }
 

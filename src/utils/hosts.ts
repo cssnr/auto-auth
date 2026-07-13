@@ -39,10 +39,10 @@ export class Hosts {
   }
 
   static async edit(old: string, host: string, creds: string): Promise<void> {
+    await this.set(host, creds)
     if (old !== host) {
       await this.delete(old)
     }
-    await this.set(host, creds)
   }
 
   static async update(hosts: HostsRecord): Promise<void> {

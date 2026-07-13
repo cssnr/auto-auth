@@ -100,7 +100,7 @@ async function onSubmit() {
   if (!passRef.value) {
     debug('No password')
     passwordEl.value?.focus()
-    passInvalid.value = `${i18n.t('ui.text.password')} ${i18n.t('ui.text.password')}`
+    passInvalid.value = `${i18n.t('ui.text.password')} ${i18n.t('ui.text.invalid')}`
     return
   }
 

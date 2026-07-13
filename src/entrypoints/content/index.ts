@@ -54,24 +54,28 @@ async function onChanged(changes: Record<string, any>) {
 
 async function processCreds(creds: any) {
   // console.debug('processCreds - tabEnabled:', tabEnabled, '- creds:', creds)
-  if (creds) {
-    tabEnabled = true
-    if (creds === 'ignored') {
-      console.log('%cIgnored - Site is Ignored!', 'color: Gold')
-      await chrome.runtime.sendMessage({
-        badgeText: i18n.t('content.badge.off'),
-        badgeColor: 'yellow',
-      })
-    } else {
-      console.log('%cEnabled - Site Credentials Found.', 'color: LimeGreen')
-      await chrome.runtime.sendMessage({
-        badgeText: i18n.t('content.badge.on'),
-        badgeColor: 'green',
-      })
+  try {
+    if (creds) {
+      tabEnabled = true
+      if (creds === 'ignored') {
+        console.log('%cIgnored - Site is Ignored!', 'color: Gold')
+        await chrome.runtime.sendMessage({
+          badgeText: i18n.t('content.badge.off'),
+          badgeColor: 'yellow',
+        })
+      } else {
+        console.log('%cEnabled - Site Credentials Found.', 'color: LimeGreen')
+        await chrome.runtime.sendMessage({
+          badgeText: i18n.t('content.badge.on'),
+          badgeColor: 'green',
+        })
+      }
+    } else if (tabEnabled) {
+      console.log('%cDisabled - Site Credentials Removed.', 'color: Tomato')
+      tabEnabled = false
+      await chrome.runtime.sendMessage({ badgeText: '' })
     }
-  } else if (tabEnabled) {
-    console.log('%cDisabled - Site Credentials Removed.', 'color: Tomato')
-    tabEnabled = false
-    await chrome.runtime.sendMessage({ badgeText: '' })
+  } catch (e) {
+    // extension is reloaded, updated, or the page outlives the background script
   }
 }
