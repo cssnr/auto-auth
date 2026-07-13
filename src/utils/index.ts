@@ -25,7 +25,7 @@ export async function submitHost(
   user: string,
   pass: string,
   original?: string,
-) {
+): Promise<boolean> {
   // console.debug('submitHost:', host, user, pass, original)
   try {
     // NOTE: Update Hosts.set to handle this logic...
@@ -35,8 +35,10 @@ export async function submitHost(
       await Hosts.set(host, `${user}:${pass}`)
     }
     showToast(`${i18n.t('ui.action.addEdit')}: ${host}`, 'success')
+    return true
   } catch (e) {
     const message = e instanceof Error ? e.message : i18n.t('import.errorUnknown')
     showToast(`${i18n.t('ui.text.addEditError')}: ${message}`, 'danger')
+    return false
   }
 }

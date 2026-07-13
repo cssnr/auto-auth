@@ -65,7 +65,7 @@ async function processRequest(
   // Check if Request Already Processed
   if (pendingRequests.includes(details.requestId)) {
     console.log('%cAlready Processed requestId:', 'color: Orange', details.requestId)
-    hijackRequest(true)
+    return hijackRequest(true)
   }
   pendingRequests.push(details.requestId)
 

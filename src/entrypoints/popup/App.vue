@@ -57,7 +57,8 @@ async function deleteHost(host: string) {
 
 async function onSubmit(host: string, user: string, pass: string, original?: string) {
   debug('popup/App.vue - onSubmit:', host, user, pass, original)
-  await submitHost(host, user, pass, original)
+  const success = await submitHost(host, user, pass, original)
+  if (!success) return
   hostnameRef.value = host
   savedCreds.value = `${user}:${pass}`
   usernameRef.value = user

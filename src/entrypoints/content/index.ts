@@ -35,7 +35,14 @@ async function onChanged(changes: Record<string, any>) {
   if (exactItems) {
     const oldCreds = exactItems.oldValue?.[url.host]
     const newCreds = exactItems.newValue?.[url.host]
-    if (oldCreds !== newCreds) return await processCreds(newCreds)
+    if (oldCreds !== newCreds) {
+      // If exact match was removed, check if a wildcard still covers this host
+      if (!newCreds) {
+        const wildcard = findBestWildcardMatch(url.host, await Hosts.all())
+        return await processCreds(wildcard)
+      }
+      return await processCreds(newCreds)
+    }
   }
 
   if (wildcardItems) {
