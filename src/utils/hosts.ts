@@ -65,6 +65,11 @@ export class Hosts {
     return Object.assign({}, ...Object.values(sync)) as HostsRecord
   }
 
+  static async has(host: string): Promise<boolean> {
+    const sync = await Hosts.#getSync(host)
+    return host in sync
+  }
+
   static async get(host: string): Promise<string | undefined> {
     const result = await Hosts.#lookup(host)
     return result?.creds
@@ -125,29 +130,18 @@ export class Hosts {
 export function validateHostname(hostname: string): string | undefined {
   const value = hostname.toLowerCase().trim()
 
-  if (value.includes('*')) {
-    const [hostPart, portPart] = parseHostPort(value)
+  const [hostPart, portPart] = parseHostPort(value)
 
-    if (portPart !== undefined && portPart !== '*' && !/^\d+$/.test(portPart)) {
-      return undefined
-    }
-
-    const segments = hostPart.split('.')
-    if (segments.length === 0 || segments.includes('')) return undefined
-    for (const segment of segments) {
-      if (segment === '*') continue
-      if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(segment)) return undefined
-    }
-
-    return portPart !== undefined ? `${hostPart}:${portPart}` : hostPart
-  }
-
-  try {
-    let urlValue = value
-    if (!urlValue.includes('://')) urlValue = `https://${urlValue}`
-    const url = new URL(urlValue)
-    return url.hostname
-  } catch {
+  if (portPart !== undefined && portPart !== '*' && !/^\d+$/.test(portPart)) {
     return undefined
   }
+
+  const segments = hostPart.split('.')
+  if (segments.length === 0 || segments.includes('')) return undefined
+  for (const segment of segments) {
+    if (segment === '*') continue
+    if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(segment)) return undefined
+  }
+
+  return portPart !== undefined ? `${hostPart}:${portPart}` : hostPart
 }

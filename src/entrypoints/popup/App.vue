@@ -58,6 +58,7 @@ async function deleteHost(host: string) {
 async function onSubmit(host: string, user: string, pass: string, original?: string) {
   debug('popup/App.vue - onSubmit:', host, user, pass, original)
   await submitHost(host, user, pass, original)
+  hostnameRef.value = host
   savedCreds.value = `${user}:${pass}`
   usernameRef.value = user
 }
@@ -72,6 +73,7 @@ onMounted(async () => {
   const creds = await Hosts.get(url.host)
   debug('creds:', creds)
   if (!creds) return debug('No Saved Creds for Host.')
+  // TODO: Duplicated Lookup from Hosts.get
   const key = await Hosts.matchKey(url.host)
   if (key) hostnameRef.value = key
   savedCreds.value = creds
