@@ -32,8 +32,16 @@ export function findBestWildcardMatch(
   host: string,
   patterns: Record<string, string> | undefined,
 ): string | undefined {
+  return findBestWildcard(host, patterns)?.creds
+}
+
+function findBestWildcard(
+  host: string,
+  patterns: Record<string, string> | undefined,
+): { key: string; creds: string } | undefined {
   if (!patterns) return undefined
-  let bestMatch: string | undefined
+  let bestKey: string | undefined
+  let bestCreds: string | undefined
   let bestSpecificity = Infinity
   for (const [pattern, creds] of Object.entries(patterns)) {
     if (!pattern.includes('*')) continue
@@ -41,11 +49,12 @@ export function findBestWildcardMatch(
       const specificity = countWildcards(pattern)
       if (specificity < bestSpecificity) {
         bestSpecificity = specificity
-        bestMatch = creds
+        bestKey = pattern
+        bestCreds = creds
       }
     }
   }
-  return bestMatch
+  return bestKey ? { key: bestKey, creds: bestCreds! } : undefined
 }
 
 export class Hosts {
@@ -73,24 +82,7 @@ export class Hosts {
     const exact = sync[host]
     if (exact) return { key: host, creds: exact }
 
-    const all = await Hosts.all()
-    let bestKey: string | undefined
-    let bestCreds: string | undefined
-    let bestSpecificity = Infinity
-
-    for (const [pattern, creds] of Object.entries(all)) {
-      if (!pattern.includes('*')) continue
-      if (matchesWildcard(host, pattern)) {
-        const specificity = countWildcards(pattern)
-        if (specificity < bestSpecificity) {
-          bestSpecificity = specificity
-          bestKey = pattern
-          bestCreds = creds
-        }
-      }
-    }
-
-    return bestKey ? { key: bestKey, creds: bestCreds! } : undefined
+    return findBestWildcard(host, await Hosts.all())
   }
 
   static async set(host: string, creds: string): Promise<void> {
