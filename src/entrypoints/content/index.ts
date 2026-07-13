@@ -75,7 +75,7 @@ async function processCreds(creds: any) {
       tabEnabled = false
       await chrome.runtime.sendMessage({ badgeText: '' })
     }
-  } catch (e) {
+  } catch {
     // extension is reloaded, updated, or the page outlives the background script
   }
 }
