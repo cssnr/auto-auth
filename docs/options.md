@@ -49,12 +49,12 @@ Manage the keyboard shortcuts used to open extension panels directly from the br
 
 Shortcuts can be customized through your browser's built-in extension shortcut manager. Click **Manage Keyboard Shortcuts** to open it.
 
-| Description | Shortcut |
-| --- | --- |
-| Open Popup | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> |
-| Open Side Panel | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> |
+| Description          | Shortcut                                     |
+| -------------------- | -------------------------------------------- |
+| Open Popup           | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> |
+| Open Side Panel      | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> |
 | Open Extension Panel | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd> |
-| Open Options | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> |
+| Open Options         | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> |
 
 Note: Shortcuts marked _Not Set_ can be assigned in your browser's extension shortcut settings. In Chrome, visit `chrome://extensions/shortcuts`. In Firefox, visit `about:addons` and click the gear icon.
 

@@ -72,23 +72,23 @@ The credentials table shows all saved host entries with columns for hostname, us
 
 Right-click on a page to access extension actions:
 
-| Item | Description |
-| --- | --- |
-| **Open Popup** | Opens the extension popup panel. |
-| **Open Side Panel** | Opens the side panel. |
-| **Open Extension Panel** | Opens the popout window. |
-| **Open Options** | Opens the options page. |
+| Item                     | Description                      |
+| ------------------------ | -------------------------------- |
+| **Open Popup**           | Opens the extension popup panel. |
+| **Open Side Panel**      | Opens the side panel.            |
+| **Open Extension Panel** | Opens the popout window.         |
+| **Open Options**         | Opens the options page.          |
 
 The context menu can be enabled/disabled from the [options page](options.md#context-menu).
 
 ## Keyboard Shortcuts
 
-| Description | Shortcut |
-| --- | --- |
-| Open Popup | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> |
-| Open Side Panel | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> |
+| Description          | Shortcut                                     |
+| -------------------- | -------------------------------------------- |
+| Open Popup           | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> |
+| Open Side Panel      | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> |
 | Open Extension Panel | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd> |
-| Open Options | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> |
+| Open Options         | <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> |
 
 Shortcuts can be customized through your browser's built-in extension shortcut manager.
 
@@ -99,19 +99,19 @@ Shortcuts can be customized through your browser's built-in extension shortcut m
 
 The toolbar icon color indicates extension status:
 
-| Color | Meaning |
-| --- | --- |
-| **Green** | Host permissions granted, extension active. |
-| **Yellow** | Extension is temporarily disabled. |
-| **Red** | Host permissions not granted. |
+| Color      | Meaning                                     |
+| ---------- | ------------------------------------------- |
+| **Green**  | Host permissions granted, extension active. |
+| **Yellow** | Extension is temporarily disabled.          |
+| **Red**    | Host permissions not granted.               |
 
 The badge on the icon shows per-tab status:
 
-| Badge | Meaning |
-| --- | --- |
-| **On** (green) | Credentials are saved for this site. |
-| **Off** (yellow) | The host is ignored. |
-| *(empty)* | No credentials for this site. |
+| Badge            | Meaning                              |
+| ---------------- | ------------------------------------ |
+| **On** (green)   | Credentials are saved for this site. |
+| **Off** (yellow) | The host is ignored.                 |
+| _(empty)_        | No credentials for this site.        |
 
 ## Import / Export
 
