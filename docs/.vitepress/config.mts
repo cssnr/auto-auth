@@ -133,10 +133,10 @@ export default defineConfig({
         ],
       },
       {
-        text: 'Reference',
+        text: 'Support',
         items: [
           { text: 'Security', link: '/security' },
-          { text: 'Support', link: '/support' },
+          { text: 'Get Help', link: '/support' },
         ],
       },
     ],

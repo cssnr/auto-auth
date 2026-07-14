@@ -26,7 +26,7 @@ hero:
 features:
   - title: Install and Usage
     details: View Install and Usage Guides
-    link: /install
+    link: /install#install
   - title: Migration
     details: Migrate from Other Extensions
     link: /migration
