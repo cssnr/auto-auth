@@ -1,0 +1,53 @@
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #32fc7d, #089147);
+
+  --vp-home-hero-image-background-image: linear-gradient(
+    180deg,
+    #a6e3a120 0%,
+    rgba(166, 227, 161, 0.6) 60%
+  );
+  --vp-home-hero-image-filter: blur(56px);
+
+  --vp-button-alt-bg: var(--vp-c-default-1);
+}
+
+@supports (scrollbar-gutter: stable) {
+  /* Note: local search is: 768px */
+  @media (min-width: 769px) {
+    html {
+      scrollbar-gutter: stable;
+    }
+    html:has(:fullscreen) {
+      scrollbar-gutter: auto;
+    }
+  }
+}
+
+body {
+  overflow-y: scroll;
+}
+
+summary {
+  cursor: pointer;
+}
+
+table th {
+  text-wrap: nowrap;
+}
+
+.search-keywords {
+  display: none;
+}
+
+.vp-doc a > img {
+  display: inline-block;
+  margin: 0;
+}
+
+.badges p {
+  line-height: 1.3em;
+}
+.badges img {
+  margin-right: 4px !important;
+}
