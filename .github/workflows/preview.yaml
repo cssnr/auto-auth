@@ -1,0 +1,72 @@
+name: "Preview"
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [master, main, legacy]
+    paths:
+      - ".github/workflows/preview.yaml"
+      - ".vitepress/**"
+      - "docs/**"
+      - "package*.json"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: "Build"
+    if: ${{ !contains(github.event.head_commit.message, '#nopreview') }}
+    uses: cssnr/workflows/.github/workflows/npm-build.yaml@master
+    permissions:
+      contents: read
+    with:
+      install: "npm ci"
+      build: "npm run docs:deploy"
+      path: "docs/.vitepress/dist"
+    secrets: inherit
+
+  deploy:
+    name: "Deploy"
+    uses: cssnr/workflows/.github/workflows/deploy-static.yaml@master
+    needs: build
+    permissions:
+      contents: read
+    with:
+      name: "preview"
+      url: "https://dev-static.cssnr.com/auto-auth/"
+      path: "auto-auth"
+      robots: true
+    secrets:
+      host: ${{ secrets.DEV_DEPLOY_HOST }}
+      port: ${{ secrets.DEV_DEPLOY_PORT }}
+      user: ${{ secrets.DEV_DEPLOY_USER }}
+      pass: ${{ secrets.DEV_DEPLOY_PASS }}
+      webhook: ${{ secrets.DISCORD_WEBHOOK }}
+
+  lint:
+    name: "Lint"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: ${{ !contains(github.event.head_commit.message, '#nolint') }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v7
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: "Install"
+        id: install
+        run: npm ci --ignore-scripts
+
+      - name: "eslint"
+        if: ${{ !cancelled() }}
+        run: npm run lint
+
+      - name: "prettier"
+        if: ${{ !cancelled() }}
+        run: npm run prettier:check

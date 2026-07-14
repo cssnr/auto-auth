@@ -1,0 +1,89 @@
+name: "Docs"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master, main]
+    paths:
+      - ".github/workflows/docs.yaml"
+      - ".vitepress/**"
+      - "docs/**"
+      - "package*.json"
+
+env:
+  crawler-id: ""
+  purge-domain: ""
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: "Build"
+    if: ${{ !contains(github.event.head_commit.message, '#nodeploy') }}
+    uses: cssnr/workflows/.github/workflows/npm-build.yaml@master
+    permissions:
+      contents: read
+    with:
+      install: "npm ci"
+      build: "npm run docs:deploy"
+      path: "docs/.vitepress/dist"
+      pages: true
+    secrets: inherit
+
+  deploy:
+    name: "Deploy"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: docs
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: "Deploy Pages"
+        id: deployment
+        uses: actions/deploy-pages@v5
+
+      - name: "Send Deploy Notification"
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          description: ${{ steps.deployment.outputs.page_url }}
+
+  post:
+    name: "Post"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: deploy
+
+    steps:
+      - name: "Purge Cache"
+        if: ${{ env.purge-domain != '' }}
+        uses: cssnr/cloudflare-purge-cache-action@v2
+        with:
+          zones: ${{ env.purge-domain }}
+          token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: "Algolia Crawler"
+        if: ${{ env.crawler-id != '' }}
+        uses: cssnr/algolia-crawler-action@v2
+        with:
+          crawler_id: ${{ env.crawler-id }}
+          crawler_user_id: ${{ secrets.CRAWLER_USER_ID }}
+          crawler_api_key: ${{ secrets.CRAWLER_API_KEY }}
+
+      - name: "Send Discord Notification"
+        if: ${{ failure() }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          description: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

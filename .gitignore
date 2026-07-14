@@ -2,10 +2,10 @@
 .idea/
 *.iml
 .vscode/
+cache/
 dist/
 build/
 node_modules/
-web-ext-artifacts/
 *.tsbuildinfo
 # WXT
 .output
@@ -13,3 +13,8 @@ stats.html
 stats-*.json
 .wxt
 web-ext.config.ts
+web-ext-artifacts/
+# VitePress
+contributors.json
+.env
+.env.development
