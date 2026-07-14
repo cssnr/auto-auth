@@ -44,4 +44,5 @@ ALWAYS use the `npm run *` command NEVER pipe output into arbitrary truncation c
 
 ## Follow Existing Patterns
 
-Before adding or modifying any feature, search the codebase for the closest existing implementation and follow its full integration chain. Do not stop after writing the core logic — trace every file that touches the feature (imports, registration, configuration, UI binding) and ensure each is accounted for.
+Before adding or modifying any feature, search the codebase for the closest existing implementation and follow its full integration chain.
+Do not stop after writing the core logic — trace every file that touches the feature (imports, registration, configuration, UI binding) and ensure each is accounted for.

@@ -20,8 +20,7 @@ export function onAuthRequired(
 
 export function webRequestFinished(
   requestDetails:
-    | chrome.webRequest.OnCompletedDetails
-    | chrome.webRequest.OnErrorOccurredDetails,
+    chrome.webRequest.OnCompletedDetails | chrome.webRequest.OnErrorOccurredDetails,
 ): void {
   const index = pendingRequests.indexOf(requestDetails.requestId)
   if (index > -1) {
