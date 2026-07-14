@@ -274,11 +274,3 @@ Other Web Extensions I have created and published:
 - [New Tab](https://github.com/cssnr/new-tab?tab=readme-ov-file#readme)
 
 For a full list of current projects visit: [https://cssnr.github.io/](https://cssnr.github.io/)
-
-<a href="https://github.com/cssnr/auto-auth/stargazers">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=cssnr/auto-auth&type=date&legend=bottom-right&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=cssnr/auto-auth&type=date&legend=bottom-right" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=cssnr/auto-auth&type=date&legend=bottom-right" />
- </picture>
-</a>
