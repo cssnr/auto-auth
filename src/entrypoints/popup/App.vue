@@ -22,7 +22,8 @@ debug('width:', width.value)
 
 const options = useOptions()
 
-const hostnameRef = ref('') // tab hostname
+const tabHost = ref('') // original tab hostname
+const hostnameRef = ref('') // matched hostname
 const usernameRef = ref('') // saved username
 const savedCreds = ref('') // has credentials
 
@@ -39,6 +40,12 @@ function deleteClick(host: string) {
   }
 }
 
+function setMatch(match: { key: string; creds: string } | undefined) {
+  hostnameRef.value = match?.key ?? ''
+  savedCreds.value = match?.creds ?? ''
+  usernameRef.value = match ? parseCreds(match.creds)[0] : ''
+}
+
 // DUPLICATION: HostsTable.vue
 async function deleteHost(host: string) {
   debug('popup/App.vue - deleteHost:', host)
@@ -46,8 +53,8 @@ async function deleteHost(host: string) {
   // debug('creds:', creds)
   try {
     await Hosts.delete(host)
-    savedCreds.value = '' // NOTE: These 2 lines are only differences
-    usernameRef.value = '' // NOTE: These 2 lines are only differences
+    const match = await Hosts.find(hostnameRef.value)
+    setMatch(match)
     showToast(`${i18n.t('ui.text.removed')}: ${host}`, 'success')
   } catch (e) {
     const message = e instanceof Error ? e.message : i18n.t('import.errorUnknown')
@@ -59,9 +66,8 @@ async function onSubmit(host: string, user: string, pass: string, original?: str
   debug('popup/App.vue - onSubmit:', host, user, pass, original)
   const success = await submitHost(host, user, pass, original)
   if (!success) return
-  hostnameRef.value = host
-  savedCreds.value = `${user}:${pass}`
-  usernameRef.value = user
+  const match = original !== host ? await Hosts.find(tabHost.value) : { key: host, creds: `${user}:${pass}` }
+  setMatch(match)
 }
 
 onMounted(async () => {
@@ -70,13 +76,10 @@ onMounted(async () => {
   if (!tab.url) return debug('No URL for Tab - No Access.')
   const url = new URL(tab.url)
   debug('url:', url)
-  hostnameRef.value = url.host
+  tabHost.value = url.host
   const match = await Hosts.find(url.host)
   debug('match:', match)
-  if (!match) return debug('No Saved Creds for Host.')
-  hostnameRef.value = match.key
-  savedCreds.value = match.creds
-  usernameRef.value = parseCreds(match.creds)[0]
+  setMatch(match)
 })
 </script>
 
