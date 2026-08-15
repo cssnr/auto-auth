@@ -75,7 +75,7 @@ export function validateHostname(hostname: string): string | undefined {
   const segments = hostPart.split('.')
   if (segments.length === 0 || segments.includes('')) return undefined
   for (const segment of segments) {
-    if (segment === '*') continue
+    if (segment === '*' || segment === '**') continue
     if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(segment)) return undefined
   }
 
@@ -92,11 +92,29 @@ export function matchesWildcard(host: string, pattern: string): boolean {
 
   const hostParts = hostName.split('.')
   const patternParts = patternName.split('.')
-  if (patternParts.length !== hostParts.length) return false
 
-  return patternParts.every((part, i) =>
-    part === '*' ? (hostParts[i]?.length ?? 0) > 0 : part === hostParts[i],
-  )
+  return matchSegments(hostParts, patternParts)
+}
+
+// NOTE: `*` matches a single label, `**` matches one or more labels
+function matchSegments(hostParts: string[], patternParts: string[]): boolean {
+  const match = (hostIndex: number, patternIndex: number): boolean => {
+    if (patternIndex === patternParts.length) return hostIndex === hostParts.length
+    const part = patternParts[patternIndex]
+    if (part === '**') {
+      for (let end = hostIndex + 1; end <= hostParts.length; end++) {
+        if (match(end, patternIndex + 1)) return true
+      }
+      return false
+    }
+    if (hostIndex >= hostParts.length) return false
+    if (part === '*')
+      return (
+        (hostParts[hostIndex]?.length ?? 0) > 0 && match(hostIndex + 1, patternIndex + 1)
+      )
+    return hostParts[hostIndex] === part && match(hostIndex + 1, patternIndex + 1)
+  }
+  return match(0, 0)
 }
 
 export function findBestWildcardMatch(
@@ -113,12 +131,12 @@ function findBestWildcard(
   if (!patterns) return undefined
   let bestKey: string | undefined
   let bestCreds: string | undefined
-  let bestSpecificity = Infinity
+  let bestSpecificity = -1
   for (const [pattern, creds] of Object.entries(patterns)) {
     if (!pattern.includes('*')) continue
     if (matchesWildcard(host, pattern)) {
-      const specificity = countWildcards(pattern)
-      if (specificity < bestSpecificity) {
+      const specificity = wildcardSpecificity(pattern)
+      if (specificity > bestSpecificity) {
         bestSpecificity = specificity
         bestKey = pattern
         bestCreds = creds
@@ -135,6 +153,11 @@ function parseHostPort(value: string): [string, string | undefined] {
     : [value.slice(0, colon), value.slice(colon + 1)]
 }
 
-function countWildcards(pattern: string): number {
-  return (pattern.match(/\*/g) || []).length
+// NOTE: Exact labels are most specific, then `*`, then `**`
+function wildcardSpecificity(pattern: string): number {
+  return pattern.split('.').reduce((score, segment) => {
+    if (segment === '**') return score
+    if (segment === '*') return score + 1
+    return score + 2
+  }, 0)
 }

@@ -1,11 +1,12 @@
 import { i18n } from '#imports'
 import { defineContentScript } from 'wxt/utils/define-content-script'
-import { Hosts, findBestWildcardMatch } from '@/utils/hosts.ts'
+import { Hosts } from '@/utils/hosts.ts'
 
 // TODO: Logging
 
 let url: URL
 let tabEnabled = false
+let lastCreds: string | undefined
 
 export default defineContentScript({
   matches: ['*://*/*'],
@@ -27,32 +28,15 @@ export default defineContentScript({
 
 async function onChanged(changes: Record<string, any>) {
   // console.debug('content/index.ts - onChanged:', changes)
-  const exactItems = changes[url.host[0]] // NOTE: Lazy Typing... in changes
-  const wildcardItems = changes['*']
-
-  if (!exactItems && !wildcardItems) return
-
-  if (exactItems) {
-    const oldCreds = exactItems.oldValue?.[url.host]
-    const newCreds = exactItems.newValue?.[url.host]
-    if (oldCreds !== newCreds) {
-      // If exact match was removed, check if a wildcard still covers this host
-      if (!newCreds) {
-        const wildcard = findBestWildcardMatch(url.host, await Hosts.all())
-        return await processCreds(wildcard)
-      }
-      return await processCreds(newCreds)
-    }
-  }
-
-  if (wildcardItems) {
-    const oldWildcard = findBestWildcardMatch(url.host, wildcardItems.oldValue)
-    const newWildcard = findBestWildcardMatch(url.host, wildcardItems.newValue)
-    if (oldWildcard !== newWildcard) await processCreds(newWildcard)
-  }
+  // NOTE: Only these buckets can affect the current host (exact entries + wildcards)
+  if (!(url.host[0] in changes) && !('*' in changes)) return
+  const creds = await Hosts.get(url.host)
+  if (creds === lastCreds) return
+  await processCreds(creds)
 }
 
 async function processCreds(creds: any) {
+  lastCreds = creds
   // console.debug('processCreds - tabEnabled:', tabEnabled, '- creds:', creds)
   try {
     if (creds) {
