@@ -11,6 +11,11 @@ const validTests: [string, string][] = [
   ['localhost', 'localhost'],
   ['Example.COM', 'example.com'],
   ['  Example.COM  ', 'example.com'],
+  ['*.example.com', '*.example.com'],
+  ['staging.**', 'staging.**'],
+  ['staging.**.example.com', 'staging.**.example.com'],
+  ['**.example.com', '**.example.com'],
+  ['staging.**:8080', 'staging.**:8080'],
 ]
 
 const invalidTests: string[] = [
@@ -37,6 +42,7 @@ const invalidTests: string[] = [
   '`example.com',
   'example.com:abc',
   'example..com',
+  'example.***.com',
   '.',
   '-',
 ]
