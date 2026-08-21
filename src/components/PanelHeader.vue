@@ -68,6 +68,7 @@ const config = useAppConfig()
 
       <div v-if="!isMobile && panelButton" class="ms-1">
         <button
+          type="button"
           :title="i18n.t('ui.action.extensionPanel')"
           class="btn btn-sm btn-outline-info"
           @click="openExtPanel(closeWindow)"
@@ -78,6 +79,7 @@ const config = useAppConfig()
 
       <div v-if="!isMobile && sideButton" class="ms-1">
         <button
+          type="button"
           :title="i18n.t('ui.action.sidePanel')"
           class="btn btn-sm btn-outline-info"
           @click="openSidePanel(closeWindow)"
@@ -87,7 +89,12 @@ const config = useAppConfig()
       </div>
 
       <div v-if="!isMobile && popupButton" class="ms-1">
-        <button :title="i18n.t('ui.action.openPopup')" class="btn btn-sm btn-outline-info" @click="openPopup()">
+        <button
+          type="button"
+          :title="i18n.t('ui.action.openPopup')"
+          class="btn btn-sm btn-outline-info"
+          @click="openPopup()"
+        >
           <i class="fa-solid fa-window-maximize"></i>
         </button>
       </div>
