@@ -20,6 +20,7 @@
     "docs:dev": "vitepress dev docs",
     "docs:preview": "vitepress preview docs",
     "get-contributors": "npx get-contributors cssnr/auto-auth -f docs/.vitepress/contributors.json",
+    "prettier": "npm run prettier:write",
     "prettier:check": "npx prettier --check .",
     "prettier:write": "npx prettier --write .",
     "lint": "npx eslint src",

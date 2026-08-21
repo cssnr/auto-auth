@@ -6,6 +6,7 @@ import { Hosts } from '@/utils/hosts.ts'
 
 let url: URL
 let tabEnabled = false
+let lastCreds: string | undefined
 
 export default defineContentScript({
   matches: ['*://*/*'],
@@ -27,33 +28,38 @@ export default defineContentScript({
 
 async function onChanged(changes: Record<string, any>) {
   // console.debug('content/index.ts - onChanged:', changes)
-  const items = changes[url.host[0]] // NOTE: Lazy Typing... in changes
-  if (!items) return
-  const oldCreds = items.oldValue?.[url.host]
-  const newCreds = items.newValue?.[url.host]
-  if (oldCreds !== newCreds) await processCreds(newCreds)
+  // NOTE: Only these buckets can affect the current host (exact entries + wildcards)
+  if (!(url.host[0] in changes) && !('*' in changes)) return
+  const creds = await Hosts.get(url.host)
+  if (creds === lastCreds) return
+  await processCreds(creds)
 }
 
 async function processCreds(creds: any) {
+  lastCreds = creds
   // console.debug('processCreds - tabEnabled:', tabEnabled, '- creds:', creds)
-  if (creds) {
-    tabEnabled = true
-    if (creds === 'ignored') {
-      console.log('%cIgnored - Site is Ignored!', 'color: Gold')
-      await chrome.runtime.sendMessage({
-        badgeText: i18n.t('content.badge.off'),
-        badgeColor: 'yellow',
-      })
-    } else {
-      console.log('%cEnabled - Site Credentials Found.', 'color: LimeGreen')
-      await chrome.runtime.sendMessage({
-        badgeText: i18n.t('content.badge.on'),
-        badgeColor: 'green',
-      })
+  try {
+    if (creds) {
+      tabEnabled = true
+      if (creds === 'ignored') {
+        console.log('%cIgnored - Site is Ignored!', 'color: Gold')
+        await chrome.runtime.sendMessage({
+          badgeText: i18n.t('content.badge.off'),
+          badgeColor: 'yellow',
+        })
+      } else {
+        console.log('%cEnabled - Site Credentials Found.', 'color: LimeGreen')
+        await chrome.runtime.sendMessage({
+          badgeText: i18n.t('content.badge.on'),
+          badgeColor: 'green',
+        })
+      }
+    } else if (tabEnabled) {
+      console.log('%cDisabled - Site Credentials Removed.', 'color: Tomato')
+      tabEnabled = false
+      await chrome.runtime.sendMessage({ badgeText: '' })
     }
-  } else if (tabEnabled) {
-    console.log('%cDisabled - Site Credentials Removed.', 'color: Tomato')
-    tabEnabled = false
-    await chrome.runtime.sendMessage({ badgeText: '' })
+  } catch {
+    // extension is reloaded, updated, or the page outlives the background script
   }
 }

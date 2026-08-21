@@ -1,16 +1,29 @@
 export type HostsRecord = Record<string, string>
 
 export class Hosts {
-  static readonly keys: string[] = [...'abcdefghijklmnopqrstuvwxyz0123456789']
+  static readonly keys: string[] = [...'*abcdefghijklmnopqrstuvwxyz0123456789']
 
   static async all(): Promise<HostsRecord> {
     const sync = await chrome.storage.sync.get<HostsRecord>(Hosts.keys)
     return Object.assign({}, ...Object.values(sync)) as HostsRecord
   }
 
-  static async get(host: string): Promise<string | undefined> {
+  static async has(host: string): Promise<boolean> {
     const sync = await Hosts.#getSync(host)
-    return sync[host]
+    return host in sync
+  }
+
+  static async get(host: string): Promise<string | undefined> {
+    const result = await Hosts.find(host)
+    return result?.creds
+  }
+
+  static async find(host: string): Promise<{ key: string; creds: string } | undefined> {
+    const sync = await Hosts.#getSync(host)
+    const exact = sync[host]
+    if (exact) return { key: host, creds: exact }
+
+    return findBestWildcard(host, await Hosts.all())
   }
 
   static async set(host: string, creds: string): Promise<void> {
@@ -26,10 +39,10 @@ export class Hosts {
   }
 
   static async edit(old: string, host: string, creds: string): Promise<void> {
+    await this.set(host, creds)
     if (old !== host) {
       await this.delete(old)
     }
-    await this.set(host, creds)
   }
 
   static async update(hosts: HostsRecord): Promise<void> {
@@ -49,20 +62,102 @@ export class Hosts {
   }
 }
 
-// Above Code is Original - New Code Below
-
 // NOTE: Moved from components/HostModal.vue and exported
 export function validateHostname(hostname: string): string | undefined {
-  // console.log('validateHostname:', hostname)
-  try {
-    let value = hostname
-    // console.log('value1:', value)
-    if (!value.includes('://')) value = `https://${value}`
-    // console.log('value2:', value)
-    const url = new URL(value)
-    // console.log(`url.hostname: "${url.hostname}"`, url)
-    return url.hostname
-  } catch {
-    // invalid hostname
+  const value = hostname.toLowerCase().trim()
+
+  const [hostPart, portPart] = parseHostPort(value)
+
+  if (portPart !== undefined && portPart !== '*' && !/^\d+$/.test(portPart)) {
+    return undefined
   }
+
+  const segments = hostPart.split('.')
+  if (segments.length === 0 || segments.includes('')) return undefined
+  for (const segment of segments) {
+    if (segment === '*' || segment === '**') continue
+    if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(segment)) return undefined
+  }
+
+  return portPart !== undefined ? `${hostPart}:${portPart}` : hostPart
+}
+
+export function matchesWildcard(host: string, pattern: string): boolean {
+  const [hostName, hostPort] = parseHostPort(host)
+  const [patternName, patternPort] = parseHostPort(pattern)
+
+  if (patternPort !== undefined && patternPort !== '*' && patternPort !== hostPort) {
+    return false
+  }
+
+  const hostParts = hostName.split('.')
+  const patternParts = patternName.split('.')
+
+  return matchSegments(hostParts, patternParts)
+}
+
+// NOTE: `*` matches a single label, `**` matches one or more labels
+function matchSegments(hostParts: string[], patternParts: string[]): boolean {
+  const match = (hostIndex: number, patternIndex: number): boolean => {
+    if (patternIndex === patternParts.length) return hostIndex === hostParts.length
+    const part = patternParts[patternIndex]
+    if (part === '**') {
+      for (let end = hostIndex + 1; end <= hostParts.length; end++) {
+        if (match(end, patternIndex + 1)) return true
+      }
+      return false
+    }
+    if (hostIndex >= hostParts.length) return false
+    if (part === '*')
+      return (
+        (hostParts[hostIndex]?.length ?? 0) > 0 && match(hostIndex + 1, patternIndex + 1)
+      )
+    return hostParts[hostIndex] === part && match(hostIndex + 1, patternIndex + 1)
+  }
+  return match(0, 0)
+}
+
+export function findBestWildcardMatch(
+  host: string,
+  patterns: Record<string, string> | undefined,
+): string | undefined {
+  return findBestWildcard(host, patterns)?.creds
+}
+
+function findBestWildcard(
+  host: string,
+  patterns: Record<string, string> | undefined,
+): { key: string; creds: string } | undefined {
+  if (!patterns) return undefined
+  let bestKey: string | undefined
+  let bestCreds: string | undefined
+  let bestSpecificity = -1
+  for (const [pattern, creds] of Object.entries(patterns)) {
+    if (!pattern.includes('*')) continue
+    if (matchesWildcard(host, pattern)) {
+      const specificity = wildcardSpecificity(pattern)
+      if (specificity > bestSpecificity) {
+        bestSpecificity = specificity
+        bestKey = pattern
+        bestCreds = creds
+      }
+    }
+  }
+  return bestKey ? { key: bestKey, creds: bestCreds! } : undefined
+}
+
+function parseHostPort(value: string): [string, string | undefined] {
+  const colon = value.indexOf(':')
+  return colon === -1
+    ? [value, undefined]
+    : [value.slice(0, colon), value.slice(colon + 1)]
+}
+
+// NOTE: Exact labels are most specific, then `*`, then `**`
+function wildcardSpecificity(pattern: string): number {
+  return pattern.split('.').reduce((score, segment) => {
+    if (segment === '**') return score
+    if (segment === '*') return score + 1
+    return score + 2
+  }, 0)
 }

@@ -80,9 +80,9 @@ async function onSubmit() {
 
   // existing
   if (isAdding.value || hostRef.value !== originalHost.value) {
-    const existing = await Hosts.get(hostRef.value)
-    debug('existing:', existing)
-    if (existing) {
+    const exists = await Hosts.has(hostRef.value)
+    debug('existing:', exists)
+    if (exists) {
       debug('Existing Host:', hostRef.value)
       hostnameEl.value?.focus()
       hostnameEl.value?.select()
@@ -100,7 +100,7 @@ async function onSubmit() {
   if (!passRef.value) {
     debug('No password')
     passwordEl.value?.focus()
-    passInvalid.value = `${i18n.t('ui.text.password')} ${i18n.t('ui.text.password')}`
+    passInvalid.value = `${i18n.t('ui.text.password')} ${i18n.t('ui.text.invalid')}`
     return
   }
 
