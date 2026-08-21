@@ -73,7 +73,7 @@ async function onSubmit(host: string, user: string, pass: string, original?: str
 onMounted(async () => {
   const [tab] = await chrome.tabs.query({ currentWindow: true, active: true })
   debug('tab:', tab)
-  if (!tab.url) return debug('No URL for Tab - No Access.')
+  if (!tab?.url) return debug('No URL for Tab - No Access.')
   const url = new URL(tab.url)
   debug('url:', url)
   tabHost.value = url.host

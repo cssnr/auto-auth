@@ -29,7 +29,8 @@ export default defineContentScript({
 async function onChanged(changes: Record<string, any>) {
   // console.debug('content/index.ts - onChanged:', changes)
   // NOTE: Only these buckets can affect the current host (exact entries + wildcards)
-  if (!(url.host[0] in changes) && !('*' in changes)) return
+  // NOTE: noUncheckedIndexedAccess makes `url.host[0]` possibly undefined
+  if (!((url.host[0] ?? '') in changes) && !('*' in changes)) return
   const creds = await Hosts.get(url.host)
   if (creds === lastCreds) return
   await processCreds(creds)

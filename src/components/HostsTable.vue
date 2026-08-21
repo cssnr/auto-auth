@@ -109,6 +109,8 @@ function onSubmit(host: string, user: string, pass: string, original?: string) {
   if (host in hosts.value) {
     const creds = hosts.value[host]
     debug('creds:', creds)
+    // NOTE: noUncheckedIndexedAccess makes indexed access possibly undefined
+    if (!creds) return showToast(i18n.t('ui.text.noCredentialsImport'), 'warning')
     const [username, password] = parseCreds(creds)
     if (username == user && password == pass) return showToast(i18n.t('ui.text.noChanges'), 'warning')
   }
