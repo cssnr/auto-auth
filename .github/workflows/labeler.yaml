@@ -46,7 +46,7 @@ jobs:
           file: .configs/labels/labels.yaml
 
       - name: "Labeler"
-        uses: actions/labeler@v6
+        uses: actions/labeler@v7
         with:
           sync-labels: true
           configuration-path: .configs/labels/labeler.yaml

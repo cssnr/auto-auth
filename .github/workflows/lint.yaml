@@ -56,6 +56,10 @@ jobs:
         if: ${{ !cancelled() }}
         run: npm run web-ext
 
+      - name: "test"
+        if: ${{ !cancelled() }}
+        run: npm run test
+
       - name: "eslint"
         if: ${{ !cancelled() }}
         run: npm run lint

@@ -41,17 +41,25 @@ const bestTests: [string, Record<string, string>, string | undefined][] = [
   ],
 ]
 
+let failed = 0
+
 for (const [host, pattern, expected] of tests) {
   const result = matchesWildcard(host, pattern)
-  const status = result === expected ? '' : '⛔ FAIL ⛔'
+  const passed = result === expected
+  if (!passed) failed++
+  const status = passed ? '' : '⛔ FAIL ⛔'
   console.log(`${pattern.padEnd(19)} ${expected ? '✅' : '❌'}  ${host} ${status}`)
 }
 
 console.log('\nBest match:')
 for (const [host, patterns, expected] of bestTests) {
   const result = findBestWildcardMatch(host, patterns)
-  const status = result === expected ? '' : '⛔ FAIL ⛔'
+  const passed = result === expected
+  if (!passed) failed++
+  const status = passed ? '' : '⛔ FAIL ⛔'
   console.log(
     `${host.padEnd(24)} ${expected ?? 'none'.padEnd(10)} ${JSON.stringify(patterns)} ${status}`,
   )
 }
+
+if (failed > 0) process.exitCode = 1

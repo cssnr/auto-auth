@@ -29,13 +29,15 @@ export class Hosts {
   static async set(host: string, creds: string): Promise<void> {
     const sync = await Hosts.#getSync(host)
     sync[host] = creds
-    await chrome.storage.sync.set({ [host[0]]: sync })
+    // NOTE: noUncheckedIndexedAccess makes `host[0]` possibly undefined
+    await chrome.storage.sync.set({ [host[0]!]: sync })
   }
 
   static async delete(host: string): Promise<void> {
     const sync = await Hosts.#getSync(host)
     delete sync[host]
-    await chrome.storage.sync.set({ [host[0]]: sync })
+    // NOTE: noUncheckedIndexedAccess makes `host[0]` possibly undefined
+    await chrome.storage.sync.set({ [host[0]!]: sync })
   }
 
   static async edit(old: string, host: string, creds: string): Promise<void> {
@@ -48,17 +50,19 @@ export class Hosts {
   static async update(hosts: HostsRecord): Promise<void> {
     const sync = await chrome.storage.sync.get<Record<string, HostsRecord>>(Hosts.keys)
     for (const [key, value] of Object.entries(hosts)) {
-      if (!(key[0] in sync)) {
-        sync[key[0]] = {}
-      }
-      sync[key[0]][key] = value
+      // NOTE: noUncheckedIndexedAccess makes `key[0]` possibly undefined
+      const firstChar = key[0]!
+      const bucket = sync[firstChar] ?? {}
+      bucket[key] = value
+      sync[firstChar] = bucket
     }
     await chrome.storage.sync.set(sync)
   }
 
   static async #getSync(host: string): Promise<HostsRecord> {
     const sync = await chrome.storage.sync.get<Record<string, HostsRecord>>(host[0])
-    return sync[host[0]] ?? {}
+    // NOTE: noUncheckedIndexedAccess makes `host[0]` possibly undefined
+    return sync[host[0]!] ?? {}
   }
 }
 

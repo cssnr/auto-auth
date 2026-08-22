@@ -47,16 +47,24 @@ const invalidTests: string[] = [
   '-',
 ]
 
+let failed = 0
+
 console.log('Valid hostnames:')
 for (const [input, expected] of validTests) {
   const result = validateHostname(input)
-  const status = result === expected ? '' : `⛔ FAIL (got ${result})`
+  const passed = result === expected
+  if (!passed) failed++
+  const status = passed ? '' : `⛔ FAIL (got ${result})`
   console.log(`  ${input.padEnd(20)} ->  ${expected} ${status}`)
 }
 
 console.log('\nInvalid hostnames:')
 for (const input of invalidTests) {
   const result = validateHostname(input)
-  const status = result === undefined ? '' : `⛔ FAIL (got ${result})`
+  const passed = result === undefined
+  if (!passed) failed++
+  const status = passed ? '' : `⛔ FAIL (got ${result})`
   console.log(`  ${input.padEnd(20)} -> undefined ${status}`)
 }
+
+if (failed > 0) process.exitCode = 1
