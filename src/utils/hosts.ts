@@ -68,7 +68,19 @@ export class Hosts {
 
 // NOTE: Moved from components/HostModal.vue and exported
 export function validateHostname(hostname: string): string | undefined {
-  const value = hostname.toLowerCase().trim()
+  let value = hostname.toLowerCase().trim()
+
+  // NOTE: Accept full URLs (e.g. `https://cssnr.com/path`) and normalize to `host[:port]`
+  if (value.includes('://') || value.includes('/')) {
+    if (!value.includes('://')) value = `https://${value}`
+    let url: URL
+    try {
+      url = new URL(value)
+    } catch {
+      return undefined
+    }
+    value = url.host || url.hostname
+  }
 
   const [hostPart, portPart] = parseHostPort(value)
 

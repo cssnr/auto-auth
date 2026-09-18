@@ -16,6 +16,12 @@ const validTests: [string, string][] = [
   ['staging.**.example.com', 'staging.**.example.com'],
   ['**.example.com', '**.example.com'],
   ['staging.**:8080', 'staging.**:8080'],
+  ['https://cssnr.com/', 'cssnr.com'],
+  ['https://cssnr.com/path', 'cssnr.com'],
+  ['https://cssnr.com:8080/path', 'cssnr.com:8080'],
+  ['cssnr.com/path', 'cssnr.com'],
+  ['HTTPS://CssNr.com/Path', 'cssnr.com'],
+  ['https://*.example.com/path', '*.example.com'],
 ]
 
 const invalidTests: string[] = [
@@ -43,6 +49,8 @@ const invalidTests: string[] = [
   'example.com:abc',
   'example..com',
   'example.***.com',
+  'https://',
+  'https://-example.com',
   '.',
   '-',
 ]
