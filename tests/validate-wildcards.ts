@@ -1,4 +1,4 @@
-import { matchesWildcard, findBestWildcardMatch } from '@/utils/hosts.ts'
+import { matchesWildcard, findBestWildcard } from '@/utils/hosts.ts'
 
 const tests: [string, string, boolean][] = [
   ['sub.example.com', '*.example.com', true],
@@ -56,7 +56,7 @@ for (const [host, pattern, expected] of tests) {
 
 console.log('\nBest match:')
 for (const [host, patterns, expected] of bestTests) {
-  const result = findBestWildcardMatch(host, patterns)
+  const result = findBestWildcard(host, patterns)?.creds
   const passed = result === expected
   if (!passed) failed++
   const status = passed ? '' : '⛔ FAIL ⛔'

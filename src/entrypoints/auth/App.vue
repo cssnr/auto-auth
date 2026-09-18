@@ -8,7 +8,7 @@ import { openOptions } from '@/utils/extension.ts'
 import { getSession, saveKeyValue } from '@/utils/options.ts'
 import { useOptions } from '@/composables/useOptions.ts'
 import { showToast } from '@/composables/useToast.ts'
-import { Hosts, findBestWildcardMatch } from '@/utils/hosts.ts'
+import { Hosts } from '@/utils/hosts.ts'
 import ToastAlerts from '@/components/ToastAlerts.vue'
 import BackToTop from '@/components/BackToTop.vue'
 import OptionsOffscreen from '@/components/OptionsOffscreen.vue'
@@ -133,13 +133,15 @@ onMounted(async () => {
   } else if (hostRef.value in session) {
     debug('else hostRef.value in session:', hostRef.value)
     await populateFields(session[hostRef.value] ?? '')
-  } else {
-    const bestMatch = findBestWildcardMatch(hostRef.value, session)
-    if (bestMatch) {
-      debug('session wildcard match:', bestMatch)
-      await populateFields(bestMatch)
-    }
   }
+  // NOTE: Session only ever holds exact host keys, so wildcard match is inert
+  // } else {
+  //   const bestMatch = findBestWildcardMatch(hostRef.value, session)
+  //   if (bestMatch) {
+  //     debug('session wildcard match:', bestMatch)
+  //     await populateFields(bestMatch)
+  //   }
+  // }
 
   const link = document.querySelector<HTMLLinkElement>('link[rel*="icon"]')
   // debug('link:', link)

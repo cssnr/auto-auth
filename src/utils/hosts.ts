@@ -144,14 +144,15 @@ function matchSegments(hostParts: string[], patternParts: string[]): boolean {
   return match(0, 0)
 }
 
-export function findBestWildcardMatch(
-  host: string,
-  patterns: Record<string, string> | undefined,
-): string | undefined {
-  return findBestWildcard(host, patterns)?.creds
-}
+// NOTE: Only used by the (commented out) session wildcard fallback, which is inert
+// export function findBestWildcardMatch(
+//   host: string,
+//   patterns: Record<string, string> | undefined,
+// ): string | undefined {
+//   return findBestWildcard(host, patterns)?.creds
+// }
 
-function findBestWildcard(
+export function findBestWildcard(
   host: string,
   patterns: Record<string, string> | undefined,
 ): { key: string; creds: string } | undefined {

@@ -1,6 +1,6 @@
 import { parseCreds } from '@/utils/creds.ts'
 import { getOptions, getSession } from '@/utils/options.ts'
-import { Hosts, findBestWildcardMatch } from '@/utils/hosts.ts'
+import { Hosts } from '@/utils/hosts.ts'
 
 // TODO: Logging
 
@@ -92,8 +92,9 @@ async function processRequest(
   const session = await getSession()
   // console.log('session:', session)
 
-  // Find session creds (exact or wildcard match)
-  const sessionCreds = session[url.host] ?? findBestWildcardMatch(url.host, session)
+  // Find session creds (exact only; wildcard fallback commented out as it is inert)
+  // const sessionCreds = session[url.host] ?? findBestWildcardMatch(url.host, session)
+  const sessionCreds = session[url.host]
   if (sessionCreds) {
     console.log('%cSending Session Creds for:', 'color: SpringGreen', details.requestId)
     const [username, password] = parseCreds(sessionCreds)
