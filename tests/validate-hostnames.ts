@@ -22,6 +22,11 @@ const validTests: [string, string][] = [
   ['cssnr.com/path', 'cssnr.com'],
   ['HTTPS://CssNr.com/Path', 'cssnr.com'],
   ['https://*.example.com/path', '*.example.com'],
+  ['[::1]', '[::1]'],
+  ['[::1]:8080', '[::1]:8080'],
+  ['http://[::1]/', '[::1]'],
+  ['http://[::1]:8080/path', '[::1]:8080'],
+  ['[2001:0db8:0000:0000:0000:ff00:0042:8329]', '[2001:db8::ff00:42:8329]'],
 ]
 
 const invalidTests: string[] = [
@@ -51,6 +56,8 @@ const invalidTests: string[] = [
   'example.***.com',
   'https://',
   'https://-example.com',
+  '[not-ipv6]',
+  '[::1]:abc',
   '.',
   '-',
 ]

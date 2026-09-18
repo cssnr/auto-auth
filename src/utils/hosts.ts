@@ -1,7 +1,7 @@
 export type HostsRecord = Record<string, string>
 
 export class Hosts {
-  static readonly keys: string[] = [...'*abcdefghijklmnopqrstuvwxyz0123456789']
+  static readonly keys: string[] = [...'[*abcdefghijklmnopqrstuvwxyz0123456789']
 
   static async all(): Promise<HostsRecord> {
     const sync = await chrome.storage.sync.get<HostsRecord>(Hosts.keys)
@@ -88,6 +88,15 @@ export function validateHostname(hostname: string): string | undefined {
     return undefined
   }
 
+  // NOTE: Accept bracketed IPv6 addresses, normalized via the URL parser so stored keys match `url.host`
+  if (hostPart.startsWith('[')) {
+    try {
+      return new URL(`http://${value}`).host
+    } catch {
+      return undefined
+    }
+  }
+
   const segments = hostPart.split('.')
   if (segments.length === 0 || segments.includes('')) return undefined
   for (const segment of segments) {
@@ -163,6 +172,15 @@ function findBestWildcard(
 }
 
 function parseHostPort(value: string): [string, string | undefined] {
+  // NOTE: IPv6 literals are bracketed and contain colons, split on the closing `]` instead
+  if (value.startsWith('[')) {
+    const close = value.indexOf(']')
+    if (close === -1) return [value, undefined]
+    const after = value.slice(close + 1)
+    return after.startsWith(':')
+      ? [value.slice(0, close + 1), after.slice(1)]
+      : [value.slice(0, close + 1), undefined]
+  }
   const colon = value.indexOf(':')
   return colon === -1
     ? [value, undefined]

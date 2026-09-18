@@ -26,6 +26,9 @@ const tests: [string, string, boolean][] = [
   ['a.example.com', 'a.**.com', true],
   ['a.b.c.example.com', 'a.**.com', true],
   ['a.example.com', 'a.**.net', false],
+  ['[::1]:8080', '[::1]:*', true],
+  ['[::1]:8080', '[::1]:8080', true],
+  ['[::1]:8080', '[::2]:*', false],
 ]
 
 const bestTests: [string, Record<string, string>, string | undefined][] = [
