@@ -132,7 +132,7 @@ onMounted(async () => {
     }
   } else if (hostRef.value in session) {
     debug('else hostRef.value in session:', hostRef.value)
-    await populateFields(session[hostRef.value])
+    await populateFields(session[hostRef.value] ?? '')
   } else {
     const bestMatch = findBestWildcardMatch(hostRef.value, session)
     if (bestMatch) {

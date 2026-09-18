@@ -73,7 +73,7 @@ async function onSubmit(host: string, user: string, pass: string, original?: str
 onMounted(async () => {
   const [tab] = await chrome.tabs.query({ currentWindow: true, active: true })
   debug('tab:', tab)
-  if (!tab.url) return debug('No URL for Tab - No Access.')
+  if (!tab?.url) return debug('No URL for Tab - No Access.')
   const url = new URL(tab.url)
   debug('url:', url)
   tabHost.value = url.host
@@ -110,6 +110,7 @@ onMounted(async () => {
 
         <button
           v-if="savedCreds !== 'ignored'"
+          type="button"
           class="btn btn-outline-warning"
           @click.prevent="hostModal?.show(hostnameRef, savedCreds)"
         >
@@ -117,7 +118,7 @@ onMounted(async () => {
           <span>{{ i18n.t('popup.editCreds') }}</span>
         </button>
 
-        <button class="btn btn-outline-danger" @click="deleteClick(hostnameRef)">
+        <button type="button" class="btn btn-outline-danger" @click="deleteClick(hostnameRef)">
           <i class="fa-regular fa-trash-can me-1"></i>
           <span>{{ i18n.t('popup.deleteCreds') }}</span>
         </button>
