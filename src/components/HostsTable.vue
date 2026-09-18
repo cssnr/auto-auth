@@ -237,7 +237,10 @@ const columnCount = computed(() => {
           </td>
           <template v-else>
             <td v-if="!options.clickEdit" class="text-truncate">
-              <a :href="`https://${host}`" target="_blank" class="link-body-emphasis">{{ host }}</a>
+              <a v-if="!host.includes('*')" :href="`https://${host}`" target="_blank" class="link-body-emphasis">{{
+                host
+              }}</a>
+              <span v-else class="link-body-emphasis">{{ host }}</span>
             </td>
             <InputCell
               v-else
