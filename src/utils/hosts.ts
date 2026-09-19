@@ -88,8 +88,11 @@ export function validateHostname(hostname: string): string | undefined {
     return undefined
   }
 
-  // NOTE: Accept bracketed IPv6 addresses; canonicalize the literal via `url.hostname` (which never includes
-  //   the port) and keep the port verbatim, so stored keys match `url.host` from real requests
+  // NOTE: Accept bracketed IPv6 addresses; canonicalize the literal via
+  //   `url.hostname` (which never includes the port) and keep the port
+  //   verbatim, so keys round-trip with `url.host` — except for scheme-default
+  //   ports (http :80, https :443), which the URL parser strips from
+  //   `url.host`, so those keys only match the non-default scheme
   if (hostPart.startsWith('[')) {
     try {
       const hostname = new URL(`http://${hostPart}`).hostname
