@@ -90,10 +90,10 @@ onMounted(async () => {
     <div class="d-grid gap-2 p-1">
       <PermsCheck :close-window="true" />
 
-      <div v-if="!hostnameRef" class="text-center rounded border border-2 border-danger-subtle p-1">
+      <div v-if="!tabHost" class="text-center rounded border border-2 border-danger-subtle p-1">
         {{ i18n.t('popup.noAccess') }}
       </div>
-      <div v-if="hostnameRef && !savedCreds" class="text-center rounded border border-2 p-1">
+      <div v-if="tabHost && !hostnameRef" class="text-center rounded border border-2 p-1">
         {{ i18n.t('popup.noSaved') }}
       </div>
       <template v-if="savedCreds">
