@@ -76,20 +76,8 @@ export class Hosts {
 
 // NOTE: Moved from components/HostModal.vue and exported
 export function validateHostname(hostname: string): string | undefined {
-  let value = hostname.toLowerCase().trim()
-
-  // NOTE: Accept full URLs (e.g. `https://cssnr.com/path`) and normalize to `host[:port]`
-  if (value.includes('://') || value.includes('/')) {
-    if (!value.includes('://')) value = `https://${value}`
-    let url: URL
-    try {
-      url = new URL(value)
-    } catch {
-      return undefined
-    }
-    value = url.host || url.hostname
-  }
-
+  const value = extractHost(hostname.toLowerCase().trim())
+  if (value === undefined) return undefined
   const [hostPart, portPart] = parseHostPort(value)
 
   if (portPart !== undefined && portPart !== '*' && !/^\d+$/.test(portPart)) {
@@ -103,21 +91,37 @@ export function validateHostname(hostname: string): string | undefined {
   //   `url.host`, so those keys only match the non-default scheme
   if (hostPart.startsWith('[')) {
     try {
-      const hostname = new URL(`http://${hostPart}`).hostname
+      const hostname = new URL(`https://${hostPart}`).hostname
       return portPart !== undefined ? `${hostname}:${portPart}` : hostname
     } catch {
       return undefined
     }
   }
 
-  const segments = hostPart.split('.')
-  if (segments.length === 0 || segments.includes('')) return undefined
+  if (!validLabels(hostPart)) return undefined
+  return portPart !== undefined ? `${hostPart}:${portPart}` : hostPart
+}
+
+// NOTE: Accept full URLs (e.g. `https://cssnr.com/path`) and normalize to `host[:port]`
+function extractHost(value: string): string | undefined {
+  if (!value.includes('/')) return value
+  if (!value.includes('://')) value = `https://${value}`
+  try {
+    const url = new URL(value)
+    return url.host || url.hostname
+  } catch {
+    return undefined
+  }
+}
+
+function validLabels(host: string): boolean {
+  const segments = host.split('.')
+  if (segments.length === 0 || segments.includes('')) return false
   for (const segment of segments) {
     if (segment === '*' || segment === '**') continue
-    if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(segment)) return undefined
+    if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(segment)) return false
   }
-
-  return portPart !== undefined ? `${hostPart}:${portPart}` : hostPart
+  return true
 }
 
 export function matchesWildcard(host: string, pattern: string): boolean {

@@ -25,7 +25,8 @@ async function seed(record: Record<string, string>) {
   const buckets: Record<string, Record<string, string>> = {}
   for (const [key, value] of Object.entries(record)) {
     const bucket = key[0]!
-    ;(buckets[bucket] ??= {})[key] = value
+    buckets[bucket] ??= {}
+    buckets[bucket]![key] = value
   }
   for (const [key, value] of Object.entries(buckets)) storage.set(key, value)
 }
