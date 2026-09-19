@@ -1,7 +1,7 @@
 export type HostsRecord = Record<string, string>
 
 export class Hosts {
-  static readonly keys: string[] = [...'*abcdefghijklmnopqrstuvwxyz0123456789']
+  static readonly keys: string[] = [...'[*abcdefghijklmnopqrstuvwxyz0123456789']
 
   static async all(): Promise<HostsRecord> {
     const sync = await chrome.storage.sync.get<HostsRecord>(Hosts.keys)
@@ -68,12 +68,38 @@ export class Hosts {
 
 // NOTE: Moved from components/HostModal.vue and exported
 export function validateHostname(hostname: string): string | undefined {
-  const value = hostname.toLowerCase().trim()
+  let value = hostname.toLowerCase().trim()
+
+  // NOTE: Accept full URLs (e.g. `https://cssnr.com/path`) and normalize to `host[:port]`
+  if (value.includes('://') || value.includes('/')) {
+    if (!value.includes('://')) value = `https://${value}`
+    let url: URL
+    try {
+      url = new URL(value)
+    } catch {
+      return undefined
+    }
+    value = url.host || url.hostname
+  }
 
   const [hostPart, portPart] = parseHostPort(value)
 
   if (portPart !== undefined && portPart !== '*' && !/^\d+$/.test(portPart)) {
     return undefined
+  }
+
+  // NOTE: Accept bracketed IPv6 addresses; canonicalize the literal via
+  //   `url.hostname` (which never includes the port) and keep the port
+  //   verbatim, so keys round-trip with `url.host` — except for scheme-default
+  //   ports (http :80, https :443), which the URL parser strips from
+  //   `url.host`, so those keys only match the non-default scheme
+  if (hostPart.startsWith('[')) {
+    try {
+      const hostname = new URL(`http://${hostPart}`).hostname
+      return portPart !== undefined ? `${hostname}:${portPart}` : hostname
+    } catch {
+      return undefined
+    }
   }
 
   const segments = hostPart.split('.')
@@ -121,14 +147,15 @@ function matchSegments(hostParts: string[], patternParts: string[]): boolean {
   return match(0, 0)
 }
 
-export function findBestWildcardMatch(
-  host: string,
-  patterns: Record<string, string> | undefined,
-): string | undefined {
-  return findBestWildcard(host, patterns)?.creds
-}
+// NOTE: Only used by the (commented out) session wildcard fallback, which is inert
+// export function findBestWildcardMatch(
+//   host: string,
+//   patterns: Record<string, string> | undefined,
+// ): string | undefined {
+//   return findBestWildcard(host, patterns)?.creds
+// }
 
-function findBestWildcard(
+export function findBestWildcard(
   host: string,
   patterns: Record<string, string> | undefined,
 ): { key: string; creds: string } | undefined {
@@ -151,6 +178,15 @@ function findBestWildcard(
 }
 
 function parseHostPort(value: string): [string, string | undefined] {
+  // NOTE: IPv6 literals are bracketed and contain colons, split on the closing `]` instead
+  if (value.startsWith('[')) {
+    const close = value.indexOf(']')
+    if (close === -1) return [value, undefined]
+    const after = value.slice(close + 1)
+    return after.startsWith(':')
+      ? [value.slice(0, close + 1), after.slice(1)]
+      : [value.slice(0, close + 1), undefined]
+  }
   const colon = value.indexOf(':')
   return colon === -1
     ? [value, undefined]
