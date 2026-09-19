@@ -14,7 +14,7 @@
     "android": "web-ext run -t firefox-android -s .output/firefox-mv3 --firefox-apk org.mozilla.firefox_beta --adb-device",
     "clean": "rm -rf .output",
     "tsc": "vue-tsc --noEmit",
-    "test": "tsx tests/validate-hostnames.ts && tsx tests/validate-wildcards.ts",
+    "test": "tsx tests/validate-hostnames.ts && tsx tests/validate-wildcards.ts && tsx tests/hosts-find.ts",
     "docs": "npm run docs:dev",
     "docs:build": "vitepress build docs",
     "docs:deploy": "npm run get-contributors && npm run docs:build",

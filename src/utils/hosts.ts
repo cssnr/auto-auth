@@ -23,6 +23,14 @@ export class Hosts {
     const exact = sync[host]
     if (exact) return { key: host, creds: exact }
 
+    // NOTE: Agree with wildcards: an entry without a port matches any port, so
+    //   a portless key falls back to a request with a port
+    const [hostName, hostPort] = parseHostPort(host)
+    if (hostPort !== undefined) {
+      const portless = sync[hostName]
+      if (portless) return { key: hostName, creds: portless }
+    }
+
     return findBestWildcard(host, await Hosts.all())
   }
 
@@ -193,11 +201,19 @@ function parseHostPort(value: string): [string, string | undefined] {
     : [value.slice(0, colon), value.slice(colon + 1)]
 }
 
-// NOTE: Exact labels are most specific, then `*`, then `**`
+// NOTE: Exact labels are most specific, then `*`, then `**`. An explicit
+//   numeric port only breaks label ties (i.e. `*.example.com:8080` beats
+//   `*.example.com` for a `:8080` host), so the port tier (max 2) is scaled
+//   below a single label difference (4).
 function wildcardSpecificity(pattern: string): number {
-  return pattern.split('.').reduce((score, segment) => {
+  const [host, port] = parseHostPort(pattern)
+  const labelScore = host.split('.').reduce((score, segment) => {
     if (segment === '**') return score
     if (segment === '*') return score + 1
     return score + 2
   }, 0)
+  // NOTE: `*` port and no port match the same set of hosts, so only an
+  //   explicit numeric port adds specificity
+  const portScore = port !== undefined && port !== '*' ? 2 : 0
+  return labelScore * 4 + portScore
 }

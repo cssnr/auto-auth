@@ -14,6 +14,9 @@ const tests: [string, string, boolean][] = [
   ['example.com', '*', false],
   ['sub.example.com:8080', '*.example.com:*', true],
   ['sub.example.com:8080', '*.example.com:9090', false],
+  ['sub.example.com:8080', '*.example.com', true],
+  ['sub.example.com', '*.example.com:8080', false],
+  ['a.b.example.com:8080', '**.example.com', true],
   ['staging.a', 'staging.**', true],
   ['staging.a.b', 'staging.**', true],
   ['staging.a.b.c.d', 'staging.**', true],
@@ -40,6 +43,16 @@ const bestTests: [string, Record<string, string>, string | undefined][] = [
   [
     'a.example.com',
     { '*.example.com': 'user2:pass', '**.example.com': 'user1:pass' },
+    'user2:pass',
+  ],
+  [
+    'a.example.com:8080',
+    { '*.example.com': 'user1:pass', '*.example.com:8080': 'user2:pass' },
+    'user2:pass',
+  ],
+  [
+    'a.example.com:8080',
+    { '*.example.com:*': 'user1:pass', '*.example.com:8080': 'user2:pass' },
     'user2:pass',
   ],
 ]
