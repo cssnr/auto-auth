@@ -7,6 +7,8 @@ export function openSidePanel(close = false) {
   if (chrome.sidePanel) {
     // debug('chrome.sidePanel')
     chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+      // NOTE: noUncheckedIndexedAccess makes destructured `tab` possibly undefined
+      if (!tab) return console.warn('openSidePanel - No Tab Found')
       chrome.sidePanel
         .open({ windowId: tab.windowId })
         .then(() => {

@@ -18,6 +18,7 @@ const closeWindow = () => window.close()
         <i class="fa-solid fa-gears"></i> {{ i18n.t('ui.action.options') }}
       </a>
       <button
+        type="button"
         :title="i18n.t('ui.action.close')"
         class="btn btn-sm btn-outline-warning hvr-grow-sm"
         @click="closeWindow()"

@@ -93,6 +93,14 @@ function saveCredsChange(event?: Event) {
   sessionStorage.setItem(hostRef.value, saveCreds.value ? '1' : '0')
 }
 
+async function populateFields(credsStr: string) {
+  const [username, password] = parseCreds(credsStr)
+  userRef.value = username
+  await nextTick()
+  usernameEl.value?.select()
+  passRef.value = password
+}
+
 onMounted(async () => {
   // NOTE: Copied from VanillaJS...
   const searchParams = new URLSearchParams(window.location.search)
@@ -117,25 +125,23 @@ onMounted(async () => {
   debug('session:', session)
 
   if (creds) {
-    debug('if creds:', creds)
     hasSavedCreds.value = true
     if (creds !== 'ignored') {
-      const [username, password] = parseCreds(creds)
-      userRef.value = username
-      debug('usernameEl.value:', usernameEl.value)
-      await nextTick()
-      usernameEl.value?.select()
-      passRef.value = password
+      debug('if creds:', creds)
+      await populateFields(creds)
     }
   } else if (hostRef.value in session) {
     debug('else hostRef.value in session:', hostRef.value)
-    const [username, password] = parseCreds(session[hostRef.value])
-    userRef.value = username
-    debug('usernameEl.value:', usernameEl.value)
-    await nextTick()
-    usernameEl.value?.select()
-    passRef.value = password
+    await populateFields(session[hostRef.value] ?? '')
   }
+  // NOTE: Session only ever holds exact host keys, so wildcard match is inert
+  // } else {
+  //   const bestMatch = findBestWildcardMatch(hostRef.value, session)
+  //   if (bestMatch) {
+  //     debug('session wildcard match:', bestMatch)
+  //     await populateFields(bestMatch)
+  //   }
+  // }
 
   const link = document.querySelector<HTMLLinkElement>('link[rel*="icon"]')
   // debug('link:', link)

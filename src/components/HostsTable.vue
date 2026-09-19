@@ -109,6 +109,8 @@ function onSubmit(host: string, user: string, pass: string, original?: string) {
   if (host in hosts.value) {
     const creds = hosts.value[host]
     debug('creds:', creds)
+    // NOTE: noUncheckedIndexedAccess makes indexed access possibly undefined
+    if (!creds) return showToast(i18n.t('ui.text.noCredentialsImport'), 'warning')
     const [username, password] = parseCreds(creds)
     if (username == user && password == pass) return showToast(i18n.t('ui.text.noChanges'), 'warning')
   }
@@ -235,7 +237,10 @@ const columnCount = computed(() => {
           </td>
           <template v-else>
             <td v-if="!options.clickEdit" class="text-truncate">
-              <a :href="`https://${host}`" target="_blank" class="link-body-emphasis">{{ host }}</a>
+              <a v-if="!host.includes('*')" :href="`https://${host}`" target="_blank" class="link-body-emphasis">{{
+                host
+              }}</a>
+              <span v-else class="link-body-emphasis">{{ host }}</span>
             </td>
             <InputCell
               v-else
