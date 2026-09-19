@@ -53,7 +53,7 @@ async function deleteHost(host: string) {
   // debug('creds:', creds)
   try {
     await Hosts.delete(host)
-    const match = await Hosts.find(hostnameRef.value)
+    const match = await Hosts.find(tabHost.value)
     setMatch(match)
     showToast(`${i18n.t('ui.text.removed')}: ${host}`, 'success')
   } catch (e) {
