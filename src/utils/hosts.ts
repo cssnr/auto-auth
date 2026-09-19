@@ -1,7 +1,7 @@
 export type HostsRecord = Record<string, string>
 
 export class Hosts {
-  static readonly keys: string[] = [...'[*abcdefghijklmnopqrstuvwxyz0123456789']
+  static readonly keys: string[] = [...'[*_abcdefghijklmnopqrstuvwxyz0123456789']
 
   static async all(): Promise<HostsRecord> {
     const sync = await chrome.storage.sync.get<HostsRecord>(Hosts.keys)
@@ -10,7 +10,7 @@ export class Hosts {
 
   static async has(host: string): Promise<boolean> {
     const sync = await Hosts.#getSync(host)
-    return host in sync
+    return Object.hasOwn(sync, host)
   }
 
   static async get(host: string): Promise<string | undefined> {
@@ -21,14 +21,15 @@ export class Hosts {
   static async find(host: string): Promise<{ key: string; creds: string } | undefined> {
     const sync = await Hosts.#getSync(host)
     const exact = sync[host]
-    if (exact) return { key: host, creds: exact }
+    if (exact && Object.hasOwn(sync, host)) return { key: host, creds: exact }
 
     // NOTE: Agree with wildcards: an entry without a port matches any port, so
     //   a portless key falls back to a request with a port
     const [hostName, hostPort] = parseHostPort(host)
     if (hostPort !== undefined) {
       const portless = sync[hostName]
-      if (portless) return { key: hostName, creds: portless }
+      if (portless && Object.hasOwn(sync, hostName))
+        return { key: hostName, creds: portless }
     }
 
     return findBestWildcard(host, await Hosts.all())
@@ -78,7 +79,8 @@ export class Hosts {
 export function validateHostname(hostname: string): string | undefined {
   const value = extractHost(hostname.toLowerCase().trim())
   if (value === undefined) return undefined
-  const [hostPart, portPart] = parseHostPort(value)
+  const [rawHost, portPart] = parseHostPort(value)
+  let hostPart = rawHost
 
   if (portPart !== undefined && portPart !== '*' && !/^\d+$/.test(portPart)) {
     return undefined
@@ -98,7 +100,18 @@ export function validateHostname(hostname: string): string | undefined {
     }
   }
 
-  if (!validLabels(hostPart)) return undefined
+  if (!validLabels(hostPart)) {
+    // NOTE: Fall back to the URL parser (as master did) to IDN-normalize raw
+    //   Unicode (e.g. `münchen.de` -> `xn--mnchen-3ya.de`); gated on non-ASCII
+    //   so parser quirks (e.g. `@` as userinfo) can't smuggle ASCII junk through
+    if (!/\P{ASCII}/u.test(hostPart)) return undefined
+    try {
+      hostPart = new URL(`https://${hostPart}`).hostname
+    } catch {
+      return undefined
+    }
+    if (!validLabels(hostPart)) return undefined
+  }
   return portPart !== undefined ? `${hostPart}:${portPart}` : hostPart
 }
 
@@ -119,7 +132,7 @@ function validLabels(host: string): boolean {
   if (segments.length === 0 || segments.includes('')) return false
   for (const segment of segments) {
     if (segment === '*' || segment === '**') continue
-    if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(segment)) return false
+    if (!/^[a-z0-9_]([a-z0-9_-]*[a-z0-9_])?$/.test(segment)) return false
   }
   return true
 }

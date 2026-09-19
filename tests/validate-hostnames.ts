@@ -28,12 +28,19 @@ const validTests: [string, string][] = [
   ['http://[::1]/', '[::1]'],
   ['http://[::1]:8080/path', '[::1]:8080'],
   ['[2001:0db8:0000:0000:0000:ff00:0042:8329]', '[2001:db8::ff00:42:8329]'],
+  ['_example.com', '_example.com'],
+  ['_dmarc.example.com', '_dmarc.example.com'],
+  ['_acme-challenge.example.com', '_acme-challenge.example.com'],
+  ['sub_domain.example.com', 'sub_domain.example.com'],
+  ['münchen.de', 'xn--mnchen-3ya.de'],
+  ['www.münchen.de', 'www.xn--mnchen-3ya.de'],
+  ['täst.de', 'xn--tst-qla.de'],
+  ['münchen.de:8080', 'xn--mnchen-3ya.de:8080'],
 ]
 
 const invalidTests: string[] = [
   '.example.com',
   '-example.com',
-  '_example.com',
   '!example.com',
   '@example.com',
   '#example.com',

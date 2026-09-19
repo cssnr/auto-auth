@@ -87,6 +87,21 @@ await check('portless ipv6 key matches ported request', Hosts.find('[::1]:8080')
 await seed({})
 await check('no entries', Hosts.find('example.com:8080'), undefined)
 
+await seed({})
+await check('prototype key has = false (no entry)', Hosts.has('constructor'), false)
+await check(
+  'prototype key find = undefined (no entry)',
+  Hosts.find('constructor'),
+  undefined,
+)
+
+await seed({ constructor: 'u1:p1' })
+await check('stored prototype key has = true', Hosts.has('constructor'), true)
+await check('stored prototype key find returns it', Hosts.find('constructor'), {
+  key: 'constructor',
+  creds: 'u1:p1',
+})
+
 if (failed > 0) {
   console.error(`\n${failed} FAILURES`)
   process.exit(1)
