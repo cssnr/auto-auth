@@ -68,6 +68,11 @@ const invalidTests: string[] = [
   '[::1]:abc',
   '.',
   '-',
+  '*',
+  '**',
+  '*.*',
+  '*:*',
+  '**:8080',
 ]
 
 let failed = 0

@@ -137,11 +137,13 @@ function extractHost(value: string): string | undefined {
 function validLabels(host: string): boolean {
   const segments = host.split('.')
   if (segments.length === 0 || segments.includes('')) return false
+  let hasLiteral = false
   for (const segment of segments) {
     if (segment === '*' || segment === '**') continue
+    hasLiteral = true
     if (!/^[a-z0-9_]([a-z0-9_-]*[a-z0-9_])?$/.test(segment)) return false
   }
-  return true
+  return hasLiteral
 }
 
 export function matchesWildcard(host: string, pattern: string): boolean {
