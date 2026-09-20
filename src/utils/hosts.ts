@@ -151,13 +151,13 @@ export function matchesWildcard(host: string, pattern: string): boolean {
   return matchSegments(hostParts, patternParts)
 }
 
-// NOTE: `*` matches a single label, `**` matches one or more labels
+// NOTE: `*` matches a single label, `**` matches zero or more labels
 function matchSegments(hostParts: string[], patternParts: string[]): boolean {
   const match = (hostIndex: number, patternIndex: number): boolean => {
     if (patternIndex === patternParts.length) return hostIndex === hostParts.length
     const part = patternParts[patternIndex]
     if (part === '**') {
-      for (let end = hostIndex + 1; end <= hostParts.length; end++) {
+      for (let end = hostIndex; end <= hostParts.length; end++) {
         if (match(end, patternIndex + 1)) return true
       }
       return false

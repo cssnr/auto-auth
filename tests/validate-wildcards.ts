@@ -20,11 +20,11 @@ const tests: [string, string, boolean][] = [
   ['staging.a', 'staging.**', true],
   ['staging.a.b', 'staging.**', true],
   ['staging.a.b.c.d', 'staging.**', true],
-  ['staging', 'staging.**', false],
+  ['staging', 'staging.**', true],
   ['staging.a', 'staging.**.com', false],
   ['a.example.com', '**.example.com', true],
   ['a.b.example.com', '**.example.com', true],
-  ['example.com', '**.example.com', false],
+  ['example.com', '**.example.com', true],
   ['a.b.example.com:8080', '**.example.com:*', true],
   ['a.example.com', 'a.**.com', true],
   ['a.b.c.example.com', 'a.**.com', true],
@@ -37,7 +37,7 @@ const tests: [string, string, boolean][] = [
 const bestTests: [string, Record<string, string>, string | undefined][] = [
   ['staging.a', { 'staging.**': 'user1:pass', 'staging.*': 'user2:pass' }, 'user2:pass'],
   ['staging.a.b', { 'staging.**': 'user1:pass' }, 'user1:pass'],
-  ['staging', { 'staging.**': 'user1:pass' }, undefined],
+  ['staging', { 'staging.**': 'user1:pass' }, 'user1:pass'],
   ['example.com', { '**.com': 'user1:pass' }, 'user1:pass'],
   ['a.example.com', { '**.com': 'user1:pass' }, 'user1:pass'],
   [
