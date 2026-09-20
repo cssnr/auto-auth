@@ -17,19 +17,19 @@ import { i18n } from '#imports'
     ></a>
     <ul class="dropdown-menu auto dropdown-menu-end" aria-labelledby="bs-theme-dropdown">
       <li>
-        <button class="dropdown-item" data-bs-theme-value="dark" aria-pressed="false">
+        <button type="button" class="dropdown-item" data-bs-theme-value="dark" aria-pressed="false">
           <i class="fa-regular fa-moon" style="min-width: 16px"></i>
           <span class="ms-3">{{ i18n.t('theme.dark') }}</span>
         </button>
       </li>
       <li>
-        <button class="dropdown-item" data-bs-theme-value="light" aria-pressed="false">
+        <button type="button" class="dropdown-item" data-bs-theme-value="light" aria-pressed="false">
           <i class="fa-solid fa-sun" style="min-width: 16px"></i>
           <span class="ms-3">{{ i18n.t('theme.light') }}</span>
         </button>
       </li>
       <li>
-        <button class="dropdown-item" data-bs-theme-value="auto" aria-pressed="false">
+        <button type="button" class="dropdown-item" data-bs-theme-value="auto" aria-pressed="false">
           <i class="fa-solid fa-circle-half-stroke" style="min-width: 16px"></i>
           <span class="ms-3">{{ i18n.t('theme.auto') }}</span>
         </button>

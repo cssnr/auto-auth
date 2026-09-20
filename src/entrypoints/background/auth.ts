@@ -10,7 +10,11 @@ export function onAuthRequired(
   details: chrome.webRequest.OnAuthRequiredDetails,
   asyncCallback?: (response: chrome.webRequest.BlockingResponse) => void,
 ): chrome.webRequest.BlockingResponse | undefined {
-  processRequest(details, asyncCallback).catch(console.warn)
+  // TODO: if (!asyncCallback) throw - should be called here...
+  processRequest(details, asyncCallback).catch((e) => {
+    console.warn(e)
+    if (asyncCallback) asyncCallback({})
+  })
   return undefined // returned so asyncCallback can be called
 }
 
@@ -64,7 +68,7 @@ async function processRequest(
   // Check if Request Already Processed
   if (pendingRequests.includes(details.requestId)) {
     console.log('%cAlready Processed requestId:', 'color: Orange', details.requestId)
-    hijackRequest(true)
+    return hijackRequest(true)
   }
   pendingRequests.push(details.requestId)
 
@@ -88,9 +92,12 @@ async function processRequest(
   const session = await getSession()
   // console.log('session:', session)
 
-  if (url.host in session) {
+  // Find session creds (exact only; wildcard fallback commented out as it is inert)
+  // const sessionCreds = session[url.host] ?? findBestWildcardMatch(url.host, session)
+  const sessionCreds = session[url.host]
+  if (sessionCreds) {
     console.log('%cSending Session Creds for:', 'color: SpringGreen', details.requestId)
-    const [username, password] = parseCreds(session[url.host])
+    const [username, password] = parseCreds(sessionCreds)
     const authCredentials: chrome.webRequest.AuthCredentials = { username, password }
     // console.log('authCredentials:', authCredentials)
     return asyncCallback({ authCredentials })

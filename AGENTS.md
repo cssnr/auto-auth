@@ -39,6 +39,7 @@ ALWAYS use the `npm run *` command NEVER pipe output into arbitrary truncation c
 | `npm run clean`    | `rm -rf .output`                  |
 | `npm run lint`     | `npx eslint src` ESLint           |
 | `npm run tsc`      | `vue-tsc --noEmit` TS Check       |
+| `npm run test`     | `tsx` run tests in `tests/`       |
 | `npm run prepare`  | `wxt prepare` Generate i18n Types |
 | `npm run prettier` | ALWAYS RUN AFTER EDITING FILES    |
 

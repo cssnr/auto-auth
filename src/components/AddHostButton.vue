@@ -12,7 +12,7 @@ const hostModal = ref<InstanceType<typeof HostModal> | null>(null)
 </script>
 
 <template>
-  <button v-bind="$attrs" class="btn btn-success" @click="hostModal?.show()">
+  <button type="button" v-bind="$attrs" class="btn btn-success" @click="hostModal?.show()">
     <i class="fa-solid fa-table-cells-row-lock me-2"></i> {{ i18n.t('ui.action.addCredentials') }}
   </button>
 

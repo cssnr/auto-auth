@@ -22,7 +22,8 @@ debug('width:', width.value)
 
 const options = useOptions()
 
-const hostnameRef = ref('') // tab hostname
+const tabHost = ref('') // original tab hostname
+const hostnameRef = ref('') // matched hostname
 const usernameRef = ref('') // saved username
 const savedCreds = ref('') // has credentials
 
@@ -39,6 +40,12 @@ function deleteClick(host: string) {
   }
 }
 
+function setMatch(match: { key: string; creds: string } | undefined) {
+  hostnameRef.value = match?.key ?? ''
+  savedCreds.value = match?.creds ?? ''
+  usernameRef.value = match ? parseCreds(match.creds)[0] : ''
+}
+
 // DUPLICATION: HostsTable.vue
 async function deleteHost(host: string) {
   debug('popup/App.vue - deleteHost:', host)
@@ -46,8 +53,8 @@ async function deleteHost(host: string) {
   // debug('creds:', creds)
   try {
     await Hosts.delete(host)
-    savedCreds.value = '' // NOTE: These 2 lines are only differences
-    usernameRef.value = '' // NOTE: These 2 lines are only differences
+    const match = await Hosts.find(tabHost.value)
+    setMatch(match)
     showToast(`${i18n.t('ui.text.removed')}: ${host}`, 'success')
   } catch (e) {
     const message = e instanceof Error ? e.message : i18n.t('import.errorUnknown')
@@ -57,23 +64,22 @@ async function deleteHost(host: string) {
 
 async function onSubmit(host: string, user: string, pass: string, original?: string) {
   debug('popup/App.vue - onSubmit:', host, user, pass, original)
-  await submitHost(host, user, pass, original)
-  savedCreds.value = `${user}:${pass}`
-  usernameRef.value = user
+  const success = await submitHost(host, user, pass, original)
+  if (!success) return
+  const match = original !== host ? await Hosts.find(tabHost.value) : { key: host, creds: `${user}:${pass}` }
+  setMatch(match)
 }
 
 onMounted(async () => {
   const [tab] = await chrome.tabs.query({ currentWindow: true, active: true })
   debug('tab:', tab)
-  if (!tab.url) return debug('No URL for Tab - No Access.')
+  if (!tab?.url) return debug('No URL for Tab - No Access.')
   const url = new URL(tab.url)
   debug('url:', url)
-  hostnameRef.value = url.host
-  const creds = await Hosts.get(url.host)
-  debug('creds:', creds)
-  if (!creds) return debug('No Saved Creds for Host.')
-  savedCreds.value = creds
-  usernameRef.value = parseCreds(creds)[0]
+  tabHost.value = url.host
+  const match = await Hosts.find(url.host)
+  debug('match:', match)
+  setMatch(match)
 })
 </script>
 
@@ -84,10 +90,10 @@ onMounted(async () => {
     <div class="d-grid gap-2 p-1">
       <PermsCheck :close-window="true" />
 
-      <div v-if="!hostnameRef" class="text-center rounded border border-2 border-danger-subtle p-1">
+      <div v-if="!tabHost" class="text-center rounded border border-2 border-danger-subtle p-1">
         {{ i18n.t('popup.noAccess') }}
       </div>
-      <div v-if="hostnameRef && !savedCreds" class="text-center rounded border border-2 p-1">
+      <div v-if="tabHost && !hostnameRef" class="text-center rounded border border-2 p-1">
         {{ i18n.t('popup.noSaved') }}
       </div>
       <template v-if="savedCreds">
@@ -104,6 +110,7 @@ onMounted(async () => {
 
         <button
           v-if="savedCreds !== 'ignored'"
+          type="button"
           class="btn btn-outline-warning"
           @click.prevent="hostModal?.show(hostnameRef, savedCreds)"
         >
@@ -111,7 +118,7 @@ onMounted(async () => {
           <span>{{ i18n.t('popup.editCreds') }}</span>
         </button>
 
-        <button class="btn btn-outline-danger" @click="deleteClick(hostnameRef)">
+        <button type="button" class="btn btn-outline-danger" @click="deleteClick(hostnameRef)">
           <i class="fa-regular fa-trash-can me-1"></i>
           <span>{{ i18n.t('popup.deleteCreds') }}</span>
         </button>
