@@ -130,7 +130,7 @@ onMounted(async () => {
       debug('if creds:', creds)
       await populateFields(creds)
     }
-  } else if (hostRef.value in session) {
+  } else if (Object.hasOwn(session, hostRef.value)) {
     debug('else hostRef.value in session:', hostRef.value)
     await populateFields(session[hostRef.value] ?? '')
   }
