@@ -4,8 +4,8 @@ export class Hosts {
   static readonly keys: string[] = [...'[*_abcdefghijklmnopqrstuvwxyz0123456789']
 
   static async all(): Promise<HostsRecord> {
-    const sync = await chrome.storage.sync.get<HostsRecord>(Hosts.keys)
-    return Object.assign({}, ...Object.values(sync)) as HostsRecord
+    const sync = await chrome.storage.sync.get<Record<string, HostsRecord>>(Hosts.keys)
+    return Hosts.#merge(sync)
   }
 
   static async has(host: string): Promise<boolean> {
@@ -19,20 +19,23 @@ export class Hosts {
   }
 
   static async find(host: string): Promise<{ key: string; creds: string } | undefined> {
-    const sync = await Hosts.#getSync(host)
-    const exact = sync[host]
-    if (exact && Object.hasOwn(sync, host)) return { key: host, creds: exact }
+    // NOTE: Read all buckets in a single call so exact, portless, and wildcard
+    //   lookups share one storage access instead of two
+    const sync = await chrome.storage.sync.get<Record<string, HostsRecord>>(Hosts.keys)
+    const bucket = sync[host[0]!] ?? {}
+    const exact = bucket[host]
+    if (exact && Object.hasOwn(bucket, host)) return { key: host, creds: exact }
 
     // NOTE: Agree with wildcards: an entry without a port matches any port, so
     //   a portless key falls back to a request with a port
     const [hostName, hostPort] = parseHostPort(host)
     if (hostPort !== undefined) {
-      const portless = sync[hostName]
-      if (portless && Object.hasOwn(sync, hostName))
+      const portless = bucket[hostName]
+      if (portless && Object.hasOwn(bucket, hostName))
         return { key: hostName, creds: portless }
     }
 
-    return findBestWildcard(host, await Hosts.all())
+    return findBestWildcard(host, Hosts.#merge(sync))
   }
 
   static async set(host: string, creds: string): Promise<void> {
@@ -66,6 +69,10 @@ export class Hosts {
       sync[firstChar] = bucket
     }
     await chrome.storage.sync.set(sync)
+  }
+
+  static #merge(sync: Record<string, HostsRecord>): HostsRecord {
+    return Object.assign({}, ...Object.values(sync)) as HostsRecord
   }
 
   static async #getSync(host: string): Promise<HostsRecord> {
